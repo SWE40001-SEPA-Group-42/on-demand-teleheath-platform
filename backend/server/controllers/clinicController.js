@@ -5,33 +5,31 @@ const Clinic = require('../models/clinicModel')
 // GET
 const getClinic = asyncHandler(async(req, res) => {
 
-    const clinic = await Clinic.find()
-
-    if (!clinic ) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    }
-
-    res.status(200).json(clinic)
-
-    /* Pre DB Checks
-    const clinicName = req.body.clinic_name;
+    const clinicNameJSON = req.body.clinicName
+    
+    const clinic = await Clinic.find({clinicName: clinicNameJSON})
 
     if (!clinicName ) {
         res.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    }
-
-    res.status(200).json({message: `Searching for Clinic record for ${clinicName}`})
-    */
+    } 
+    
+    res.status(200).json(clinic)
 })
 
 // POST
 const addClinic = asyncHandler(async(req, res) => {
+
+    const clinicNameJSON = req.body.clinicName
+    const clinicAddressJSON = req.body.clinicAddress
+    const clinicContactNumberJSON = req.body.clinicContactNumber
+    const clinicUrlJSON = req.body.clinicUrl
+
     const clinic = await Clinic.create({
-        clinicName: req.body.clinic_name,
-        clinicAddress: req.body.clinic_address,
-        clinicContactNumber: req.body.clinic_phone_number
+        clinicName: clinicNameJSON,
+        clinicAddress: clinicAddressJSON,
+        clinicContactNumber: clinicContactNumberJSON,
+        clinicUrl: clinicUrlJSON
     })
 
     if (!clinic) {
@@ -40,19 +38,6 @@ const addClinic = asyncHandler(async(req, res) => {
     }
 
     res.status(200).json(clinic)
-
-    /* Pre-DB Checks
-    const clinicName = req.body.clinic_name;
-    const clinicAddress = req.body.clinic_address;
-    const clinicPhoneNumber = req.body.clinic_phone_number;
-
-    if (!clinicName || !clinicAddress || !clinicPhoneNumber ) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    }
-
-    res.status(200).json({message: `Creating Clinic record for ${clinicName}`})
-    */
 })
 
 // PUT

@@ -6,7 +6,6 @@ const { errorHandler } = require('./middleware/errorMiddleware')
 const port = process.env.PORT || 8001 // Default port
 
 const app = express()
-// connectDB()
 
 // For Logging
 app.use(express.json())
@@ -18,4 +17,7 @@ app.use(errorHandler)
 // Routes
 app.use('/api/clinic', clinicRoutes)
 
-app.listen(port, () => console.log(`Web RTC Server initialised on port ${port}`))
+app.listen(port, () => {
+    console.log(`Web RTC Server initialised on port ${port}`)
+    connectDB()
+})

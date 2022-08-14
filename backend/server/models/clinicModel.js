@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// Model refers to Schema collection `clinic` and passes it based on these requirements
 const clinicSchema = mongoose.Schema(
     {
         clinicName: {
@@ -11,13 +12,19 @@ const clinicSchema = mongoose.Schema(
             required: [true, 'Please add a clinic address']
         },
         clinicContactNumber: {
-            type: Number,
+            type: String,
             required: [true, 'Please add a clinic contact number']
+        },
+        clinicUrl: {
+            type: String,
+            required: [true, 'Please add a clinic url']
         }
     }, 
     {
+        collection: 'clinic',
+        versionKey: false,
         timestamps: true
     }
 )
 
-module.exports = mongoose.model('Clinic', clinicSchema)
+module.exports = mongoose.model('clinic', clinicSchema)
