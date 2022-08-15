@@ -30,25 +30,37 @@ const clinicSchema = mongoose.Schema(
 // Model refers to Schema collection `doctors` and passes it based on these requirements
 const doctorSchema = mongoose.Schema(
     {
-        doctorName: {
+        drFirstName: {
             type: String,
-            required: [true, 'Please add a doctor name']
+            required: [true, 'Please add a doctor\'s first name']
         },
-        doctorAge: {
+        drSurName: {
             type: String,
-            required: [true, 'Please add a doctor\'s age']
+            required: [true, 'Please add a doctor\'s last name']
         },
-        doctorClinic: {
+        drCode: {
             type: String,
-            required: [true, 'Please add a doctor clinic']
+            required: [true, 'Please add a doctor\'s code']
         },
-        doctorQualification: {
+        prescriberCode: {
             type: String,
-            required: [true, 'Please add a doctor qualification']
+            required: [true, 'Please add a doctor\'s prescriber code']
         },
-        doctorContactNumber: {
+        drAddress: {
             type: String,
-            required: [true, 'Please add a doctor qualification']
+            required: [true, 'Please add a doctor\'s address']
+        },
+        drPhoneNo: {
+            type: String,
+            required: [true, 'Please add a doctor\'s contact number']
+        },
+        drEmail:  {
+            type: String,
+            required: [true, 'Please add a doctor\'s email']
+        },
+        drClinic: {
+            type: String,
+            required: [true, 'Please add a doctor\'s clinic']
         }
     }, 
     {
@@ -61,21 +73,37 @@ const doctorSchema = mongoose.Schema(
 // Model refers to Schema collection `patients` and passes it based on these requirements
 const patientSchema = mongoose.Schema(
     {
-        patientName: {
+        ptFirstName: {
             type: String,
-            required: [true, 'Please add a patient name']
+            required: [true, 'Please add a patient first name']
         },
-        patientAge: {
+        ptLastName: {
             type: String,
-            required: [true, 'Please add a patient\'s age']
+            required: [true, 'Please add a patient last name']
         },
-        patientAddress: {
+        ptDOB: {
+            type: String,
+            required: [true, 'Please add a patient\'s DOB']
+        },
+        ptGender: {
+            type: String,
+            required: [true, 'Please add a patient\'s gender']
+        },
+        ptAddress: {
             type: String,
             required: [true, 'Please add a patient qualification']
         },
-        patientContactNumber: {
+        ptReference: {
             type: String,
-            required: [true, 'Please add a patient qualification']
+            required: [true, 'Please add a patient\'s referring doctor']
+        },
+        ptPhoneNo: {
+            type: String,
+            required: [true, 'Please add a patient contact number']
+        },
+        ptEmail: {
+            type: String,
+            required: [true, 'Please add a patient email']
         }
     }, 
     {
