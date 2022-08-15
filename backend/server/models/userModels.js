@@ -21,7 +21,7 @@ const clinicSchema = mongoose.Schema(
         }
     }, 
     {
-        collection: 'clinic',
+        collection: 'clinics',
         versionKey: false,
         timestamps: true
     }
@@ -88,6 +88,6 @@ const patientSchema = mongoose.Schema(
 
 patientModel = mongoose.model('patients', patientSchema)
 doctorModel = mongoose.model('doctors', doctorSchema)
-clinicModel = mongoose.model('clinic', clinicSchema)
+clinicModel = mongoose.model('clinics', clinicSchema)
 
 module.exports = { clinicModel, doctorModel, patientModel}
