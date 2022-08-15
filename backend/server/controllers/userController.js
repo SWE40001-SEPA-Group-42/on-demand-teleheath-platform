@@ -110,13 +110,13 @@ const getDoctor = asyncHandler(async(req, res) => {
 
     const doctorFirstName = req.body.drFirstName
     const doctorLastName = req.body.drSurName
-    
+
     const doctor = await doctorModel.find({
-        drFirstName: doctorFirstName,
-        doctorLastName: doctorLastName
+        drSurName: doctorLastName,
+        drFirstName: doctorFirstName
     })
 
-    if (!doctorName) {
+    if (!doctorFirstName) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
     } 
@@ -229,7 +229,7 @@ const getPatient = asyncHandler(async(req, res) => {
         ptLastName: patientLastName
     })
 
-    if (!patientName) {
+    if (!patientFirstName || !patientLastName) {
         res.status(400)
         throw new Error(`Invalid Patient Details: Missing inputs found in the request!`)
     } 
