@@ -1,21 +1,8 @@
 const express = require('express')
 const { 
-    getClinic, 
-    addClinic, 
-    modifyClinic, 
-    deleteClinic 
-} = require('../controllers/userController')
-const { 
-    getDoctor, 
-    addDoctor, 
-    modifyDoctor, 
-    deleteDoctor 
-} = require('../controllers/userController')
-const { 
-    getPatient, 
-    addPatient, 
-    modifyPatient, 
-    deletePatient 
+    getClinic, addClinic, modifyClinic, deleteClinic,
+    getDoctor, addDoctor, modifyDoctor, deleteDoctor,
+    getPatient, addPatient, modifyPatient, deletePatient 
 } = require('../controllers/userController')
 const router = express.Router()
 
