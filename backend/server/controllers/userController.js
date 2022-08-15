@@ -20,15 +20,11 @@ const getClinic = asyncHandler(async(req, res) => {
 // POST - Clinic
 const addClinic = asyncHandler(async(req, res) => {
 
-    const { 
-        clinicNameJSON, clinicAddressJSON, clinicContactNumberJSON, clinicUrlJSON 
-    } = req.body
-
     const clinic = await clinicModel.create({
-        clinicName: clinicNameJSON,
-        clinicAddress: clinicAddressJSON,
-        clinicContactNumber: clinicContactNumberJSON,
-        clinicUrl: clinicUrlJSON
+        clinicName: req.body.clinicName,
+        clinicAddress: req.body.clinicAddress,
+        clinicContactNumber: req.body.clinicContactNumber,
+        clinicUrl: req.body.clinicUrl
     })
 
     if (!clinic) {
@@ -112,9 +108,13 @@ const deleteClinic = asyncHandler(async(req, res) => {
 // GET - Doctor
 const getDoctor = asyncHandler(async(req, res) => {
 
-    const doctorName = req.body.doctorName
+    const doctorFirstName = req.body.drFirstName
+    const doctorLastName = req.body.drSurName
     
-    const doctor = await doctorModel.find({doctorName: doctorName})
+    const doctor = await doctorModel.find({
+        drFirstName: doctorFirstName,
+        doctorLastName: doctorLastName
+    })
 
     if (!doctorName) {
         res.status(400)
@@ -127,16 +127,15 @@ const getDoctor = asyncHandler(async(req, res) => {
 // POST - Doctor
 const addDoctor = asyncHandler(async(req, res) => {
 
-    const { 
-        doctorNameJSON, doctorAgeJSON, doctorClinicJSON, doctorQualsJSON, doctorContactNumberJSON
-    } = req.body
-
     const doctor = await doctorModel.create({
-        doctorName: doctorNameJSON,
-        doctorAge: doctorAgeJSON,
-        doctorClinic: doctorClinicJSON,
-        doctorQualification: doctorQualsJSON,
-        doctorContactNumber: doctorContactNumberJSON
+        drFirstName: req.body.drFirstName,
+        drSurName: req.body.drSurName,
+        drCode: req.body.drCode,
+        prescriberCode: req.body.prescriberCode,
+        drAddress: req.body.drAddress,
+        drPhoneNo: req.body.drPhoneNo,
+        drEmail: req.body.drEmail,
+        drClinic: req.body.drClinic
     })
 
     if (!doctor) {
@@ -144,7 +143,7 @@ const addDoctor = asyncHandler(async(req, res) => {
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
     }
 
-    res.status(200).json(clinic)
+    res.status(200).json(doctor)
 })
 
 // PUT - Doctor
@@ -222,9 +221,13 @@ const deleteDoctor = asyncHandler(async(req, res) => {
 // GET - Patient
 const getPatient = asyncHandler(async(req, res) => {
 
-    const patientName = req.body.patientName
+    const patientFirstName = req.body.patientFirstName
+    const patientLastName = req.body.patientLastName
     
-    const patient = await patientModel.find({patientName: patientName})
+    const patient = await patientModel.find({
+        ptFirstName: patientFirstName,
+        ptLastName: patientLastName
+    })
 
     if (!patientName) {
         res.status(400)
@@ -237,15 +240,16 @@ const getPatient = asyncHandler(async(req, res) => {
 // POST - Patient
 const addPatient = asyncHandler(async(req, res) => {
 
-    const { 
-        patientNameJSON, patientAgeJSON, patientAddressJSON, patientContactNumberJSON
-    } = req.body
 
     const patient = await patientModel.create({
-        patientName: patientNameJSON,
-        patientAge: patientAgeJSON,
-        patientAddress: patientAddressJSON,
-        patientContactNumber: patientContactNumberJSON
+        ptFirstName: req.body.ptFirstName,
+        ptLastName: req.body.ptLastName,
+        ptDOB: req.body.ptDOB,
+        ptGender: req.body.ptGender,
+        ptAddress: req.body.ptAddress,
+        ptReference: req.body.ptReference,
+        ptPhoneNo: req.body.ptPhoneNo,
+        ptEmail: req.body.ptEmail
     })
 
     if (!patient) {
