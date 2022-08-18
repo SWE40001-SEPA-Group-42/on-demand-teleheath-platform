@@ -1,7 +1,6 @@
 import React from 'react'
-import { Formik, FormikErrors, FormikProps } from 'formik'
+import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
-
 
 interface FormModel {
   name: string,
