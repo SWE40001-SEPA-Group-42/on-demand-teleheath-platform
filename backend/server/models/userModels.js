@@ -108,6 +108,11 @@ const patientSchema = mongoose.Schema(
         ptEmail: {
             type: String,
             required: [true, 'Please add a patient email']
+        },
+        ptMedicareID: {
+            type: Number,
+            required: [true, 'Please add a valid Medicare card number']
+
         }
     }, 
     {
