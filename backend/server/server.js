@@ -20,4 +20,5 @@ app.use('/user', userRoutes)
 app.listen(port, () => {
     console.log(`Web RTC Server initialised on port ${port}`)
     connectDB()
+
 })
