@@ -26,8 +26,9 @@
 
 [![WebRTC](https://img.shields.io/badge/-WebRTC-BF0000?logo=webrtc&logoColor=white&style=for-the-badge)](#)
 [![React.js](https://img.shields.io/badge/-React.js-61DAFB?logo=react&logoColor=black&style=for-the-badge)](#)
+[![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge)](#)
 [![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)](#)
-
+[![Tailwind CSS](https://img.shields.io/badge/-Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white&style=for-the-badge)](#)
 
 <h4 align="left">⚙️ Backend</h4>
 
