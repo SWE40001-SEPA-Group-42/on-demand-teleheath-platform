@@ -8,6 +8,7 @@ const router = express.Router()
 
 // CRUD Operations -> Clinic
 router.route('/clinic/').get(getClinic).post(addClinic)
+//NJ - could be the issue over the routing part
 router.route('/clinic/:id').delete(deleteClinic).put(modifyClinic)
 
 // CRUD Operations -> Doctor

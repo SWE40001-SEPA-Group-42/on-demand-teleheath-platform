@@ -4,12 +4,11 @@ const { clinicModel, doctorModel, patientModel } = require('../models/userModels
 
 // GET - Clinic
 const getClinic = asyncHandler(async(req, res) => {
-
     const clinicName = req.body.clinicName
     
     const clinic = await clinicModel.find({clinicName: clinicName})
 
-    if (!clinicName ) {
+    if (!clinicName) {
         res.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
     } 
@@ -37,28 +36,48 @@ const addClinic = asyncHandler(async(req, res) => {
 
 // PUT - Clinic
 const modifyClinic = asyncHandler(async(req, res) => {
-    
-    const clinic = await clinicModel.findById(req.params.id)
 
-    if (!clinic) {
+    //Pass in the object _id
+    const filter =req.params.id
+
+    //update: All the information from postman
+    const update = {
+        clinicAddress: req.body.clinicAddress,
+        clinicContact: req.body.clinicContact,
+        clinicName: req.body.clinicName,
+        clinicUrl: req.body.clinicUrl
+    }
+
+
+    // const update = {
+    //     clinicAddress: "156 High Road",
+    //     clinicContact: "12345",
+    //     clinicName: "Electra Park Medical Centre",
+    //     clinicUrl: "Insert new links"
+    // }
+
+
+    //Function that find the result then update it with new data (entirely)
+    const clinic = await  clinicModel.findOneAndUpdate(filter, update)
+    if (!filter_id) {
         res.status(400)
         throw new Error(`Invalid Clinic Search for update!`)
     }
+    res.status(200).json(clinic)
 
-    const updatedClinic = await clinic.findById(
-        req.params.id,
-        req.body, {
-            new: true,
-        }
-    )
 
-    res.status(200).json(updatedClinic)
+    //Could be discuss with the front end to outline what are
+    //constraints for validating the inputs so it is in sync
+
 
     /* Pre-DB Checks (Note may be broken atm)
     const clinicName = req.body.clinic_name;
     const clinicAddress = req.body.clinic_address;
-    const clinicPhoneNumber = req.body.clinic_phone_number;
+    const clinicPhoneNumber = req.body.clinic_phone_number; 
 
+    //NJ - thinks doesnt need to because once the edit form is popped up 
+    //NJ - all the info will be shown and we just need to cast into the new string
+    //NJ - No pre-db check needed
     if (!clinicName || !clinicAddress || !clinicPhoneNumber ) {
         res.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
