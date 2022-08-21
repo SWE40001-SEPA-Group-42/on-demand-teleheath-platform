@@ -1,4 +1,12 @@
 
+## Requirements to run database
+1. .env file containing the following variables:
+    * NODE_ENV (e.g. develop, uat production)
+    * PORT 
+    * MONGO_URI 
+2. Node, Nodemon & NPM
+3. Jest - For Unit Testing
+
 ## Available Scripts
 
 In the project directory, you can run:
