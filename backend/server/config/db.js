@@ -1,11 +1,9 @@
 const mongoose = require('mongoose')
 
-const dbUrl =  "mongodb+srv://sepagroup42:sepagroup42@cluster0.t4qslyt.mongodb.net/telehealthdb?retryWrites=true&w=majority"
 const connectDB = async () => {
     try {
-        //const conn = await mongoose.connect(process.env.MONGO_URI)
-
-        const conn = await mongoose.connect(dbUrl, {
+        // Please use .env file to store db connections
+        const conn = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
