@@ -36,48 +36,17 @@ const addClinic = asyncHandler(async(req, res) => {
 
 // PUT - Clinic
 const modifyClinic = asyncHandler(async(req, res) => {
-    //Function that find the result then update it with new data (entirely)
-    // const clinic = await  clinicModel.findOneAndUpdate(filter, update)
-    // if (!filter) {
-    //     res.status(400)
-    //     throw new Error(`Invalid Clinic Search for update!`)
-    // }
-    // res.status(200).json(clinic)
-
-
-    //Could be discuss with the front end to outline what are
-    //constraints for validating the inputs so it is in sync
-
-
-    /* Pre-DB Checks (Note may be broken atm)
-    const clinicName = req.body.clinic_name;
-    const clinicAddress = req.body.clinic_address;
-    const clinicPhoneNumber = req.body.clinic_phone_number; 
-
-    //NJ - thinks doesnt need to because once the edit form is popped up 
-    //NJ - all the info will be shown and we just need to cast into the new string
-    //NJ - No pre-db check needed
-    if (!clinicName || !clinicAddress || !clinicPhoneNumber ) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    }
-
-    {
-        updateJson: {
-            "clinicName" : `${clinicName}`,
-            "clinicAddress" : `${clinicAddress}`,
-            "clinicPhoneNumber" : `${clinicPhoneNumber}`
-        }
-    }
-
-    res.status(200).json({message: `Updating entire Clinic record for ${req.params.id}`})
-    */
     const updatedClinic = await clinicModel.findByIdAndUpdate(
         req.params.id,
         req.body, {
             new: true,
         }
     )
+
+    if (!updatedClinic) {
+        res.status(400)
+        throw new Error(`Invalid Clinic Search for update!`)
+    }
 
     res.status(200).json(updatedClinic)
 })
@@ -143,19 +112,17 @@ const addDoctor = asyncHandler(async(req, res) => {
 // PUT - Doctor
 const modifyDoctor = asyncHandler(async(req, res) => {
     
-    const doctor = await doctorModel.findById(req.params.id)
-
-    if (!doctor) {
-        res.status(400)
-        throw new Error(`Invalid Doctor Search for update!`)
-    }
-
     const updatedDoctor = await doctorModel.findByIdAndUpdate(
         req.params.id,
         req.body, {
             new: true,
         }
     )
+
+    if (!updatedDoctor) {
+        res.status(400)
+        throw new Error(`Invalid Doctor Search for update!`)
+    }
 
     res.status(200).json(updatedDoctor)
 })
@@ -220,21 +187,17 @@ const addPatient = asyncHandler(async(req, res) => {
 
 // PUT - Patient
 const modifyPatient = asyncHandler(async(req, res) => {
-    
-    const patient = await patientModel.findById(req.params.id)
-    
-
-    if (!patient) {
-        res.status(400)
-        throw new Error(`Invalid Patient Search for update!`)
-    }
-
     const updatedPatient = await patientModel.findByIdAndUpdate(
         req.params.id,
         req.body, {
             new: true,
         }
     )
+
+    if (!updatedPatient) {
+        res.status(400)
+        throw new Error(`Invalid Patient Search for update!`)
+    }
 
     res.status(200).json(updatedPatient)
 })

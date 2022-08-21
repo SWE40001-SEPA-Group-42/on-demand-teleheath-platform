@@ -17,8 +17,11 @@ app.use(errorHandler)
 // Routes
 app.use('/user', userRoutes)
 
+//Establish connection
+connectDB()
 app.listen(port, () => {
     console.log(`Web RTC Server initialised on port ${port}`)
-    connectDB()
 
 })
+
+module.exports = app
