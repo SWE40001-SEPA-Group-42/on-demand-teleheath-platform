@@ -1,6 +1,7 @@
 const express = require('express')
-const { 
-    getClinic, addClinic, modifyClinicByID, modifyClinicByName, deleteClinicByID, deleteClinicByName,
+const clinics = require('../controllers/clinics')
+const {
+    modifyClinicByName, deleteClinicByID, deleteClinicByName,
     getDoctor, addDoctor, modifyDoctorByID, modifyDoctorByName, deleteDoctorByID, deleteDoctorByName,
     getPatient, addPatient, modifyPatientByID, modifyPatientByName, deletePatientByID, deletePatientByName
 } = require('../controllers/userController')
@@ -8,12 +9,9 @@ const router = express.Router()
 
 // CRUD Operations -> Clinic
 router.route('/clinic/')
-    .get(getClinic)
-    .post(addClinic)
     .put(modifyClinicByName)
     .delete(deleteClinicByName)
 router.route('/clinic/:id')
-    .put(modifyClinicByID)
     .delete(deleteClinicByID)
 
 // CRUD Operations -> Doctor
