@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import DoctorForm from './component/DoctorForm';
+import DoctorForm from './components/DoctorForm';
 
 function App() {
   return (
