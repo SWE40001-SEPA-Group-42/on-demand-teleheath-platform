@@ -1,5 +1,5 @@
 const request = require("supertest")
-const { clinicModel } = require('../models/userModels');
+const { clinicModel, doctorModel, patientModel } = require('../models/userModels');
 const { app, connectDB, closeDB } = require("../server");
 
 process.env.NODE_ENV = 'test'
@@ -68,7 +68,6 @@ describe('Clinic Routes', () => {
         expect(responseGET.statusCode).toBe(200)
         expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
       })
-
     })
     
     /* Broken Test at the moment - Need to mock ID's somehow
@@ -92,4 +91,18 @@ describe('Clinic Routes', () => {
     */
 
   })
+})
+
+describe('Doctor Routes', () => {
+  const mockDoctor = doctorModel({
+
+  }) 
+
+})
+
+describe('Patient Routes', () => {
+  const mockPatient = patientModel({
+
+  }) 
+
 })
