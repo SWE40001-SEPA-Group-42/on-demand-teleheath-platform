@@ -33,7 +33,7 @@ const connectDB = async () => {
 }
 
 const closeDB = async() => {
-    return mongoose.disconnect()
+    return mongoose.connection.close()
 }
 
 module.exports = { connectDB, closeDB }
