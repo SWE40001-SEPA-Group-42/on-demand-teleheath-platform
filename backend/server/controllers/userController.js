@@ -1,62 +1,15 @@
 // Handles the Clinic Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
-const { clinicModel, doctorModel, patientModel } = require('../models/userModels')
-
-// GET - Clinic
-const getClinic = asyncHandler(async(req, res) => {
-    const clinicName = req.body.clinicName
-    
-    const clinic = await clinicModel.find({clinicName: clinicName})
-
-    if (!clinicName) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    } 
-    
-    res.status(200).json(clinic)
-})
-
-// POST - Clinic
-const addClinic = asyncHandler(async(req, res) => {
-
-    const clinic = await clinicModel.create({
-        clinicName: req.body.clinicName,
-        clinicAddress: req.body.clinicAddress,
-        clinicContactNumber: req.body.clinicContactNumber,
-        clinicUrl: req.body.clinicUrl
-    })
-
-    if (!clinic) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
-    }
-
-    res.status(200).json(clinic)
-})
-
-// PUT - Clinic using ID
-const modifyClinicByID = asyncHandler(async(req, res) => {
-    const updatedClinic = await clinicModel.findByIdAndUpdate(
-        req.params.id,
-        req.body, {
-            new: true,
-        }
-    )
-
-    if (!updatedClinic) {
-        res.status(400)
-        throw new Error(`Invalid Clinic Search for update!`)
-    }
-
-    res.status(200).json(updatedClinic)
-})
+const clinicModel = require('../models/clinic')
+const patientModel = require('../models/patient')
+const doctorModel = require('../models/doctor')
 
 // PUT - Clinic using Name
 const modifyClinicByName = asyncHandler(async(req, res) => {
     const clinicName = req.body.clinicName
 
     const updatedClinic = await clinicModel.findOneAndUpdate(
-        { 
+        {
             clinicName: clinicName
         },
         req.body, {
@@ -107,15 +60,15 @@ const getDoctor = asyncHandler(async(req, res) => {
     const doctorLastName = req.body.drSurName
 
     const doctor = await doctorModel.find({
-        drSurName: doctorLastName,
-        drFirstName: doctorFirstName
+        drFirstName: doctorFirstName,
+        drSurName: doctorLastName
     })
 
     if (!doctorFirstName) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
-    } 
-    
+    }
+
     res.status(200).json(doctor)
 })
 
@@ -159,7 +112,7 @@ const modifyDoctorByID = asyncHandler(async(req, res) => {
     res.status(200).json(updatedDoctor)
 })
 
-// PUT - Patient using ID
+// PUT - Doctor using FirstName LastName
 const modifyDoctorByName = asyncHandler(async(req, res) => {
 
     const drFirstName = req.body.drFirstName
@@ -334,7 +287,7 @@ const deletePatientByName = asyncHandler(async(req, res) => {
 
 
 module.exports = {
-    getClinic, addClinic, modifyClinicByID, modifyClinicByName, deleteClinicByID, deleteClinicByName,
+    modifyClinicByName, deleteClinicByID, deleteClinicByName,
     getDoctor, addDoctor, modifyDoctorByID, modifyDoctorByName, deleteDoctorByID, deleteDoctorByName,
     getPatient, addPatient, modifyPatientByID, modifyPatientByName, deletePatientByID, deletePatientByName
 }

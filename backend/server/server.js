@@ -3,6 +3,13 @@ const dotenv = require('dotenv').config()
 const { connectDB, closeDB } = require('./config/db')
 const userRoutes = require('./routes/userRoutes')
 const { errorHandler } = require('./middleware/errorMiddleware')
+
+const usersRouter = require('./controllers/users')
+const clinicRouter = require('./controllers/clinics')
+const patientRouter = require('./controllers/users')
+const doctorRouter = require('./controllers/users')
+
+
 const port = process.env.PORT || 8001 // Default port
 
 const app = express()
@@ -23,5 +30,8 @@ connectDB()
 app.listen(port, () => {
     console.log(`Web RTC Server initialised on port ${port}`)
 })
+
+app.use('/api/users', usersRouter)
+app.use('/api/clinics', clinicRouter)
 
 module.exports = { app, connectDB, closeDB }
