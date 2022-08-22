@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 
 //mongoose url
-var uri = "mongodb+srv://sepagroup42:sepagroup42@cluster0.t4qslyt.mongodb.net/telehealthdb?retryWrites=true&w=majority"
+var uri = process.env.TEST_MONGO_URI
 
 const  options = {
     useNewUrlParser:  true,
