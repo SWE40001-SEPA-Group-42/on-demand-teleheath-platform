@@ -34,8 +34,8 @@ const addClinic = asyncHandler(async(req, res) => {
     res.status(200).json(clinic)
 })
 
-// PUT - Clinic
-const modifyClinic = asyncHandler(async(req, res) => {
+// PUT - Clinic using ID
+const modifyClinicByID = asyncHandler(async(req, res) => {
     const updatedClinic = await clinicModel.findByIdAndUpdate(
         req.params.id,
         req.body, {
@@ -51,19 +51,51 @@ const modifyClinic = asyncHandler(async(req, res) => {
     res.status(200).json(updatedClinic)
 })
 
-// DELETE - Clinic
-const deleteClinic = asyncHandler(async(req, res) => {
+// PUT - Clinic using Name
+const modifyClinicByName = asyncHandler(async(req, res) => {
+    const clinicName = req.body.clinicName
 
+    const updatedClinic = await clinicModel.findOneAndUpdate(
+        { 
+            clinicName: clinicName
+        },
+        req.body, {
+            new: true,
+        }
+    )
+
+    if (!updatedClinic) {
+        res.status(400)
+        throw new Error(`Invalid Clinic Search for update!`)
+    }
+
+    res.status(200).json(updatedClinic)
+})
+
+// DELETE - Clinic using ID
+const deleteClinicByID = asyncHandler(async(req, res) => {
     const clinic = await clinicModel.findById(req.params.id)
+    if (!clinic) {
+        res.status(400)
+        throw new Error(`Invalid Clinic Search for update!`)
+    }
+    await clinic.remove()
+
+    res.status(200).json(clinic)
+})
+
+// DELETE - Clinic using name
+const deleteClinicByName = asyncHandler(async(req, res) => {
+    const clinicName = req.body.clinicName
+    const clinic = await clinicModel.findOneAndRemove({clinicName: clinicName})
+
 
     if (!clinic) {
         res.status(400)
         throw new Error(`Invalid Clinic Search for update!`)
     }
 
-    await clinic.remove()
-
-    res.status(200).json({ id: req.params.id })
+    res.status(200).json(clinic)
 })
 
 // Handles the Doctor Object API calls to the Back End
@@ -109,8 +141,8 @@ const addDoctor = asyncHandler(async(req, res) => {
     res.status(200).json(doctor)
 })
 
-// PUT - Doctor
-const modifyDoctor = asyncHandler(async(req, res) => {
+// PUT - Doctor using ID
+const modifyDoctorByID = asyncHandler(async(req, res) => {
     
     const updatedDoctor = await doctorModel.findByIdAndUpdate(
         req.params.id,
@@ -127,9 +159,32 @@ const modifyDoctor = asyncHandler(async(req, res) => {
     res.status(200).json(updatedDoctor)
 })
 
-// DELETE - Doctor
-const deleteDoctor = asyncHandler(async(req, res) => {
+// PUT - Patient using ID
+const modifyDoctorByName = asyncHandler(async(req, res) => {
 
+    const drFirstName = req.body.drFirstName
+    const drLastName = req.body.drSurName
+    
+    const updatedDoctor = await doctorModel.findOneAndUpdate(
+        { 
+            drFirstName: drFirstName, 
+            drLastName: drLastName 
+        },
+        req.body, {
+            new: true,
+        }
+    )
+
+    if (!updatedDoctor) {
+        res.status(400)
+        throw new Error(`Invalid Doctor Search for update!`)
+    }
+
+    res.status(200).json(updatedDoctor)
+})
+
+// DELETE - Doctor using ID
+const deleteDoctorByID = asyncHandler(async(req, res) => {
     const doctor = await doctorModel.findById(req.params.id)
 
     if (!doctor) {
@@ -138,8 +193,24 @@ const deleteDoctor = asyncHandler(async(req, res) => {
     }
 
     await doctor.remove()
+    res.status(200).json(doctor)
+})
 
-    res.status(200).json({ id: req.params.id })
+// DELETE - Doctor using Name
+const deleteDoctorByName = asyncHandler(async(req, res) => {
+    const drFirstName = req.body.drFirstName
+    const drLastName = req.body.drSurName
+    const doctor = await doctorModel.findOneAndRemove({
+        drFirstName: drFirstName,
+        drLastName: drLastName
+    })
+
+    if (!doctor) {
+        res.status(400)
+        throw new Error(`Invalid Doctor Search for delete!`)
+    }
+
+    res.status(200).json(doctor)
 })
 
 // GET - Patient
@@ -185,8 +256,8 @@ const addPatient = asyncHandler(async(req, res) => {
     res.status(200).json(patient)
 })
 
-// PUT - Patient
-const modifyPatient = asyncHandler(async(req, res) => {
+// PUT - Patient using ID
+const modifyPatientByID = asyncHandler(async(req, res) => {
     const updatedPatient = await patientModel.findByIdAndUpdate(
         req.params.id,
         req.body, {
@@ -202,24 +273,70 @@ const modifyPatient = asyncHandler(async(req, res) => {
     res.status(200).json(updatedPatient)
 })
 
-// DELETE - Patient
-const deletePatient = asyncHandler(async(req, res) => {
+// PUT - Patient using ID
+const modifyPatientByName = asyncHandler(async(req, res) => {
+    
+    const ptFirstName = req.body.ptFirstName
+    const ptLastName = req.body.ptLastName
+    
+    const updatedPatient = await patientModel.findOneAndUpdate(
+        { 
+            ptFirstName: ptFirstName, 
+            ptLastName: ptLastName 
+        },
+        req.body, {
+            new: true,
+        }
+    )
 
-    const patient = await patientModel.findById(req.params.id)
-
-    if (!patient) {
+    if (!updatedPatient) {
         res.status(400)
         throw new Error(`Invalid Patient Search for update!`)
     }
 
+    res.status(200).json(updatedPatient)
+})
+
+// DELETE - Patient using ID
+const deletePatientByID = asyncHandler(async(req, res) => {
+    const patient = await patientModel.findById(req.params.id)
+
+    if (!patient) {
+        res.status(400)
+        throw new Error(`Invalid Patient Search for delete!`)
+    }
+
     await patient.remove()
 
-    res.status(200).json({ id: req.params.id })
+    res.status(200).json(patient)
+
+})
+
+// DELETE - Patient using Name
+const deletePatientByName = asyncHandler(async(req, res) => {
+    const ptFirstName = req.body.ptFirstName
+    const ptLastName = req.body.ptLastName
+    
+   
+    const patient = await patientModel.findOneAndRemove({
+        ptFirstName: ptFirstName,
+        ptLastName:  ptLastName
+    })
+
+    if (!patient) {
+        res.status(400)
+        throw new Error(`Invalid Patient Search for delete!`)
+    }
+
+    await patient.remove()
+
+    res.status(200).json(patient)
 })
 
 
+
 module.exports = {
-    getClinic, addClinic, modifyClinic, deleteClinic,
-    getDoctor, addDoctor, modifyDoctor, deleteDoctor,
-    getPatient, addPatient, modifyPatient, deletePatient
+    getClinic, addClinic, modifyClinicByID, modifyClinicByName, deleteClinicByID, deleteClinicByName,
+    getDoctor, addDoctor, modifyDoctorByID, modifyDoctorByName, deleteDoctorByID, deleteDoctorByName,
+    getPatient, addPatient, modifyPatientByID, modifyPatientByName, deletePatientByID, deletePatientByName
 }

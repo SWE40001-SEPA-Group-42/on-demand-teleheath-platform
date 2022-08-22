@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --ForceExit",
     "start": "node server/server.js",
     "server": "nodemon server/server.js"
   },

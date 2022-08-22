@@ -15,6 +15,7 @@ const connectDB = async () => {
                     useUnifiedTopology: true
                 })
             })
+            console.log(`MongoDB Connected on MOCK DB`)
             
         } else {
             const conn = await mongoose.connect(process.env.MONGO_URI, {
