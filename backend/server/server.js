@@ -17,7 +17,7 @@ app.use(errorHandler)
 // Routes
 app.use('/user', userRoutes)
 
-//Establish connection
+//Establish connection - TODO Move this and app.listen from the server.js to separate file (get's called multiple times in the test)
 connectDB()
 
 app.listen(port, () => {

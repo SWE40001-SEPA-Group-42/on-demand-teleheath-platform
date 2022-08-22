@@ -328,8 +328,6 @@ const deletePatientByName = asyncHandler(async(req, res) => {
         throw new Error(`Invalid Patient Search for delete!`)
     }
 
-    await patient.remove()
-
     res.status(200).json(patient)
 })
 
