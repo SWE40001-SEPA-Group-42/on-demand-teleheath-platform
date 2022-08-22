@@ -1,6 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const connectDB = require('./config/db')
+const { connectDB, closeDB } = require('./config/db')
 const userRoutes = require('./routes/userRoutes')
 const { errorHandler } = require('./middleware/errorMiddleware')
 const port = process.env.PORT || 8001 // Default port
@@ -19,9 +19,9 @@ app.use('/user', userRoutes)
 
 //Establish connection
 connectDB()
+
 app.listen(port, () => {
     console.log(`Web RTC Server initialised on port ${port}`)
-
 })
 
-module.exports = app
+module.exports = { app, connectDB, closeDB }
