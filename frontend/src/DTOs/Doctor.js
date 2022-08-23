@@ -7,7 +7,9 @@ class DoctorDTO {
     #drPhoneNo
     #drEmail
     #drClinic
-    #drQualify
+    #drQualif
+    #drGender
+    #drLanguages
 
     constructor(obj = {}) {
         this.#drFirstName = obj.drFirstName;
@@ -18,7 +20,9 @@ class DoctorDTO {
         this.#drPhoneNo = obj.drPhoneNo;
         this.#drEmail = obj.drEmail;
         this.#drClinic = obj.drClinic;
-        this.#drQualify = obj.drQualify;
+        this.#drQualif = obj.drQualif;
+        this.#drGender = obj.drGender;
+        this.#drLanguages = obj.drLanguages;
     }
 
     get getDrFirstName() {
@@ -85,12 +89,28 @@ class DoctorDTO {
         this.#drClinic = value;
     }
 
-    get getDrQualify() {
-        return this.#drQualify;
+    get getDrQualif() {
+        return this.#drQualif;
     }
 
-    set setDrQualify(value) {
-        this.#drQualify = value
+    set setDrQualif(value) {
+        this.#drQualif = value;
+    }
+
+    get getDrGender() {
+        return this.#drGender;
+    }
+
+    set setDrGender(value) {
+        this.#drGender = value;
+    }
+
+    get getDrLanguages() {
+        return this.#drLanguages;
+    }
+
+    set setDrLanguages(value) {
+        this.#drLanguages = value;
     }
 }
 
