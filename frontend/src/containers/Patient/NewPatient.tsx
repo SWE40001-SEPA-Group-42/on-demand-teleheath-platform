@@ -1,17 +1,14 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Heading, Text, SimpleGrid, useToast } from '@chakra-ui/react';
-import InputField from './../../components/InputField';
-import BirthSexField from './../../components/BirthSexField';
-import PatientDAO from './../../DAOs/PatientDAO';
-import PatientDTO from './../../DTOs/PatientDTO';
+import { Box, Button, Heading, Text, SimpleGrid } from '@chakra-ui/react';
+import TextField from '../../components/CustomFormFields/TextField';
+import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 
 interface Props {}
-
 const NewPatient: React.FC<Props> = () => {
   const currentDate = new Date();
-	const toast = useToast();
+	// const toast = useToast();
 
   return (
     <Formik
@@ -41,7 +38,7 @@ const NewPatient: React.FC<Props> = () => {
 					.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
 				password: Yup.string()
 					.required('Password cannot be blank')
-					.matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/, 'Only alphabets are allowed for this field'),
+					.matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/, 'Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit and one special character.'),
 				firstName: Yup.string()
 					.required('First name cannot be blank')
 					.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
@@ -93,67 +90,40 @@ const NewPatient: React.FC<Props> = () => {
 						.matches(/^[A-Za-z0-9]+$/, 'Please enter a valid postcode'),
 				}),
 			})}
-			onSubmit={(values, actions) => {
-				PatientDAO.insert(
-					new PatientDTO({
-						...values,
-						dob: new Date(values.dob).toISOString(),
-						joined: new Date().toISOString(),
-					})
-				).then((result) => {
-					if (result) {
-						toast({
-							title: 'Success',
-							position: 'top-right',
-							description: 'Account created successfully',
-							status: 'success',
-							duration: 5000,
-							isClosable: true,
-						});
-
-						actions.resetForm();
-					} else {
-						toast({
-							title: 'Error',
-							position: 'top-right',
-							description: 'Something went wrong',
-							status: 'error',
-							duration: 5000,
-							isClosable: true,
-						});
-					}
-				});
+			onSubmit={async (values) => {
+				await new Promise((r) => setTimeout(r, 500));
+				alert(JSON.stringify(values, null, 2));
 			}}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 20, 40]} h="100vh">
 					<Box py={4}>
 						<Heading as="h1" size="lg">Patient sign up</Heading>
-						<Text fontSize="md">
+						<Text py={4} fontSize="sm">
 							Create a free account to book a remote consultation faster and have a personalised health experience.
 						</Text>
 						<hr />
 					</Box>
 					<form onSubmit={formik.handleSubmit}>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-            <InputField
+            <TextField
 								name="userName"
 								type="text"
 								label="Username"
 								placeholder="janesmith"
 							/>
-              <InputField
+              <TextField
 								name="password"
 								type="password"
 								label="Password"
 							/>
-							<InputField
+							<TextField
 								name="firstName"
 								type="text"
 								label="First Name"
 								placeholder="Jane"
 							/>
-							<InputField
+							<TextField
 								name="lastName"
 								type="text"
 								label="Last Name"
@@ -161,7 +131,7 @@ const NewPatient: React.FC<Props> = () => {
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
+							<TextField
 								name="dob"
 								type="date"
 								label="Date of Birth"
@@ -172,13 +142,13 @@ const NewPatient: React.FC<Props> = () => {
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
+							<TextField
 								name="email"
 								type="email"
 								label="Email"
 								placeholder="janesmith@patient.com"
 							/>
-							<InputField
+							<TextField
 								name="phone"
 								type="text"
 								label="Phone Number (incl. country code)"
@@ -186,29 +156,29 @@ const NewPatient: React.FC<Props> = () => {
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={1} spacing={0}>
-							<InputField
+							<TextField
 								name="address.line1"
 								type="text"
 								label="Address Line 1"
-								placeholder="Address"
+								placeholder="Street address, P.O. box, company name, c/o"
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={1} spacing={0}>
-							<InputField
+							<TextField
 								name="address.line2"
 								type="text"
 								label="Address Line 2"
-								placeholder="Apt, Suite, etc(optional)"
+								placeholder="Apt, Suite, Unit, Building, Floor"
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
+							<TextField
 								name="address.city"
 								type="text"
 								label="City"
 								placeholder="City"
 							/>
-							<InputField
+							<TextField
 								name="address.state"
 								type="text"
 								label="State"
@@ -216,13 +186,13 @@ const NewPatient: React.FC<Props> = () => {
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
+							<TextField
 								name="address.postcode"
 								type="text"
 								label="Postcode"
 								placeholder="Postcode"
 							/>
-							<InputField
+							<TextField
 								name="address.country"
 								type="text"
 								label="Country"
