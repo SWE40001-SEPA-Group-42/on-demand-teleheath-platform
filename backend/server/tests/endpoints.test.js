@@ -23,10 +23,10 @@ describe('Clinic Routes', () => {
     clinicUrl: "https://test.com"
   }) 
 
-  describe("POST /user/clinic/", () => {
+  describe("POST /api/clinics/", () => {
     describe("Given a clinic's details", () => {
       test("a clinic record should be created with a 200 status code", async () => {
-          const response = await request(app).post("/user/clinic/").send({
+          const response = await request(app).post("/api/user/clinic/").send({
             clinicName: mockClinic.clinicName,
             clinicAddress: mockClinic.clinicAddress,
             clinicContactNumber: mockClinic.clinicContactNumber,
@@ -38,7 +38,7 @@ describe('Clinic Routes', () => {
     })
   })
 
-  describe("GET /user/clinic/", () => {
+  describe("GET /api/clinics/", () => {
       describe("Given a clinic's name", () => {
         test("my searched clinic will return with a 200 status code", async () => {
             const response = await request(app).get("/user/clinic/").send({
@@ -50,7 +50,7 @@ describe('Clinic Routes', () => {
       })
   })
 
-  describe("PUT/user/clinic/:id", () => {
+  describe("PUT /api/clinics/:id", () => {
     describe("Given a clinic's ID", () => {
       test("their details will be updated with a 200 status code", async () => {
         const response = await request(app).put(`/user/clinic/${updateID.id}`).send({
@@ -64,7 +64,7 @@ describe('Clinic Routes', () => {
     })
   })
 
-  describe("DELETE /user/clinic/1", () => {
+  describe("DELETE /api/clinics/:id", () => {
     describe("Given a clinic's details", () => {
       test("a clinic record should be deleted with a 200 status code", async () => {
 
