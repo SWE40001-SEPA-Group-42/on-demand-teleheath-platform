@@ -81,7 +81,8 @@ describe('Clinic Routes', () => {
   // describe("PUT /api/clinics/:id", () => {
   //   describe("Given a clinic's ID", () => {
   //     test("their details will be updated with a 200 status code", async () => {
-  //       const response = await request(app).put(`/api/clinics/${updateID.id}`).send({
+  //       const response = await request(app).put(`/api/clinics/1`).send({
+  //         _id: 1,
   //         clinicName: "updatedTestClinic",
   //         clinicAddress: "321 Test St",
   //         clinicContactNumber: "04908762234",
@@ -97,7 +98,7 @@ describe('Clinic Routes', () => {
   //     test("a clinic record should be deleted with a 200 status code", async () => {
 
   //       await request(app)
-  //         .delete(`/user/clinic/${mockClinic._id}`)
+  //         .delete(`/api/clinics/1`)
   //         .expect(200)
   //     })
   //   })
