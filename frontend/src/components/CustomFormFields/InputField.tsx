@@ -12,7 +12,7 @@ type Props = InputHTMLAttributes<HTMLElement> & {
 	name: string;
 };
 
-const TextField: React.FC<Props> = ({ label, ...props }) => {
+const InputField: React.FC<Props> = ({ label, ...props }) => {
 	const [field, meta] = useField(props);
 	return (
 		<FormControl isInvalid={Boolean(meta.error && meta.touched)} py={2}>
@@ -23,4 +23,4 @@ const TextField: React.FC<Props> = ({ label, ...props }) => {
 	);
 };
 
-export default TextField;
+export default InputField;
