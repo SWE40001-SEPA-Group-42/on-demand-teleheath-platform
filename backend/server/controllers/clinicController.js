@@ -1,9 +1,9 @@
 const asyncHandler = require('express-async-handler')
-const clinicModel = require("../models/clinic");
+const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (request, response) => {
     const cName = request.body.clinicName
-    const clinics = await clinicModel.find({clinicName : cName})
+    const clinics = await Clinic.find({clinicName : cName})
 
     if (!cName) {
         response.status(400)
@@ -16,7 +16,7 @@ const getClinic = asyncHandler(async (request, response) => {
 
 
 const addClinic = asyncHandler(async (request, response, next) => {
-    const clinic = await clinicModel.create({
+    const clinic = await Clinic.create({
         clinicName: request.body.clinicName,
         clinicAddress: request.body.clinicAddress,
         clinicContactNumber: request.body.clinicContactNumber,
@@ -32,7 +32,7 @@ const addClinic = asyncHandler(async (request, response, next) => {
 })
 
 const updateClinicByID = asyncHandler(async(request, response) => {
-    const updatedClinic = await clinicModel.findByIdAndUpdate(
+    const updatedClinic = await Clinic.findByIdAndUpdate(
         request.params.id,
         request.body, {
             new: true,
@@ -51,7 +51,7 @@ const updateClinicByID = asyncHandler(async(request, response) => {
 const updateClinicByName = asyncHandler(async(req, res) => {
     const clinicName = req.body.clinicName
 
-    const updatedClinic = await clinicModel.findOneAndUpdate(
+    const updatedClinic = await Clinic.findOneAndUpdate(
         {
             clinicName: clinicName
         },
@@ -70,7 +70,7 @@ const updateClinicByName = asyncHandler(async(req, res) => {
 
 const deleteClinicByID = asyncHandler(async(req, res) => {
 
-    const clinic = await clinicModel.findById(req.params.id)
+    const clinic = await Clinic.findById(req.params.id)
     if (!clinic) {
         res.status(400)
         throw new Error(`Invalid Clinic search for delete!`)
@@ -83,7 +83,7 @@ const deleteClinicByID = asyncHandler(async(req, res) => {
 // DELETE - Clinic using name
 const deleteClinicByName = asyncHandler(async(req, res) => {
     const clinicName = req.body.clinicName
-    const clinic = await clinicModel.findOneAndRemove({clinicName: clinicName})
+    const clinic = await Clinic.findOneAndRemove({clinicName: clinicName})
 
 
     if (!clinic) {

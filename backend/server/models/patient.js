@@ -49,4 +49,6 @@ const patientSchema = mongoose.Schema(
 )
 
 
-module.exports = mongoose.model('patients', patientSchema)
+patientModel = mongoose.model('patients', patientSchema)
+
+module.exports = patientModel

@@ -27,4 +27,7 @@ const clinicSchema = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('clinics', clinicSchema)
+
+const Clinic = mongoose.model('clinics', clinicSchema)
+
+module.exports = Clinic
