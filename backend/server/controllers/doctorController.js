@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const doctorModel = require('../models/doctor')
+const Doctor = require('../models/doctor')
 
 // GET - Doctor
 const getDoctor = asyncHandler(async(req, res) => {
@@ -7,7 +7,7 @@ const getDoctor = asyncHandler(async(req, res) => {
     const doctorFirstName = req.body.drFirstName
     const doctorLastName = req.body.drSurName
 
-    const doctor = await doctorModel.find({
+    const doctor = await Doctor.find({
         drFirstName: doctorFirstName,
         drSurName: doctorLastName
     })
@@ -23,7 +23,7 @@ const getDoctor = asyncHandler(async(req, res) => {
 // POST - Doctor
 const addDoctor = asyncHandler(async(req, res) => {
 
-    const doctor = await doctorModel.create({
+    const doctor = await Doctor.create({
         drFirstName: req.body.drFirstName,
         drSurName: req.body.drSurName,
         drCode: req.body.drCode,
@@ -45,7 +45,7 @@ const addDoctor = asyncHandler(async(req, res) => {
 // PUT - Doctor using ID
 const modifyDoctorByID = asyncHandler(async(req, res) => {
     
-    const updatedDoctor = await doctorModel.findByIdAndUpdate(
+    const updatedDoctor = await Doctor.findByIdAndUpdate(
         req.params.id,
         req.body, {
             new: true,
@@ -66,7 +66,7 @@ const modifyDoctorByName = asyncHandler(async(req, res) => {
     const drFirstName = req.body.drFirstName
     const drLastName = req.body.drSurName
     
-    const updatedDoctor = await doctorModel.findOneAndUpdate(
+    const updatedDoctor = await Doctor.findOneAndUpdate(
         { 
             drFirstName: drFirstName, 
             drLastName: drLastName 
@@ -86,7 +86,7 @@ const modifyDoctorByName = asyncHandler(async(req, res) => {
 
 // DELETE - Doctor using ID
 const deleteDoctorByID = asyncHandler(async(req, res) => {
-    const doctor = await doctorModel.findById(req.params.id)
+    const doctor = await Doctor.findById(req.params.id)
 
     if (!doctor) {
         res.status(400)
@@ -101,7 +101,7 @@ const deleteDoctorByID = asyncHandler(async(req, res) => {
 const deleteDoctorByName = asyncHandler(async(req, res) => {
     const drFirstName = req.body.drFirstName
     const drLastName = req.body.drSurName
-    const doctor = await doctorModel.findOneAndRemove({
+    const doctor = await Doctor.findOneAndRemove({
         drFirstName: drFirstName,
         drLastName: drLastName
     })
