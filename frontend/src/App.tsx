@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import DoctorForm from './containers/Doctor/DoctorForm';
 import PatientSignupForm from './containers/Patient/PatientSignupForm';
 import AddPatientDetails from './containers/Patient/AddPatientDetails';
 
@@ -15,6 +16,7 @@ function App() {
 							path="patient/profile/add"
 							element={<AddPatientDetails />}
 						/>
+						<Route path="doctor/add" element={<DoctorForm />} />
 					</Routes>
 				</main>
 			</div>
