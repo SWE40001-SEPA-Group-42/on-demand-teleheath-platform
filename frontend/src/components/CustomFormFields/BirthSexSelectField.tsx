@@ -1,6 +1,6 @@
 import { Select } from '@chakra-ui/react';
 
-const SelectBirthSexField = () => {
+const BirthSexSelectField = () => {
   return (
     <Select placeholder="Select an option">
       <option value="male">Male</option>
@@ -10,4 +10,4 @@ const SelectBirthSexField = () => {
   );
 };
 
-export default SelectBirthSexField;
+export default BirthSexSelectField;
