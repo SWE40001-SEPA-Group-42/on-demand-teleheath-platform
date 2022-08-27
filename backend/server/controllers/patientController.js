@@ -1,6 +1,6 @@
 // Handles the User Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
-const patientModel = require('../models/patient')
+const Patient = require('../models/patient')
 
 // GET - Patient
 const getPatient = asyncHandler(async(req, res) => {
@@ -8,7 +8,7 @@ const getPatient = asyncHandler(async(req, res) => {
     const patientFirstName = req.body.patientFirstName
     const patientLastName = req.body.patientLastName
     
-    const patient = await patientModel.find({
+    const patient = await Patient.find({
         ptFirstName: patientFirstName,
         ptLastName: patientLastName
     })
@@ -25,7 +25,7 @@ const getPatient = asyncHandler(async(req, res) => {
 const addPatient = asyncHandler(async(req, res) => {
 
 
-    const patient = await patientModel.create({
+    const patient = await Patient.create({
         ptFirstName: req.body.ptFirstName,
         ptLastName: req.body.ptLastName,
         ptDOB: req.body.ptDOB,
@@ -47,7 +47,7 @@ const addPatient = asyncHandler(async(req, res) => {
 
 // PUT - Patient using ID
 const modifyPatientByID = asyncHandler(async(req, res) => {
-    const updatedPatient = await patientModel.findByIdAndUpdate(
+    const updatedPatient = await Patient.findByIdAndUpdate(
         req.params.id,
         req.body, {
             new: true,
@@ -68,7 +68,7 @@ const modifyPatientByName = asyncHandler(async(req, res) => {
     const ptFirstName = req.body.ptFirstName
     const ptLastName = req.body.ptLastName
     
-    const updatedPatient = await patientModel.findOneAndUpdate(
+    const updatedPatient = await Patient.findOneAndUpdate(
         { 
             ptFirstName: ptFirstName, 
             ptLastName: ptLastName 
@@ -88,7 +88,7 @@ const modifyPatientByName = asyncHandler(async(req, res) => {
 
 // DELETE - Patient using ID
 const deletePatientByID = asyncHandler(async(req, res) => {
-    const patient = await patientModel.findById(req.params.id)
+    const patient = await Patient.findById(req.params.id)
 
     if (!patient) {
         res.status(400)
@@ -107,7 +107,7 @@ const deletePatientByName = asyncHandler(async(req, res) => {
     const ptLastName = req.body.ptLastName
     
    
-    const patient = await patientModel.findOneAndRemove({
+    const patient = await Patient.findOneAndRemove({
         ptFirstName: ptFirstName,
         ptLastName:  ptLastName
     })
