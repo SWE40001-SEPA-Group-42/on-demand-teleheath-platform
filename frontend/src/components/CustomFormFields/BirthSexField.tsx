@@ -15,7 +15,7 @@ type Props = InputHTMLAttributes<HTMLElement> & {
 const BirthSexField: React.FC<Props> = ({ label, ...props }) => {
 	const [field, meta] = useField(props);
 	return (
-		<FormControl isInvalid={Boolean(meta.error && meta.touched)} py={2}>
+		<FormControl isRequired isInvalid={Boolean(meta.error && meta.touched)} py={2}>
 			<FormLabel htmlFor={field.name}>{label}</FormLabel>
 			<Field as={BirthSexSelectField} {...field} {...props} />
 			<FormErrorMessage>{meta.error}</FormErrorMessage>
