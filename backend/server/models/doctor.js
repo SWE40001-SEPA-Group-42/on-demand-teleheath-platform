@@ -35,6 +35,10 @@ const doctorSchema = mongoose.Schema(
             type: String,
             required: [true, 'Please add a doctor\'s clinic']
         },
+        drGender : {
+            type: String, 
+            required: [true, 'Please add a doctor\'s Gender']
+        },
         drQualif : {
             type: String,
             required: [true, 'Please add a doctor\'s qualification']
@@ -47,6 +51,6 @@ const doctorSchema = mongoose.Schema(
     }
 )
 
-doctorModel = mongoose.model('doctors', doctorSchema)
+const Doctor = mongoose.model('doctors', doctorSchema)
 
-module.exports = {doctorModel}
+module.exports = Doctor
