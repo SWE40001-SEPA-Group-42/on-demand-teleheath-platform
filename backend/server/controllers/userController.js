@@ -2,6 +2,7 @@ const User = require('../models/user')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 
+// Router is handled in the same file as the Controller
 usersRouter.post('/', async (request, response, next) => {
     try {
         const body = request.body

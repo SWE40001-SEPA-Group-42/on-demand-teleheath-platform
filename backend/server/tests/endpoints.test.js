@@ -4,12 +4,6 @@ const { app, connectDB, closeDB } = require("../server");
 
 process.env.NODE_ENV = 'test'
 
-// describe('Sample Test', () => {
-//   it('should test that true === true', () => {
-//     expect(true).toBe(true)
-//   })  
-// })
-
 // Establish Connection
 connectDB()
     
@@ -77,32 +71,33 @@ describe('Clinic Routes', () => {
     })
   })
 
+  /*
+  describe("PUT /api/clinics/:id", () => {
+    describe("Given a clinic's ID", () => {
+      test("their details will be updated with a 200 status code", async () => {
+        const response = await request(app).put(`/api/clinics/1`).send({
+          _id: 1,
+          clinicName: "updatedTestClinic",
+          clinicAddress: "321 Test St",
+          clinicContactNumber: "04908762234",
+          clinicUrl: "https://test_new.com"
+        })
+          expect(response.statusCode).toBe(200)
+      })
+    })
+  })
 
-  // describe("PUT /api/clinics/:id", () => {
-  //   describe("Given a clinic's ID", () => {
-  //     test("their details will be updated with a 200 status code", async () => {
-  //       const response = await request(app).put(`/api/clinics/1`).send({
-  //         _id: 1,
-  //         clinicName: "updatedTestClinic",
-  //         clinicAddress: "321 Test St",
-  //         clinicContactNumber: "04908762234",
-  //         clinicUrl: "https://test_new.com"
-  //       })
-  //         expect(response.statusCode).toBe(200)
-  //     })
-  //   })
-  // })
+  describe("DELETE /api/clinics/:id", () => {
+    describe("Given a clinic's details", () => {
+      test("a clinic record should be deleted with a 200 status code", async () => {
 
-  // describe("DELETE /api/clinics/:id", () => {
-  //   describe("Given a clinic's details", () => {
-  //     test("a clinic record should be deleted with a 200 status code", async () => {
-
-  //       await request(app)
-  //         .delete(`/api/clinics/1`)
-  //         .expect(200)
-  //     })
-  //   })
-  // })
+        await request(app)
+          .delete(`/api/clinics/1`)
+          .expect(200)
+      })
+    })
+  })
+  */
 })
 
 // Close Connection
