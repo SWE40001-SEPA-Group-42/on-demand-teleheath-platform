@@ -1,28 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import DoctorForm from './components/Doctor/NewDoctor';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ClinicForm from './containers/Clinic/ClinicForm';
+import DoctorForm from './containers/Doctor/DoctorForm';
+import PatientSignupForm from './containers/Patient/PatientSignupForm';
+import PatientDetailsForm from './containers/Patient/PatientDetailsForm';
 
 function App() {
-  return (
-    <div className="App">
-      {/* {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      <DoctorForm/>
-    </div>
-  );
+	return (
+		<BrowserRouter>
+			<div className="App">
+				<main>
+					<Routes>
+						<Route index element={<PatientSignupForm />} />
+						<Route
+							path="patient/profile/add"
+							element={<PatientDetailsForm />}
+						/>
+						<Route path="doctor/add" element={<DoctorForm />} />
+						<Route path="clinic/add" element={<ClinicForm />} />
+					</Routes>
+				</main>
+			</div>
+		</BrowserRouter>
+	);
 }
 
 export default App;
