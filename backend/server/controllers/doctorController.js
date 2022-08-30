@@ -32,7 +32,8 @@ const addDoctor = asyncHandler(async(req, res) => {
         drPhoneNo: req.body.drPhoneNo,
         drEmail: req.body.drEmail,
         drClinic: req.body.drClinic,
-        drGender: req.body.drGender
+        drGender: req.body.drGender,
+        drQualif: req.body.drQualif
     })
 
     if (!doctor) {
