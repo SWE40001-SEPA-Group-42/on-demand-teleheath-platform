@@ -13,7 +13,7 @@ const getPatient = asyncHandler(async(req, res) => {
         ptLastName: patientLastName
     })
 
-    if (!patientFirstName || !patientLastName) {
+    if (!patient ) {
         res.status(400)
         throw new Error(`Invalid Patient Details: Missing inputs found in the request!`)
     } 

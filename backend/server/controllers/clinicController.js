@@ -5,7 +5,7 @@ const getClinic = asyncHandler(async (request, response) => {
     const cName = request.body.clinicName
     const clinics = await Clinic.find({clinicName : cName})
 
-    if (!cName) {
+    if (!clinics) {
         response.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
     }
