@@ -140,13 +140,13 @@ describe('Doctor Routes', () => {
     drGivenName: "Timothy",
     drSurname: "Limmen",
     drPreferredName: "Tim",
-    drDOB: new Date("1992-05-01"),
+    drDOB: "1992-03-01",
     drBirthSex : "Male",
     drEmail: "tim_limmen@gmail.com",
     drPhone: "0458865231",
     drAddress: "Tim St",
     line1: "Tim St",
-    line2: "",
+    line2: "asdsad",
     city: "Melbourne",
     state: "VIC",
     postcode: "5774",
@@ -158,15 +158,15 @@ describe('Doctor Routes', () => {
     drClinicName: "testClinic"
   }) 
 
-
   //POST Doctor REQUEST
   describe("Given a doctor's details", () => {
     test("a doctor record should be created with a 200 status code", async () => {
+      const birthDate = new Date(`${mockDoctor.drDOB}`)
       const responsePOST = await request(app).post("/api/doctors/").send({
         drGivenName: mockDoctor.drGivenName,
         drSurname: mockDoctor.drSurname,
         drPreferredName: mockDoctor.drPreferredName,
-        drDOB: mockDoctor.drDOB,
+        drDOB: birthDate,
         drBirthSex : mockDoctor.drBirthSex,
         drEmail: mockDoctor.drEmail,
         drPhone: mockDoctor.drPhone,
@@ -181,7 +181,7 @@ describe('Doctor Routes', () => {
         drPrescriberNo: mockDoctor.drPrescriberNo,
         drQualifications: mockDoctor.drQualification,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
-        drClinicName: mockDoctor.drClinicName,
+        drClinicName: mockDoctor.drClinicName
       })
       expect(responsePOST.statusCode).toBe(200)
       expect(responsePOST.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -204,9 +204,9 @@ describe('Doctor Routes', () => {
       test("my searched doctor will be updated with a return with a 200 status code", async () => {
         const responseGET = await request(app).put("/api/doctors/").send({
           drGivenName: "Timothy",
-          drSurname: "Lemons",
+          drSurname: "Limmen",
           drPreferredName: "Tim",
-          drDOB: new Date("1997-05-01"),
+          drDOB: "1997-01-01",
           drBirthSex : "Male",
           drEmail: "tim_limmen1234@gmail.com",
           drPhone: "0958865231",
