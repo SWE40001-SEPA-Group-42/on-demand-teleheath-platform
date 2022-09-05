@@ -178,7 +178,7 @@ describe('Doctor Routes', () => {
         country: mockDoctor.country,
         drCode: mockDoctor.drCode,
         drPrescriberNo: mockDoctor.drPrescriberNo,
-        drQualifications: mockDoctor.drQualification,
+        drQualifications: mockDoctor.drQualifications,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
         drClinicName: mockDoctor.drClinicName
       });
@@ -227,7 +227,8 @@ describe('Doctor Routes', () => {
     //DELETE doctor REQUEST
     test("my searched doctor will be deleted with a return with a 200 status code", async () => {
       const responseGET = await request(app).delete("/api/doctors/").send({
-        drGivenName: mockDoctor.drGivenName
+        drGivenName: mockDoctor.drGivenName,
+        drSurname: mockDoctor.drSurname
       })
       expect(responseGET.statusCode).toBe(200)
       expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -340,17 +341,17 @@ describe('Patient Routes', () => {
         ptGivenName: "Eddard",
         ptSurname: "Stark",
         ptPreferredName: "Ned",
-        ptDOB: "2003-01-01",
+        ptDOB: "1964-01-01",
         ptBirthSex : "Male",
-        ptEmailAddress: "e.stark@gmail.com",
+        ptEmailAddress: "e.stark123@gmail.com",
         ptMobilePhone: "0456744241",
         ptHomePhone: "",
         ptWorkPhone: "",
-        ptAddress: "123 Winter Lane",
-        line1: "123 Winter Lane",
+        ptAddress: "345 Winter Lane",
+        line1: "345 Winter Lane",
         line2: "",
-        city: "Melbourne",
-        state: "Northcote",
+        city: "Sydney",
+        state: "Northland",
         postcode: "4573",
         country: "Australia",
         ptMedicareCardNo: "12345678",
