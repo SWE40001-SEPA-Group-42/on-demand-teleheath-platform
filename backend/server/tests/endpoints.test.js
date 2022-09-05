@@ -140,13 +140,17 @@ describe('Doctor Routes', () => {
     drGivenName: "Timothy",
     drSurname: "Limmen",
     drPreferredName: "Tim",
+<<<<<<< HEAD
     drDOB: "1992-12-01",
+=======
+    drDOB: "1992-03-01",
+>>>>>>> Typo fix for Doctor Controller, some tests working
     drBirthSex : "Male",
     drEmail: "tim_limmen@gmail.com",
     drPhone: "0458865231",
     drAddress: "Tim St",
     line1: "Tim St",
-    line2: "",
+    line2: "asdsad",
     city: "Melbourne",
     state: "VIC",
     postcode: "5774",
@@ -161,11 +165,12 @@ describe('Doctor Routes', () => {
   //POST Doctor REQUEST
   describe("Given a doctor's details", () => {
     test("a doctor record should be created with a 200 status code", async () => {
+      const birthDate = new Date(`${mockDoctor.drDOB}`)
       const responsePOST = await request(app).post("/api/doctors/").send({
         drGivenName: mockDoctor.drGivenName,
         drSurname: mockDoctor.drSurname,
         drPreferredName: mockDoctor.drPreferredName,
-        drDOB: mockDoctor.drDOB,
+        drDOB: birthDate,
         drBirthSex : mockDoctor.drBirthSex,
         drEmail: mockDoctor.drEmail,
         drPhone: mockDoctor.drPhone,
@@ -181,17 +186,58 @@ describe('Doctor Routes', () => {
         drQualifications: mockDoctor.drQualifications,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
         drClinicName: mockDoctor.drClinicName
+<<<<<<< HEAD
       });
+=======
+      })
+>>>>>>> Typo fix for Doctor Controller, some tests working
       expect(responsePOST.statusCode).toBe(200)
       expect(responsePOST.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
   })
 
+<<<<<<< HEAD
   describe("Given a doctor's first name", () => {
     //GET doctor REQUEST providing First name
     test("my searched doctor will return with a 200 status code", async () => {
         const responseGET = await request(app).get("/api/doctors/").send({
           drGivenName: mockDoctor.drGivenName
+=======
+
+
+    describe("Given a doctor's first name", () => {
+      //GET doctor REQUEST providing First name
+      test("my searched doctor will return with a 200 status code", async () => {
+          const responseGET = await request(app).get("/api/doctors/").send({
+            drGivenName: mockDoctor.drGivenName
+          })
+          expect(responseGET.statusCode).toBe(200)
+          expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
+      })
+
+      //PUT doctor REQUEST
+      test("my searched doctor will be updated with a return with a 200 status code", async () => {
+        const responseGET = await request(app).put("/api/doctors/").send({
+          drGivenName: "Timothy",
+          drSurname: "Limmen",
+          drPreferredName: "Tim",
+          drDOB: "1997-01-01",
+          drBirthSex : "Male",
+          drEmail: "tim_limmen1234@gmail.com",
+          drPhone: "0958865231",
+          drAddress: "Tim Ln",
+          line1: "Tim Ln",
+          line2: "King St",
+          city: "Melbourne",
+          state: "VIC",
+          postcode: "5779",
+          country: "Australia",
+          drCode: "056923",
+          drPrescriberNo: "7892345",
+          drQualifications: "Orthopedics, Pediatrics",
+          drLanguagesSpoken: "English, German",
+          drClinicName: "testClinic"
+>>>>>>> Typo fix for Doctor Controller, some tests working
         })
         expect(responseGET.statusCode).toBe(200)
         expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
