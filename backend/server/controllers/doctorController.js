@@ -12,7 +12,7 @@ const getDoctor = asyncHandler(async(req, res) => {
         drSurname: drSurname
     })
 
-    if (!doctorFirstName) {
+    if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
     }
