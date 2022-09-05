@@ -4,12 +4,12 @@ const Doctor = require('../models/doctor')
 // GET - Doctor
 const getDoctor = asyncHandler(async(req, res) => {
 
-    const doctorFirstName = req.body.drFirstName
-    const doctorLastName = req.body.drSurName
+    const drGivenName = req.body.drGivenName
+    const drSurname = req.body.drSurname
 
     const doctor = await Doctor.find({
-        drFirstName: doctorFirstName,
-        drSurName: doctorLastName
+        drGivenName: drGivenName,
+        drSurname: drSurname
     })
 
     if (!doctorFirstName) {
@@ -24,16 +24,25 @@ const getDoctor = asyncHandler(async(req, res) => {
 const addDoctor = asyncHandler(async(req, res) => {
 
     const doctor = await Doctor.create({
-        drFirstName: req.body.drFirstName,
-        drSurName: req.body.drSurName,
-        drCode: req.body.drCode,
-        prescriberCode: req.body.prescriberCode,
-        drAddress: req.body.drAddress,
-        drPhoneNo: req.body.drPhoneNo,
+        drGivenName: req.body.drGivenName,
+        drSurname: req.body.drSurname,
+        drPreferredName: req.body.drPreferredName,
+        drDOB: req.body.drDOB,
+        drBirthSex : req.body.drBirthSex,
         drEmail: req.body.drEmail,
-        drClinic: req.body.drClinic,
-        drGender: req.body.drGender,
-        drQualif: req.body.drQualif
+        drPhone: req.body.drPhone,
+        drAddress: req.body.drAddress,
+        line1: req.body.line1,
+        line2: req.body.line2,
+        city: req.body.city,
+        state: req.body.state,
+        postcode: req.body.postcode,
+        country: req.body.country,
+        drCode: req.body.drCode,
+        drPrescriberNo: req.body.drPrescriberNo,
+        drQualifications: req.body.drQualifications,
+        drLanguagesSpoken: req.body.drLanguagesSpoken,
+        drClinicName: req.body.drClinicName
     })
 
     if (!doctor) {
@@ -65,13 +74,13 @@ const modifyDoctorByID = asyncHandler(async(req, res) => {
 // PUT - Doctor using FirstName LastName
 const modifyDoctorByName = asyncHandler(async(req, res) => {
 
-    const drFirstName = req.body.drFirstName
-    const drLastName = req.body.drSurName
+    const drGivenName = req.body.drGivenName
+    const drSurname = req.body.drSurname
     
     const updatedDoctor = await Doctor.findOneAndUpdate(
         { 
-            drFirstName: drFirstName, 
-            drLastName: drLastName 
+            drGivenName: drGivenName, 
+            drSurname: drSurname 
         },
         req.body, {
             new: true,
@@ -101,11 +110,11 @@ const deleteDoctorByID = asyncHandler(async(req, res) => {
 
 // DELETE - Doctor using Name
 const deleteDoctorByName = asyncHandler(async(req, res) => {
-    const drFirstName = req.body.drFirstName
-    const drLastName = req.body.drSurName
+    const drGivenName = req.body.drGivenName
+    const drSurname = req.body.drSurname
     const doctor = await Doctor.findOneAndRemove({
-        drFirstName: drFirstName,
-        drLastName: drLastName
+        drGivenName: drGivenName,
+        drSurname: drSurname
     })
 
     if (!doctor) {
