@@ -2,8 +2,8 @@ const asyncHandler = require('express-async-handler')
 const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (request, response) => {
-    const cName = request.body.clinicName
-    const clinics = await Clinic.find({clinicName : cName})
+    const clName = request.body.clName
+    const clinics = await Clinic.find({clName : clName})
 
     if (!clinics) {
         response.status(400)
@@ -16,11 +16,18 @@ const getClinic = asyncHandler(async (request, response) => {
 
 
 const addClinic = asyncHandler(async (request, response, next) => {
+    
     const clinic = await Clinic.create({
-        clinicName: request.body.clinicName,
-        clinicAddress: request.body.clinicAddress,
-        clinicContactNumber: request.body.clinicContactNumber,
-        clinicUrl: request.body.clinicUrl
+        clName: request.body.clName,
+        clAddress: request.body.clAddress,
+        line1: request.body.line1,
+        line2: request.body.line2,
+        city: request.body.city,
+        state: request.body.state,
+        postcode: request.body.postcode,
+        country: request.body.country,
+        clPhone: request.body.clPhone,
+        clEmailAddress: request.body.clEmailAddress,
     })
 
     if (!clinic) {
@@ -49,11 +56,11 @@ const updateClinicByID = asyncHandler(async(request, response) => {
 
 // PUT - Clinic using Name
 const updateClinicByName = asyncHandler(async(req, res) => {
-    const clinicName = req.body.clinicName
+    const clName = req.body.clName
 
     const updatedClinic = await Clinic.findOneAndUpdate(
         {
-            clinicName: clinicName
+            clName: clName
         },
         req.body, {
             new: true,
@@ -82,8 +89,8 @@ const deleteClinicByID = asyncHandler(async(req, res) => {
 
 // DELETE - Clinic using name
 const deleteClinicByName = asyncHandler(async(req, res) => {
-    const clinicName = req.body.clinicName
-    const clinic = await Clinic.findOneAndRemove({clinicName: clinicName})
+    const clName = req.body.clName
+    const clinic = await Clinic.findOneAndRemove({clName: clName})
 
 
     if (!clinic) {

@@ -2,15 +2,16 @@
 const asyncHandler = require('express-async-handler')
 const Patient = require('../models/patient')
 
+
 // GET - Patient
 const getPatient = asyncHandler(async(req, res) => {
 
-    const patientFirstName = req.body.patientFirstName
-    const patientLastName = req.body.patientLastName
+    const ptGivenName = req.body.ptGivenName
+    const ptSurname = req.body.ptSurname
     
     const patient = await Patient.find({
-        ptFirstName: patientFirstName,
-        ptLastName: patientLastName
+        ptGivenName: ptGivenName,
+        ptLastName: ptSurname
     })
 
     if (!patient ) {
@@ -23,18 +24,47 @@ const getPatient = asyncHandler(async(req, res) => {
 
 // POST - Patient
 const addPatient = asyncHandler(async(req, res) => {
-
-
+    
     const patient = await Patient.create({
-        ptFirstName: req.body.ptFirstName,
-        ptLastName: req.body.ptLastName,
+        ptGivenName: req.body.ptGivenName,
+        ptSurname: req.body.ptSurname,
+        ptPreferredName: req.body.ptPreferredName,
         ptDOB: req.body.ptDOB,
-        ptGender: req.body.ptGender,
+        ptBirthSex : req.body.ptBirthSex,
+        ptEmailAddress: req.body.ptEmailAddress,
+        ptMobilePhone: req.body.ptMobilePhone,
+        ptHomePhone: req.body.ptHomePhone,
+        ptWorkPhone: req.body.ptWorkPhone,
         ptAddress: req.body.ptAddress,
-        ptReference: req.body.ptReference,
-        ptPhoneNo: req.body.ptPhoneNo,
-        ptEmail: req.body.ptEmail,
-        ptMedicareID: req.body.ptMedicareID
+        line1: req.body.line1,
+        line2: req.body.line2,
+        city: req.body.city,
+        state: req.body.state,
+        postcode: req.body.postcode,
+        country: req.body.country,
+        ptMedicareCardNo: req.body.ptMedicareCardNo,
+        ptMedicareCardIRN: req.body.ptMedicareCardIRN,
+        ptMedicareCardExpiryDate: req.body.ptMedicareCardExpiryDate,
+        ptPrivateHealthFund: req.body.ptPrivateHealthFund,
+        ptPrivateHealthFundNo: req.body.ptPrivateHealthFundNo,
+        ptEmgContactGivenName: req.body.ptEmgContactGivenName,
+        ptEmgContactSurname: req.body.ptEmgContactSurname,
+        ptEmgContactRelationship: req.body.ptEmgContactRelationship,
+        ptEmgContactMobilePhone: req.body.ptEmgContactMobilePhone,
+        ptEmgContactHomePhone: req.body.ptEmgContactHomePhone,
+        ptEmgContactWorkPhone: req.body.ptEmgContactWorkPhone,
+        ptNextOfKinGivenName: req.body.ptNextOfKinGivenName,
+        ptNextOfKinSurname: req.body.ptNextOfKinSurname,
+        ptNextOfKinRelationship: req.body.ptNextOfKinRelationship,
+        ptNextOfKinMobilePhone: req.body.ptNextOfKinMobilePhone,
+        ptNextOfKinHomePhone: req.body.ptNextOfKinHomePhone,
+        ptNextofKinWorkPhone: req.body.ptNextofKinWorkPhone,
+        ptDVAFileNo: req.body.ptDVAFileNo,
+        ptDVAExpiryDate: req.body.ptDVAExpiryDate,
+        ptHealthcareCardNo: req.body.ptHealthcareCardNo,
+        ptHealthcareCardExpiryDate: req.body.ptHealthcareCardExpiryDate,
+        ptPensionCardNo: req.body.ptPensionCardNo,
+        ptPensionCardExpiryDate: req.body.ptPensionCardExpiryDate
     })
 
     if (!patient) {
@@ -65,13 +95,13 @@ const modifyPatientByID = asyncHandler(async(req, res) => {
 // PUT - Patient using ID
 const modifyPatientByName = asyncHandler(async(req, res) => {
     
-    const ptFirstName = req.body.ptFirstName
-    const ptLastName = req.body.ptLastName
+    const ptGivenName = req.body.ptGivenName
+    const ptSurname = req.body.ptSurname
     
     const updatedPatient = await Patient.findOneAndUpdate(
         { 
-            ptFirstName: ptFirstName, 
-            ptLastName: ptLastName 
+            ptGivenName: ptGivenName, 
+            ptSurname: ptSurname 
         },
         req.body, {
             new: true,
@@ -103,13 +133,12 @@ const deletePatientByID = asyncHandler(async(req, res) => {
 
 // DELETE - Patient using Name
 const deletePatientByName = asyncHandler(async(req, res) => {
-    const ptFirstName = req.body.ptFirstName
-    const ptLastName = req.body.ptLastName
-    
-   
+    const ptGivenName = req.body.ptGivenName
+    const ptSurname = req.body.ptSurname
+
     const patient = await Patient.findOneAndRemove({
-        ptFirstName: ptFirstName,
-        ptLastName:  ptLastName
+        ptGivenName: ptGivenName,
+        ptSurname:  ptSurname
     })
 
     if (!patient) {
