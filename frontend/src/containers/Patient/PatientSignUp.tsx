@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Formik, FormikHelpers } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
@@ -10,13 +10,6 @@ interface IPatientSignUpProps {}
 const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
 	const currentDate = new Date();
 	const navigate = useNavigate();
-
-	// const handleSubmit = (event: { preventDefault: () => void }) => {
-	// 	event.preventDefault();
-
-	// 	// redirect to patient/profile/add
-	// 	navigate('/patient/profile/add');
-	// };
 
 	return (
 		<Formik
@@ -52,22 +45,6 @@ const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
 				// redirect to patient/profile/add
 				navigate('/patient/profile/add');
 			}}
-			// onSubmit={(values, { setSubmitting }) => {
-			// 	setTimeout(() => {
-			// 		alert(JSON.stringify(values, null, 2));
-			// 		setSubmitting(false);
-			// 	}, 400);
-			// }}
-			// onSubmit={(
-			// 	values: FormValues,
-			// 	{ setSubmitting }: FormikHelpers<FormValues>
-			// ) => {
-			// 	// console.log(JSON.stringify(values))
-			// 	setTimeout(() => {
-			// 		alert(JSON.stringify(values, null, 2));
-			// 		setSubmitting(false);
-			// 	}, 500);
-			// }}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 20, 40]} h="100vh">
