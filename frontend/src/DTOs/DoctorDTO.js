@@ -1,7 +1,7 @@
 import DTO from './DTO';
 import AddressDTO from './AddressDTO';
 
-class PatientDTO extends DTO {
+class DoctorDTO extends DTO {
 	#drCreatedAt;
 	#drGivenName;
 	#drSurname;
@@ -147,6 +147,4 @@ class PatientDTO extends DTO {
 	}
 }
 
-Window.PatientDTO = PatientDTO; // TODO: Remove this... debug only
-
-export default PatientDTO;
+export default DoctorDTO;

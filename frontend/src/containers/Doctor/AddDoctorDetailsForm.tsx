@@ -13,7 +13,7 @@ import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpo
 
 interface FormModel {
 	drUsername: string;
-  drPassword: string;
+    drPassword: string;
 	drDateCreated: string;
 	drGivenName: string;
 	drSurname: string;
@@ -37,7 +37,7 @@ interface FormModel {
 	drLanguages: [string];
 }
 
-const DoctorForm = () => {
+const AddDoctorDetailsForm = () => {
 	const currentDate = new Date();
 
 	return (
@@ -268,4 +268,4 @@ const DoctorForm = () => {
 	);
 };
 
-export default DoctorForm;
+export default AddDoctorDetailsForm;
