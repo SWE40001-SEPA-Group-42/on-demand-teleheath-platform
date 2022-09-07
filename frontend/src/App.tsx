@@ -26,7 +26,7 @@ function App() {
 						/>
 						{/* Doctor */}
 						<Route 
-							path="doctor/signup" 
+							path="clinic/doctor/add" 
 							element={<DoctorSignupForm />} 
 						/>
 						<Route 
