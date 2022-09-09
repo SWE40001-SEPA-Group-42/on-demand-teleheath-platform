@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+        "label": "Start React client",
+        "command": "cd ./frontend;npm start;cd ..;",
+        "args": [],
+        "type": "shell",
+        "problemMatcher": [],
+        "group": {
+            "kind": "build"
+        }
+    },
+    {
+        "label": "Install React Node packages",
+        "command": "cd ./frontend;npm install;cd ..;",
+        "args": [],
+        "type": "shell",
+        "problemMatcher": [],
+        "group": {
+            "kind": "build"
+        }
+    }
+]
+}
