@@ -2,9 +2,15 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ClinicForm from './containers/Clinic/ClinicForm';
-import DoctorForm from './containers/Doctor/DoctorForm';
+
+//Doctor
+import DoctorAddProfile from './containers/Doctor/DoctorAddProfile';
+import DoctorDetailsForm from './containers/Doctor/DoctorDetailsForm';
+import AddDoctorDetailsForm from './containers/Doctor/AddDoctorDetailsForm';
+
+//Patient
 import PatientSignupForm from './containers/Patient/PatientSignupForm';
-import PatientDetailsForm from './containers/Patient/PatientDetailsForm';
+import AddPatientDetails from './containers/Patient/AddPatientDetails';
 
 function App() {
 	return (
@@ -13,11 +19,25 @@ function App() {
 				<main>
 					<Routes>
 						<Route index element={<PatientSignupForm />} />
+						{/* Patient */}
 						<Route
 							path="patient/profile/add"
-							element={<PatientDetailsForm />}
+							element={<AddPatientDetails />}
 						/>
-						<Route path="doctor/add" element={<DoctorForm />} />
+						{/* Doctor */}
+						<Route 
+							path="clinic/doctor/add" 
+							element={<DoctorAddProfile />} 
+						/>
+						<Route 
+							path="doctor/profile" 
+							element={<DoctorDetailsForm />} 
+						/>
+						<Route 
+							path="doctor/profile/add" 
+							element={<AddDoctorDetailsForm />} 
+						/>
+						{/* Clinic */}
 						<Route path="clinic/add" element={<ClinicForm />} />
 					</Routes>
 				</main>
