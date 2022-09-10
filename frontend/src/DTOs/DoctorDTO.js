@@ -19,7 +19,7 @@ class DoctorDTO extends DTO {
 
 	constructor(obj = {}) {
 		super(obj);
-		this.#drJoinedAt = obj.drJoinedAt;
+		this.#drCreatedAt = obj.drCreatedAt;
 		this.#drGivenName = obj.drGivenName;
 		this.#drSurname = obj.drSurname;
 		this.#drPreferredName = obj.drPreferredName;

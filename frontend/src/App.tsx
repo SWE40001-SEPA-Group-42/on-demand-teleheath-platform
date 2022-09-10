@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ClinicForm from './containers/Clinic/ClinicForm';
 
 //Doctor
-import DoctorSignupForm from './containers/Doctor/DoctorSignupForm';
+import DoctorAddProfile from './containers/Doctor/DoctorAddProfile';
 import DoctorDetailsForm from './containers/Doctor/DoctorDetailsForm';
 import AddDoctorDetailsForm from './containers/Doctor/AddDoctorDetailsForm';
 
@@ -27,7 +27,7 @@ function App() {
 						{/* Doctor */}
 						<Route 
 							path="clinic/doctor/add" 
-							element={<DoctorSignupForm />} 
+							element={<DoctorAddProfile />} 
 						/>
 						<Route 
 							path="doctor/profile" 

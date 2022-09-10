@@ -6,14 +6,17 @@ import {
 	Button,
 	Heading,
 	SimpleGrid,
+	useToast,
 } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
+import DoctorDAO from '../../DAOs/DoctorDAO';
+import DoctorDTO from '../../DTOs/DoctorDTO';
 
 interface FormModel {
 	drUsername: string;
-  drPassword: string;
+	drPassword: string;
 	drDateCreated: string;
 	drGivenName: string;
 	drSurname: string;
@@ -37,8 +40,9 @@ interface FormModel {
 	drLanguages: [string];
 }
 
-const DoctorSignupForm = () => {
+const DoctorAddProfile = () => {
 	const currentDate = new Date();
+	const toast = useToast();
 
 	return (
 		<Formik
@@ -121,9 +125,18 @@ const DoctorSignupForm = () => {
 					.required('Qualifications cannot be blank')
 					.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
 			})}
-			onSubmit={(values) => {
-				alert(JSON.stringify(values))
-				// console.log(JSON.stringify(values));
+			onSubmit={(values, actions) => {
+				DoctorDAO.insert(
+					new DoctorDTO({
+						...values,
+						drDOB: new Date(values.drDOB).toISOString(),
+						createdAt: currentDate,
+					})
+				).then((result) => {
+					if (result) {
+						
+					}
+				})
 			}}
 		>
 			{(formik) => (
@@ -268,4 +281,4 @@ const DoctorSignupForm = () => {
 	);
 };
 
-export default DoctorSignupForm;
+export default DoctorAddProfile;

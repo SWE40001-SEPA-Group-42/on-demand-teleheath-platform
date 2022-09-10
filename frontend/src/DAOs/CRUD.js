@@ -6,7 +6,7 @@ class Request {
   }
 
   get url() {
-      return new URL(`query/${this.path.join("/")}`, "http://localhost:3001"); // ensure it is the database url
+      return new URL(`${this.path.join("/")}`, "http://localhost:8001"); // ensure it is the database url
   }
 
   execute() {
