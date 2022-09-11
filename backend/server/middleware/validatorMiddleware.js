@@ -1,10 +1,9 @@
 const { body, validationResult } = require('express-validator')
 
 const clinicValidator = (validationType) => {
-  // Work in Progress
   if (validationType == 'clinicName') {
     return [
-      body('clName').isString().withMessage(
+      body('clName').notEmpty().isString().withMessage(
         'must provide a valid clinic name'
       )
     ]
@@ -13,7 +12,7 @@ const clinicValidator = (validationType) => {
       body('clName').isString().notEmpty().withMessage(
         'must provide a valid clinic name'
       ),
-      body('clAddress').notEmpty().isString().withMessage(
+      body('clAddress').isString().notEmpty().withMessage(
         'must provide a valid clinic address'
       ),
       body('line1').isString().notEmpty().withMessage(
@@ -51,6 +50,24 @@ const clinicValidator = (validationType) => {
   }
 }
 
+const doctorValidator = (validationType) => {
+  // Work in Progress
+  if (validationType == 'doctorName') {
+    return true
+  } else if (validationType == 'doctorBody') {
+    return true
+  }
+}
+
+const patientValidator = (validationType) => {
+  // Work in Progress
+  if (validationType == 'patientName') {
+    return true
+  } else if (validationType == 'patientBody') {
+    return true
+  }
+}
+
 /* 
   body('clURL').custom( value => {
     try {
@@ -79,5 +96,7 @@ const validate = (req, res, next) => {
 
 module.exports = {
   clinicValidator,
+  doctorValidator,
+  patientValidator,
   validate,
 }
