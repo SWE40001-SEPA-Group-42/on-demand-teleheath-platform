@@ -15,7 +15,7 @@ clinicRouter.route('/')
     .put(clinicValidator(validationType = 'clinicBody'), validate, updateClinicByName)
     .delete(clinicValidator(validationType = 'clinicName'), validate, deleteClinicByName)
 clinicRouter.route('/:id')
-    .put(updateClinicByID)
+    .put(clinicValidator(validationType = 'clinicBody'), validate, updateClinicByID)
     .delete(deleteClinicByID)
 
 module.exports = clinicRouter

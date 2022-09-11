@@ -4,20 +4,31 @@ const clinicValidator = (validationType) => {
   // Work in Progress
   if (validationType == 'clinicName') {
     return [
-      body('clinicName').isString().withMessage(
+      body('clName').isString().withMessage(
         'must provide a valid clinic name'
       )
-      // body('clinicName')
     ]
   } else if (validationType == 'clinicBody') {
     return [
-      body('clinicName').isString().withMessage(
+      body('clName').isString().notEmpty().withMessage(
         'must provide a valid clinic name'
       ),
-      body('clinicAddress').isString().withMessage(
+      body('clAddress').notEmpty().isString().withMessage(
         'must provide a valid clinic address'
       ),
-      body('clinicContactNumber').custom( value => {
+      body('line1').isString().notEmpty().withMessage(
+        'must provide a line 1 address'
+      ),
+      body('city').isString().notEmpty().withMessage(
+        'must provide a city'
+      ),
+      body('postcode').isString().notEmpty().withMessage(
+        'must provide a postcode'
+      ),
+      body('country').isString().notEmpty().withMessage(
+        'must provide a country'
+      ),
+      body('clPhone').custom( value => {
         if (value.match(/\d/g).length===10) {
           return true
         } else {
@@ -25,20 +36,33 @@ const clinicValidator = (validationType) => {
         }
       }).withMessage(
         'must provide a valid clinic contact number'
+      )
+      .notEmpty().withMessage(
+        'must provide a clinic contact number'
       ),
-      body('clinicUrl').custom( value => {
-        try {
-          new URL(value)
-          return true
-        } catch {
-          return false
-        }
-      }).withMessage(
-        'must provide a valid clinic URL'
+      body('clEmailAddress')
+      .isEmail().withMessage(
+        'must provide a valid clinic email address'
+      )
+      .notEmpty().withMessage(
+        'must a clinic email address'
       )
     ]
   }
 }
+
+/* 
+  body('clURL').custom( value => {
+    try {
+      new URL(value)
+      return true
+    } catch {
+      return false
+    }
+  }).withMessage(
+    'must provide a valid clinic URL'
+  )
+*/
 
 const validate = (req, res, next) => {
   const errors = validationResult(req)

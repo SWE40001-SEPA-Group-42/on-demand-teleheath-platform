@@ -22,21 +22,21 @@ describe('Clinic Routes', () => {
     state: "VIC",
     postcode: "4578",
     country: "Australia",
-    clPhone: "04123456793",
+    clPhone: "0358857621",
     clEmailAddress: "testClinic@test.com",
   }) 
 
   // const mockInvalidClinic = new Clinic({
   //   clName: "testClinic",
-  //   clinicAddress: "123 Test St",
-  //   line1: "123 Test St",
+  //   clinicAddress: "",
+  //   line1: "",
   //   line2: "345 Test Ln",
-  //   city: "Melbourne",
-  //   state: "VIC",
-  //   postcode: "4578",
-  //   country: "Australia",
-  //   clPhone: "04123456793",
-  //   clEmailAddress: "testClinic@test.com",
+  //   city: "",
+  //   state: "",
+  //   postcode: 1234,
+  //   country: "",
+  //   clPhone: "",
+  //   clEmailAddress: "",
   // }) 
 
  // POST Clinic REQUEST
@@ -59,18 +59,23 @@ describe('Clinic Routes', () => {
     })
   })
 
-  describe("Given a clinic's incorrect details", () => {
-    test("a clinic record should not be created with a 400 status code", async () => {
-        const response = await request(app).post("/api/clinics/").send({
-          clinicName: mockInvalidClinic.clinicName,
-          clinicAddress: mockInvalidClinic.clinicAddress,
-          clinicContactNumber: mockInvalidClinic.clinicContactNumber,
-          clinicUrl: mockInvalidClinic.clinicUrl
-        })
-        expect(response.statusCode).toBe(400)
-        expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
-    })
-  })
+  // describe("Given a clinic's incorrect details", () => {
+  //   test("a clinic record should not be created with a 500 status code", async () => {
+  //       const response = await request(app).post("/api/clinics/").send({
+  //         clName: mockInvalidClinic.clName,
+  //         clAddress: mockInvalidClinic.clAddress,
+  //         line1: mockInvalidClinic.line1,
+  //         line2: mockInvalidClinic.line2,
+  //         city: mockInvalidClinic.city,
+  //         state: mockInvalidClinic.state,
+  //         postcode: mockInvalidClinic.postcode,
+  //         country: mockInvalidClinic.country,
+  //         clPhone: mockInvalidClinic.clPhone,
+  //         clEmailAddress: mockInvalidClinic.clEmailAddress,
+  //       })
+  //       expect(response.statusCode).toBe(400)
+  //   })
+  // })
   
   describe("Given a clinic's name", () => {
 
@@ -94,7 +99,7 @@ describe('Clinic Routes', () => {
         state: "NSW",
         postcode: "9006",
         country: "Australia",
-        clPhone: "04908762234",
+        clPhone: "0358857621",
         clEmailAddress: "testClinicNEW@test.com",
       })
       expect(responseGET.statusCode).toBe(200)
@@ -153,15 +158,7 @@ describe('Doctor Routes', () => {
     drGivenName: "Timothy",
     drSurname: "Limmen",
     drPreferredName: "Tim",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    drDOB: "1992-12-01",
-=======
     drDOB: "1992-03-01",
->>>>>>> Typo fix for Doctor Controller, some tests working
-=======
-    drDOB: "1992-12-01",
->>>>>>> Backend/unit tests (#10)
     drBirthSex : "Male",
     drEmail: "tim_limmen@gmail.com",
     drPhone: "0458865231",
@@ -202,71 +199,20 @@ describe('Doctor Routes', () => {
         drQualifications: mockDoctor.drQualifications,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
         drClinicName: mockDoctor.drClinicName
-<<<<<<< HEAD
-<<<<<<< HEAD
       });
-=======
-      })
->>>>>>> Typo fix for Doctor Controller, some tests working
-=======
-      });
->>>>>>> Backend/unit tests (#10)
       expect(responsePOST.statusCode).toBe(200)
       expect(responsePOST.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
   })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Backend/unit tests (#10)
   describe("Given a doctor's first name", () => {
     //GET doctor REQUEST providing First name
     test("my searched doctor will return with a 200 status code", async () => {
-        const responseGET = await request(app).get("/api/doctors/").send({
-          drGivenName: mockDoctor.drGivenName
-<<<<<<< HEAD
-=======
-
-
-    describe("Given a doctor's first name", () => {
-      //GET doctor REQUEST providing First name
-      test("my searched doctor will return with a 200 status code", async () => {
-          const responseGET = await request(app).get("/api/doctors/").send({
-            drGivenName: mockDoctor.drGivenName
-          })
-          expect(responseGET.statusCode).toBe(200)
-          expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
+      const responseGET = await request(app).get("/api/doctors/").send({
+        drGivenName: mockDoctor.drGivenName
       })
-
-      //PUT doctor REQUEST
-      test("my searched doctor will be updated with a return with a 200 status code", async () => {
-        const responseGET = await request(app).put("/api/doctors/").send({
-          drGivenName: "Timothy",
-          drSurname: "Limmen",
-          drPreferredName: "Tim",
-          drDOB: "1997-01-01",
-          drBirthSex : "Male",
-          drEmail: "tim_limmen1234@gmail.com",
-          drPhone: "0958865231",
-          drAddress: "Tim Ln",
-          line1: "Tim Ln",
-          line2: "King St",
-          city: "Melbourne",
-          state: "VIC",
-          postcode: "5779",
-          country: "Australia",
-          drCode: "056923",
-          drPrescriberNo: "7892345",
-          drQualifications: "Orthopedics, Pediatrics",
-          drLanguagesSpoken: "English, German",
-          drClinicName: "testClinic"
->>>>>>> Typo fix for Doctor Controller, some tests working
-=======
->>>>>>> Backend/unit tests (#10)
-        })
-        expect(responseGET.statusCode).toBe(200)
-        expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
+      expect(responseGET.statusCode).toBe(200)
+      expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
 
     //PUT doctor REQUEST

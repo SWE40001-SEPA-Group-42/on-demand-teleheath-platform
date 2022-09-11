@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "test": "jest --ForceExit",
+    "test": "jest --ForceExit --watch",
     "start": "node server/server.js",
     "server": "nodemon server/server.js"
   },
@@ -15,6 +15,7 @@
     "express-async-handler": "^1.2.0",
     "express-validator": "^6.14.2",
     "mongoose": "^6.5.2",
+    "mongoose-unique-validator": "^3.1.0",
     "supertest": "^6.2.4"
   },
   "devDependencies": {
