@@ -22,7 +22,10 @@ const clinicValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a line 1 address that is valid"),
-      body("line2").isString().withMessage("must provide valid line 2 address"),
+      body("line2")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide valid line 2 address"),
       body("city").isString().notEmpty().withMessage("must provide a city"),
       body("state")
         .custom((value) => {
@@ -130,7 +133,10 @@ const doctorValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a line 1 address that is valid"),
-      body("line2").isString().withMessage("must provide valid line 2 address"),
+      body("line2")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide valid line 2 address"),
       body("city").isString().notEmpty().withMessage("must provide a city"),
       body("state")
         .custom((value) => {
@@ -178,7 +184,7 @@ const doctorValidator = (validationType) => {
       body("drClinicName")
         .isString()
         .notEmpty()
-        .withMessage("must provide a clinic that they work in")
+        .withMessage("must provide a clinic that they work in"),
     ];
   }
 };
@@ -186,24 +192,245 @@ const doctorValidator = (validationType) => {
 const patientValidator = (validationType) => {
   // Work in Progress
   if (validationType == "patientName") {
-    return true;
+    return [
+      body("ptGivenName")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a given name"),
+      body("ptSurname")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a surname"),
+    ];
   } else if (validationType == "patientBody") {
-    return true;
+    return [
+      body("ptGivenName")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a given name"),
+      body("ptSurname")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a surname"),
+      body("ptPreferredName")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a surname"),
+      body("ptDOB")
+        .notEmpty()
+        .isDate()
+        .withMessage("must provide a date of birth"),
+      body("ptBirthSex")
+        .notEmpty()
+        .isString()
+        .withMessage("must provide a gender"),
+      body("ptEmailAddress")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a doctor's email address"),
+      body("ptMobilePhone")
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a valid contact number")
+        .notEmpty()
+        .withMessage("must provide a contact number"),
+      body("ptHomePhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a valid home number"),
+      body("ptWorkPhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a valid work number"),
+      body("ptAddress")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a valid address"),
+      body("line1")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a line 1 address that is valid"),
+      body("line2")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide valid line 2 address"),
+      body("city").isString().notEmpty().withMessage("must provide a city"),
+      body("state")
+        .custom((value) => {
+          if (value.length === 3) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .isString()
+        .withMessage("invalid state length")
+        .notEmpty()
+        .withMessage("must provide a state"),
+      body("postcode")
+        .custom((value) => {
+          if (value.match(/\d/g).length === 4) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a postcode"),
+      body("country")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a country"),
+      body("ptMedicareCardNo")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a Medicare Card Number"),
+      body("ptMedicareCardIRN")
+        .isNumeric()
+        .notEmpty()
+        .withMessage("must provide a Medicare IRN Number"),
+      body("ptMedicareCardExpiryDate")
+        .optional({ checkFalsy: true })
+        .isDate()
+        .withMessage("must provide a Medicare IRN Number"),
+      body("ptPrivateHealthFund")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide a private health fund"),
+      body("ptPrivateHealthFundNo")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide a private health fund number"),
+      body("ptEmgContactGivenName")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact given name"),
+      body("ptEmgContactSurname")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact surname"),
+      body("ptEmgContactRelationship")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact relationship"),
+      body("ptEmgContactMobilePhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide an emergency contact mobile number"),
+      body("ptEmgContactHomePhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide an emergency contact home number"),
+      body("ptEmgContactWorkPhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide an emergency contact work number"),
+      body("ptNextOfKinGivenName")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact given name"),
+      body("ptNextOfKinSurname")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact surname"),
+      body("ptNextOfKinRelationship")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an emergency contact relationship"),
+      body("ptNextOfKinMobilePhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a next of kin contact number"),
+      body("ptNextOfKinHomePhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a next of kin home number"),
+      body("ptNextofKinWorkPhone")
+        .optional({ checkFalsy: true })
+        .custom((value) => {
+          if (value.match(/\d/g).length === 10) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .withMessage("must provide a next of kin work number"),
+      body("ptDVAFileNo")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an DVA File Number"),
+      body("ptDVAExpiryDate")
+        .optional({ checkFalsy: true })
+        .isDate()
+        .withMessage("must provide an DVA File Number"),
+      body("ptHealthcareCardNo")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an Healthcare Card Number"),
+      body("ptHealthcareCardExpiryDate")
+        .optional({ checkFalsy: true })
+        .isDate()
+        .withMessage("must provide an Healthcare Card expiry date"),
+      body("ptPensionCardNo")
+        .optional({ checkFalsy: true })
+        .isString()
+        .withMessage("must provide an Pension Card Number"),
+      body("ptPensionCardExpiryDate")
+        .optional({ checkFalsy: true })
+        .isDate()
+        .withMessage("must provide an Pension Card expiry date"),
+    ];
   }
 };
-
-/* 
-  body('clURL').custom( value => {
-    try {
-      new URL(value)
-      return true
-    } catch {
-      return false
-    }
-  }).withMessage(
-    'must provide a valid clinic URL'
-  )
-*/
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);

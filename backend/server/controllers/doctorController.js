@@ -1,4 +1,4 @@
-const e = require('express')
+// Handles the Doctor Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
 const Doctor = require('../models/doctor')
 

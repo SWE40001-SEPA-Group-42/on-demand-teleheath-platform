@@ -1,3 +1,4 @@
+// Handles the Clinic Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
 const Clinic = require("../models/clinic");
 
