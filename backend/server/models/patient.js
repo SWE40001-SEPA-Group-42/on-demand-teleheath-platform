@@ -73,7 +73,7 @@ const patientSchema = mongoose.Schema(
         },
         ptMedicareCardIRN: {
             type: Number,
-            required: true
+            required: false
         },
         ptMedicareCardExpiryDate: {
             type: String,

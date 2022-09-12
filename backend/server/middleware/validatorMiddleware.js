@@ -305,8 +305,8 @@ const patientValidator = (validationType) => {
         .notEmpty()
         .withMessage("must provide a Medicare Card Number"),
       body("ptMedicareCardIRN")
+        .optional({ checkFalsy: true })
         .isNumeric()
-        .notEmpty()
         .withMessage("must provide a Medicare IRN Number"),
       body("ptMedicareCardExpiryDate")
         .optional({ checkFalsy: true })
