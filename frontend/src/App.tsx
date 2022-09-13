@@ -5,6 +5,7 @@ import ClinicForm from './containers/Clinic/ClinicForm';
 import DoctorForm from './containers/Doctor/DoctorForm';
 import PatientSignUp from './containers/Patient/PatientSignUp';
 import PatientAddProfile from './containers/Patient/PatientAddProfile';
+import { Login, Logout, Signup, Reset } from './components/Authentication'
 
 function App() {
 	return (
@@ -19,6 +20,10 @@ function App() {
 						/>
 						<Route path="doctor/add" element={<DoctorForm />} />
 						<Route path="clinic/add" element={<ClinicForm />} />
+						<Route path="login" element={<Login />} />
+						<Route path="signup" element={<Signup />} />
+						<Route path="reset" element={<Reset />} />
+						<Route path="logout" element={<Logout />} />
 					</Routes>
 				</main>
 			</div>
