@@ -8,8 +8,8 @@ const getDoctor = asyncHandler(async(req, res) => {
     const drSurname = req.body.drSurname
 
     const doctor = await Doctor.find({
-        drGivenName: "Johnathan",
-        drSurname: "Fury"
+        drGivenName: drGivenName,
+        drSurname: drSurname
     })
 
     if (!doctor) {
