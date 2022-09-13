@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
+const cors = require('cors')
 const { connectDB, closeDB } = require('./config/db')
 const userController = require('./controllers/userController')
 const doctorRoutes = require('./routes/doctorRoutes')
@@ -12,6 +13,7 @@ const port = process.env.PORT || 8001 // Default port
 const app = express()
 
 // For Logging
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 

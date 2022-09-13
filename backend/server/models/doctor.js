@@ -3,51 +3,90 @@ const mongoose = require('mongoose')
 // Model refers to Schema collection `clinic` and passes it based on these requirements
 const doctorSchema = mongoose.Schema(
     {
-        drFirstName: {
+        drGivenName: {
             type: String,
-            required: [true, 'Please add a doctor\'s first name']
+            required: [true, 'Please add a doctor\'s given name']
         },
-        drSurName: {
+        drSurname: {
             type: String,
-            required: [true, 'Please add a doctor\'s last name']
+            required: [true, 'Please add a doctor\'s surname']
         },
-        drCode: {
+        drPreferredName: {
             type: String,
-            required: [true, 'Please add a doctor\'s code']
+            required: [true, 'Please add a doctor\'s preffered name']
         },
-        prescriberCode: {
-            type: String,
-            required: [true, 'Please add a doctor\'s prescriber code']
+        drDOB: {
+            type: Date,
+            required: [true, 'Please add a doctor\'s DOB']
         },
-        drAddress: {
+        drBirthSex : {
             type: String,
-            required: [true, 'Please add a doctor\'s address']
-        },
-        drPhoneNo: {
-            type: String,
-            required: [true, 'Please add a doctor\'s contact number']
+            required: [true, 'Please add a doctors\'s gender']
         },
         drEmail:  {
             type: String,
             required: [true, 'Please add a doctor\'s email']
         },
-        drClinic: {
+        drPhone: {
             type: String,
-            required: [true, 'Please add a doctor\'s clinic']
+            required: [true, 'Please add a doctor\'s contact number']
         },
-        drGender : {
-            type: String, 
-            required: [true, 'Please add a doctor\'s Gender']
+        drAddress: {
+            type: String,
+            required: [true, 'Please add a doctor\'s address']
         },
-        drQualif : {
+        line1: {
+            type: String,
+            required: [true, 'Please add an address']
+        },
+        line2: {
+            type: String,
+            required: false
+        },
+        city: {
+            type: String,
+            required: [true, 'Please add a city']
+        },
+        state: {
+            type: String,
+            required: [true, 'Please add a state']
+        },
+        postcode: {
+            type: String,
+            required: [true, 'Please add a postcode']
+        },
+        country: {
+            type: String,
+            required: [true, 'Please add country']
+        },
+        drCode: {
+            type: String,
+            required: [true, 'Please add a doctor\'s code']
+        },
+        drPrescriberNo: {
+            type: String,
+            required: [true, 'Please add a doctor\'s prescriber code']
+        },
+        drQualifications : {
             type: String,
             required: [true, 'Please add a doctor\'s qualification']
+        },
+        drLanguagesSpoken : {
+            type: String,
+            required: [true, 'Please specify a doctor\'s spoken languages']
+        },
+        drClinicName: {
+            type: String,
+            required: [true, 'Please add a doctor\'s clinic']
         }
     },
     {
         collection: 'doctors',
         versionKey: false,
-        timestamps: true
+        timestamps: {
+            createdAt: 'drCreatedAt',
+            updatedAt: 'drLastUpdatedAt'
+        }
     }
 )
 

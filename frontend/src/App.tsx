@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ClinicForm from './containers/Clinic/ClinicForm';
@@ -12,7 +12,34 @@ import AddDoctorDetailsForm from './containers/Doctor/AddDoctorDetailsForm';
 import PatientSignupForm from './containers/Patient/PatientSignupForm';
 import AddPatientDetails from './containers/Patient/AddPatientDetails';
 
+//For testing only
+import axios from 'axios'
+import { useAppSelector, useAppDispatch } from './redux/hooks'
+import { fetchDoctors } from './redux/Doctor/doctorsSlice';
+
+
 function App() {
+	// const dispatch = useAppDispatch()
+	// const doctors = useAppSelector(state => state.doctors)
+	// if (doctors.data.length == 0
+	// 	) {
+	// 	dispatch(fetchDoctors())
+	// }
+	// console.log(doctors)
+
+	async function getDoctor(): Promise<void> {
+		const response = await axios.get('http://localhost:8001/api/doctors', {
+			params: {
+				drGivenName: "Johnathan",
+				drSurname: "Fury"
+			}
+		})
+
+		console.log(response.data)
+	}
+
+	getDoctor();
+
 	return (
 		<BrowserRouter>
 			<div className="App">
