@@ -19,26 +19,12 @@ import { fetchDoctors } from './redux/Doctor/doctorsSlice';
 
 
 function App() {
-	// const dispatch = useAppDispatch()
-	// const doctors = useAppSelector(state => state.doctors)
-	// if (doctors.data.length == 0
-	// 	) {
-	// 	dispatch(fetchDoctors())
-	// }
-	// console.log(doctors)
-
-	async function getDoctor(): Promise<void> {
-		const response = await axios.get('http://localhost:8001/api/doctors', {
-			params: {
-				drGivenName: "Johnathan",
-				drSurname: "Fury"
-			}
-		})
-
-		console.log(response.data)
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+	if (doctors.data.length == 0) {
+		dispatch(fetchDoctors())
 	}
-
-	getDoctor();
+	console.log(doctors)
 
 	return (
 		<BrowserRouter>
