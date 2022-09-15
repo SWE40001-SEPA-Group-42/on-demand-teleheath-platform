@@ -1,5 +1,5 @@
 import Userfront from "@userfront/react";
-
+import { Box } from "@chakra-ui/react"
 Userfront.init("xbrr9qdb");
 
 const LoginForm = Userfront.build({
@@ -8,10 +8,9 @@ const LoginForm = Userfront.build({
 
 function Login() {
     return (
-        <>
-            <h2>This is a login form</h2>
+        <Box mt="100px">
             <LoginForm/>
-        </>
+        </Box>
     )
 }
 

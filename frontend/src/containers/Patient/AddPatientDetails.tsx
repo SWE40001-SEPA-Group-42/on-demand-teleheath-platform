@@ -42,19 +42,19 @@ const PatientBasicDetails: React.FC<FormValues> = () => {
 			initialValues={{
 				ptGivenName: '',
 				ptSurName: '',
-				// ptPreferredName: '',
-				// ptDOB: '',
+				ptPreferredName: '',
+				ptDOB: '',
 				ptBirthSex: '',
-				// ptEmail: '',
-				// ptMobile: '',
-				// ptAddress: {
-				// 	line1: '',
-				// 	line2: '',
-				// 	city: '',
-				// 	state: '',
-				// 	postcode: '',
-				// 	country: '',
-				// },
+				ptEmail: '',
+				ptMobile: '',
+				ptAddress: {
+					line1: '',
+					line2: '',
+					city: '',
+					state: '',
+					postcode: '',
+					country: '',
+				},
 			}}
 			validationSchema={Yup.object({
 				ptGivenName: Yup.string()

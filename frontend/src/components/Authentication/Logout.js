@@ -1,5 +1,5 @@
 import Userfront from "@userfront/react";
-
+import { Box } from "@chakra-ui/react"
 Userfront.init("xbrr9qdb");
 
 const LogoutButton = Userfront.build({
@@ -8,9 +8,9 @@ const LogoutButton = Userfront.build({
 
 function Logout() {
     return (
-        <>
+        <Box mt='100px'>
             <LogoutButton />
-        </>
+        </Box>
     )
 }
 
