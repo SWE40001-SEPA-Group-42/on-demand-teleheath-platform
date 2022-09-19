@@ -140,13 +140,13 @@ describe('Doctor Routes', () => {
     drGivenName: "Timothy",
     drSurname: "Limmen",
     drPreferredName: "Tim",
-    drDOB: "1992-03-01",
+    drDOB: "1992-12-01",
     drBirthSex : "Male",
     drEmail: "tim_limmen@gmail.com",
     drPhone: "0458865231",
     drAddress: "Tim St",
     line1: "Tim St",
-    line2: "asdsad",
+    line2: "",
     city: "Melbourne",
     state: "VIC",
     postcode: "5774",
@@ -161,12 +161,11 @@ describe('Doctor Routes', () => {
   //POST Doctor REQUEST
   describe("Given a doctor's details", () => {
     test("a doctor record should be created with a 200 status code", async () => {
-      const birthDate = new Date(`${mockDoctor.drDOB}`)
       const responsePOST = await request(app).post("/api/doctors/").send({
         drGivenName: mockDoctor.drGivenName,
         drSurname: mockDoctor.drSurname,
         drPreferredName: mockDoctor.drPreferredName,
-        drDOB: birthDate,
+        drDOB: mockDoctor.drDOB,
         drBirthSex : mockDoctor.drBirthSex,
         drEmail: mockDoctor.drEmail,
         drPhone: mockDoctor.drPhone,
@@ -179,62 +178,61 @@ describe('Doctor Routes', () => {
         country: mockDoctor.country,
         drCode: mockDoctor.drCode,
         drPrescriberNo: mockDoctor.drPrescriberNo,
-        drQualifications: mockDoctor.drQualification,
+        drQualifications: mockDoctor.drQualifications,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
         drClinicName: mockDoctor.drClinicName
-      })
+      });
       expect(responsePOST.statusCode).toBe(200)
       expect(responsePOST.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
   })
 
-
-
-    describe("Given a doctor's first name", () => {
-      //GET doctor REQUEST providing First name
-      test("my searched doctor will return with a 200 status code", async () => {
-          const responseGET = await request(app).get("/api/doctors/").send({
-            drGivenName: mockDoctor.drGivenName
-          })
-          expect(responseGET.statusCode).toBe(200)
-          expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
-      })
-
-      //PUT doctor REQUEST
-      test("my searched doctor will be updated with a return with a 200 status code", async () => {
-        const responseGET = await request(app).put("/api/doctors/").send({
-          drGivenName: "Timothy",
-          drSurname: "Limmen",
-          drPreferredName: "Tim",
-          drDOB: "1997-01-01",
-          drBirthSex : "Male",
-          drEmail: "tim_limmen1234@gmail.com",
-          drPhone: "0958865231",
-          drAddress: "Tim Ln",
-          line1: "Tim Ln",
-          line2: "King St",
-          city: "Melbourne",
-          state: "VIC",
-          postcode: "5779",
-          country: "Australia",
-          drCode: "056923",
-          drPrescriberNo: "7892345",
-          drQualifications: "Orthopedics, Pediatrics",
-          drLanguagesSpoken: "English, German",
-          drClinicName: "testClinic"
-        })
-        expect(responseGET.statusCode).toBe(200)
-        expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
-      })
-
-      //DELETE doctor REQUEST
-      test("my searched doctor will be deleted with a return with a 200 status code", async () => {
-        const responseGET = await request(app).delete("/api/doctors/").send({
+  describe("Given a doctor's first name", () => {
+    //GET doctor REQUEST providing First name
+    test("my searched doctor will return with a 200 status code", async () => {
+        const responseGET = await request(app).get("/api/doctors/").send({
           drGivenName: mockDoctor.drGivenName
         })
         expect(responseGET.statusCode).toBe(200)
         expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
-      }) 
+    })
+
+    //PUT doctor REQUEST
+    test("my searched doctor will be updated with a return with a 200 status code", async () => {
+      const responseGET = await request(app).put("/api/doctors/").send({
+        drGivenName: "Timothy",
+        drSurname: "Limmen",
+        drPreferredName: "Tim",
+        drDOB: "1997-01-01",
+        drBirthSex : "Male",
+        drEmail: "tim_limmen1234@gmail.com",
+        drPhone: "0958865231",
+        drAddress: "Tim Ln",
+        line1: "Tim Ln",
+        line2: "King St",
+        city: "Melbourne",
+        state: "VIC",
+        postcode: "5779",
+        country: "Australia",
+        drCode: "056923",
+        drPrescriberNo: "7892345",
+        drQualifications: "Orthopedics, Pediatrics",
+        drLanguagesSpoken: "English, German",
+        drClinicName: "testClinic"
+      })
+      expect(responseGET.statusCode).toBe(200)
+      expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
+    })
+
+    //DELETE doctor REQUEST
+    test("my searched doctor will be deleted with a return with a 200 status code", async () => {
+      const responseGET = await request(app).delete("/api/doctors/").send({
+        drGivenName: mockDoctor.drGivenName,
+        drSurname: mockDoctor.drSurname
+      })
+      expect(responseGET.statusCode).toBe(200)
+      expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
+    }) 
   })
 })
 
@@ -243,15 +241,45 @@ describe('Doctor Routes', () => {
 
 describe('Patient Routes', () => {
   const mockPatient = new Patient({
-    ptFirstName: "patient first name", 
-    ptLastName : "patient last name",
-    ptDOB: "patient day of birth",
-    ptGender: "patient gender",
-    ptAddress : "patient address",
-    ptReference: "patient references",
-    ptPhoneNo: "patient phone Number",
-    ptEmail: "patient email",
-    ptMedicareID: 12345,
+    ptGivenName: "Eddard",
+    ptSurname: "Stark",
+    ptPreferredName: "Ned",
+    ptDOB: "2003-01-01",
+    ptBirthSex : "Male",
+    ptEmailAddress: "e.stark@gmail.com",
+    ptMobilePhone: "0456744241",
+    ptHomePhone: "",
+    ptWorkPhone: "",
+    ptAddress: "123 Winter Lane",
+    line1: "123 Winter Lane",
+    line2: "",
+    city: "Melbourne",
+    state: "Northcote",
+    postcode: "4573",
+    country: "Australia",
+    ptMedicareCardNo: "12345678",
+    ptMedicareCardIRN: "3",
+    ptMedicareCardExpiryDate: "2023-05-10",
+    ptPrivateHealthFund: "Medibank",
+    ptPrivateHealthFundNo: "12345678",
+    ptEmgContactGivenName: "Catelyn",
+    ptEmgContactSurname: "Stark",
+    ptEmgContactRelationship: "Wife",
+    ptEmgContactMobilePhone: "0456744999",
+    ptEmgContactHomePhone: "",
+    ptEmgContactWorkPhone: "",
+    ptNextOfKinGivenName: "",
+    ptNextOfKinSurname: "",
+    ptNextOfKinRelationship: "",
+    ptNextOfKinMobilePhone: "",
+    ptNextOfKinHomePhone: "",
+    ptNextofKinWorkPhone: "",
+    ptDVAFileNo: "12345678",
+    ptDVAExpiryDate: "2023-05-10",
+    ptHealthcareCardNo: "12345678",
+    ptHealthcareCardExpiryDate: "2023-05-10",
+    ptPensionCardNo: "12345678",
+    ptPensionCardExpiryDate: "2023-05-10"
   }) 
 
 
@@ -259,15 +287,45 @@ describe('Patient Routes', () => {
   describe("Given a patient's details", () => {
     test("a patient record should be created with a 200 status code", async () => {
       const responsePOST = await request(app).post("/api/patients/").send({
-        ptFirstName: mockPatient.ptFirstName, 
-        ptLastName : mockPatient.ptLastName,
+        ptGivenName: mockPatient.ptGivenName,
+        ptSurname: mockPatient.ptSurname,
+        ptPreferredName: mockPatient.ptPreferredName,
         ptDOB: mockPatient.ptDOB,
-        ptGender: mockPatient.ptGender,
-        ptAddress : mockPatient.ptAddress,
-        ptReference: mockPatient.ptReference,
-        ptPhoneNo: mockPatient.ptPhoneNo,
-        ptEmail: mockPatient.ptEmail,
-        ptMedicareID: mockPatient.ptMedicareID,
+        ptBirthSex : mockPatient.ptBirthSex,
+        ptEmailAddress: mockPatient.ptEmailAddress,
+        ptMobilePhone: mockPatient.ptMobilePhone,
+        ptHomePhone: mockPatient.ptHomePhone,
+        ptWorkPhone: mockPatient.ptWorkPhone,
+        ptAddress: mockPatient.ptAddress,
+        line1: mockPatient.line1,
+        line2: mockPatient.line2,
+        city: mockPatient.city,
+        state: mockPatient.state,
+        postcode: mockPatient.postcode,
+        country: mockPatient.country,
+        ptMedicareCardNo: mockPatient.ptMedicareCardNo,
+        ptMedicareCardIRN: mockPatient.ptMedicareCardIRN,
+        ptMedicareCardExpiryDate: mockPatient.ptMedicareCardExpiryDate,
+        ptPrivateHealthFund: mockPatient.ptPrivateHealthFund,
+        ptPrivateHealthFundNo: mockPatient.ptPrivateHealthFundNo,
+        ptEmgContactGivenName: mockPatient.ptEmgContactGivenName,
+        ptEmgContactSurname: mockPatient.ptEmgContactSurname,
+        ptEmgContactRelationship: mockPatient.ptEmgContactRelationship,
+        ptEmgContactMobilePhone: mockPatient.ptEmgContactMobilePhone,
+        ptEmgContactHomePhone: mockPatient.ptEmgContactHomePhone,
+        ptEmgContactWorkPhone: mockPatient.ptEmgContactWorkPhone,
+        ptNextOfKinGivenName: mockPatient.ptNextOfKinGivenName,
+        ptNextOfKinSurname: mockPatient.ptNextOfKinSurname,
+        ptNextOfKinRelationship: mockPatient.ptNextOfKinRelationship,
+        ptNextOfKinMobilePhone: mockPatient.ptNextOfKinMobilePhone,
+        ptNextOfKinHomePhone: mockPatient.ptNextOfKinHomePhone,
+        ptNextofKinWorkPhone: mockPatient.ptNextofKinWorkPhone,
+        ptDVAFileNo: mockPatient.ptDVAFileNo,
+        ptDVAExpiryDate: mockPatient.ptDVAExpiryDate,
+        ptHealthcareCardNo: mockPatient.ptHealthcareCardNo,
+        ptHealthcareCardExpiryDate: mockPatient.ptHealthcareCardExpiryDate,
+        ptPensionCardNo: mockPatient.ptPensionCardNo,
+        ptPensionCardExpiryDate: mockPatient.ptPensionCardExpiryDate
       })
       expect(responsePOST.statusCode).toBe(200)
       expect(responsePOST.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -280,15 +338,45 @@ describe('Patient Routes', () => {
     //PUT patient REQUEST
     test("my searched patient will be updated with a return with a 200 status code", async () => {
       const responseGET = await request(app).put("/api/patients/").send({
-        ptFirstName: "patient first name", 
-        ptLastName : "patient last name",
-        ptDOB: "patient TEST day of birth",
-        ptGender: "patient gender",
-        ptAddress : "patient address",
-        ptReference: "patient references",
-        ptPhoneNo: "patient TEST phone Number",
-        ptEmail: "patient email",
-        ptMedicareID: 54321,
+        ptGivenName: "Eddard",
+        ptSurname: "Stark",
+        ptPreferredName: "Ned",
+        ptDOB: "1964-01-01",
+        ptBirthSex : "Male",
+        ptEmailAddress: "e.stark123@gmail.com",
+        ptMobilePhone: "0456744241",
+        ptHomePhone: "",
+        ptWorkPhone: "",
+        ptAddress: "345 Winter Lane",
+        line1: "345 Winter Lane",
+        line2: "",
+        city: "Sydney",
+        state: "Northland",
+        postcode: "4573",
+        country: "Australia",
+        ptMedicareCardNo: "12345678",
+        ptMedicareCardIRN: "3",
+        ptMedicareCardExpiryDate: "2023-05-10",
+        ptPrivateHealthFund: "Medibank",
+        ptPrivateHealthFundNo: "12345678",
+        ptEmgContactGivenName: "Catelyn",
+        ptEmgContactSurname: "Stark",
+        ptEmgContactRelationship: "Wife",
+        ptEmgContactMobilePhone: "0456744999",
+        ptEmgContactHomePhone: "",
+        ptEmgContactWorkPhone: "",
+        ptNextOfKinGivenName: "",
+        ptNextOfKinSurname: "",
+        ptNextOfKinRelationship: "",
+        ptNextOfKinMobilePhone: "",
+        ptNextOfKinHomePhone: "",
+        ptNextofKinWorkPhone: "",
+        ptDVAFileNo: "12345678",
+        ptDVAExpiryDate: "2023-05-10",
+        ptHealthcareCardNo: "12345678",
+        ptHealthcareCardExpiryDate: "2023-05-10",
+        ptPensionCardNo: "12345678",
+        ptPensionCardExpiryDate: "2023-05-10"
       })
       expect(responseGET.statusCode).toBe(200)
       expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -297,8 +385,8 @@ describe('Patient Routes', () => {
     //GET patient REQUEST provided First name
     test("my searched patient will return with a 200 status code", async () => {
       const responseGET = await request(app).get("/api/patients/").send({
-        ptFirstName: mockPatient.ptFirstName,
-        ptLastName: mockPatient.ptLastName
+        ptGivenName: mockPatient.ptGivenName,
+        ptSurname: mockPatient.ptSurname
       })
       expect(responseGET.statusCode).toBe(200)
       expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
@@ -306,8 +394,8 @@ describe('Patient Routes', () => {
 
     test("my searched patient will be deleted with a return with a 200 status code", async () => {
       const responseGET = await request(app).delete("/api/patients/").send({
-          ptFirstName: mockPatient.ptFirstName,
-          ptLastName: mockPatient.ptLastName
+          ptGivenName: mockPatient.ptGivenName,
+          ptSurname: mockPatient.ptSurname
       })
       expect(responseGET.statusCode).toBe(200)
       expect(responseGET.headers['content-type']).toEqual(expect.stringContaining("json"))
