@@ -13,6 +13,7 @@ import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
 import DoctorDAO from '../../DAOs/DoctorDAO';
 import DoctorDTO from '../../DTOs/DoctorDTO';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 interface FormModel {
 	drUsername: string;
@@ -44,10 +45,12 @@ const DoctorAddProfile = () => {
 	const currentDate = new Date();
 	const toast = useToast();
 
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+
 	return (
 		<Formik
 			initialValues={{
-				drDateCreated: currentDate.toISOString(),
 				drGivenName: '',
 				drSurname: '',
 				drPreferredName: '',
@@ -55,19 +58,19 @@ const DoctorAddProfile = () => {
 				drBirthSex: '',
 				drEmail: '',
 				drPhone: '',
-				drAddress: {
-					line1: '',
-					line2: '',
-					city: '',
-					state: '',
-					postcode: '',
-					country: '',
-				},
+				drAddress: '',
+				line1: '',
+				line2: '',
+				city: '',
+				state: '',
+				postcode: '',
+				country: '',
 				drCode: '',
 				drPrescribeCode: '',
-				drClinicName: '',
-				drQualif: '',
+				drQualifications: '',
 				drLanguages: [''],
+				drClinicName: '',
+				drDateCreated: currentDate.toISOString(),
 			}}
 			validationSchema={Yup.object({
 				drGivenName: Yup.string()
@@ -119,24 +122,12 @@ const DoctorAddProfile = () => {
 					'Prescriber Code cannot be blank'
 				),
 				drClinicName: Yup.string()
-					.required('Clinic cannot be blank')
-					.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
-				drQualif: Yup.string()
-					.required('Qualifications cannot be blank')
-					.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+					.required('Clinic cannot be blank'),
+				drQualifications: Yup.string()
+					.required('Qualifications cannot be blank'),
 			})}
 			onSubmit={(values, actions) => {
-				DoctorDAO.insert(
-					new DoctorDTO({
-						...values,
-						drDOB: new Date(values.drDOB).toISOString(),
-						createdAt: currentDate,
-					})
-				).then((result) => {
-					if (result) {
-						
-					}
-				})
+				console.log("")
 			}}
 		>
 			{(formik) => (
@@ -236,13 +227,7 @@ const DoctorAddProfile = () => {
 								placeholder="Country"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="drCode"
-								type="text"
-								label="Practioner's code"
-								placeholder="Practioner's code"
-							/>
+						<SimpleGrid columns={[1, 1]} spacing={[0, 5]}>
 							<InputField
 								name="drPrescribeCode"
 								type="text"
