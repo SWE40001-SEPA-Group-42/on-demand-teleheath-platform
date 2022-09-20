@@ -13,7 +13,6 @@ import PatientSignupForm from './containers/Patient/PatientSignupForm';
 import AddPatientDetails from './containers/Patient/AddPatientDetails';
 
 //For testing only
-import axios from 'axios'
 import { useAppSelector, useAppDispatch } from './redux/hooks'
 import { fetchDoctors } from './redux/Doctor/doctorsSlice';
 

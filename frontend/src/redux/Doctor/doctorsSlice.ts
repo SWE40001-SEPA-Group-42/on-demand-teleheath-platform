@@ -14,6 +14,7 @@ export const fetchDoctors = createAsyncThunk(
                     drSurname: "Fury"
                 }
             })
+            console.log(response.data)
             return response.data
         } catch(err) {
             console.log(err)
@@ -92,9 +93,9 @@ const doctorSlice = createSlice({
         builder.addCase(fetchDoctors.pending, (state, action) => {
             state.loading = true
         })
-        builder.addCase(fetchDoctors.fulfilled, (state, action: PayloadAction<Doctor>) => {
+        builder.addCase(fetchDoctors.fulfilled, (state, action: PayloadAction<Doctor[]>) => {
             state.loading = false
-            state.data.push(action.payload)
+            state.data = action.payload
             state.error = ''
         })
         builder.addCase(fetchDoctors.rejected, (state, action) => {
