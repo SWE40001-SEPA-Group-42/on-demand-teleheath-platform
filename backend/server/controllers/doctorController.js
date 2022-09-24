@@ -32,9 +32,10 @@ const getAvailDoctor = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
+    } else {
+        res.status(200).json(doctor)
     }
 
-    res.status(200).json(doctor)
 })
 
 // POST - Doctor
