@@ -4,16 +4,18 @@ const {
     updateClinicByID, updateClinicByName, 
     deleteClinicByID, deleteClinicByName
 } = require('../controllers/clinicController')
+const { clinicValidator, validate } = require('../middleware/validatorMiddleware')
+const { app } = require('../server')
 const clinicRouter = express.Router()
 
 // CRUD Operations -> Clinic
 clinicRouter.route('/')
-    .get(getClinic)
-    .post(addClinic)
-    .put(updateClinicByName)
-    .delete(deleteClinicByName)
+    .get(clinicValidator(validationType = 'clinicName'), validate, getClinic)
+    .post(clinicValidator(validationType = 'clinicBody'), validate, addClinic)
+    .put(clinicValidator(validationType = 'clinicBody'), validate, updateClinicByName)
+    .delete(clinicValidator(validationType = 'clinicName'), validate, deleteClinicByName)
 clinicRouter.route('/:id')
-    .put(updateClinicByID)
+    .put(clinicValidator(validationType = 'clinicBody'), validate, updateClinicByID)
     .delete(deleteClinicByID)
 
 module.exports = clinicRouter

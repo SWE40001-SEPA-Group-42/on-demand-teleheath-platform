@@ -81,7 +81,8 @@ const doctorSchema = mongoose.Schema(
         },
         drAvail : {
             type: Boolean,
-            required: [true, 'Please add a doctor\'s availability']
+            default: true,
+            required: [true, 'Please add a doctor\'s availability'],
         }
     },
     {
