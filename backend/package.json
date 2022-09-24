@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "start": "node server/server.js",
     "server": "nodemon server/server.js"
   },

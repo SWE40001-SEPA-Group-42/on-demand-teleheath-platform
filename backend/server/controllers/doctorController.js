@@ -147,5 +147,7 @@ const deleteDoctorByName = asyncHandler(async(req, res) => {
 })
 
 module.exports = {
-    getDoctor, getAvailDoctor, modifyDoctorByID, modifyDoctorByName, deleteDoctorByID, deleteDoctorByName
+    getDoctor, getAvailDoctor, addDoctor, 
+    modifyDoctorByID, modifyDoctorByName, 
+    deleteDoctorByID, deleteDoctorByName
 }

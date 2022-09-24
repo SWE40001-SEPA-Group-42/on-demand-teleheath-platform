@@ -9,6 +9,9 @@ process.env.NODE_ENV = "test";
 // Establish Connection
 connectDB();
 
+// Uncomment this if using an older system
+// jest.setTimeout(30000)
+
 // ---------------------------- Clinic Collection Testing --------------------------------------
 describe("Clinic Routes", () => {
   // Make Test Data
@@ -180,7 +183,7 @@ describe("Doctor Routes", () => {
     drQualifications: "Physiotheraphy, Pediatrics",
     drLanguagesSpoken: "English, German",
     drClinicName: "testClinic",
-    drAvail: 'true'
+    drAvail: true
   });
 
   //POST Doctor REQUEST
@@ -207,7 +210,7 @@ describe("Doctor Routes", () => {
         drQualifications: mockDoctor.drQualifications,
         drLanguagesSpoken: mockDoctor.drLanguagesSpoken,
         drClinicName: mockDoctor.drClinicName,
-        drAvail: true,
+        drAvail: mockDoctor.drAvail,
       });
       expect(responsePOST.statusCode).toBe(200);
       expect(responsePOST.headers["content-type"]).toEqual(
@@ -251,7 +254,7 @@ describe("Doctor Routes", () => {
         drQualifications: "Orthopedics, Pediatrics",
         drLanguagesSpoken: "English, German",
         drClinicName: "testClinic",
-        drAvail: false,
+        drAvail: false
       });
       expect(responseGET.statusCode).toBe(200);
       expect(responseGET.headers["content-type"]).toEqual(
