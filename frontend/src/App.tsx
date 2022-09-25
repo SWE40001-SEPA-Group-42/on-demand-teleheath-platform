@@ -6,6 +6,7 @@ import DoctorForm from './components/Doctor/DoctorForm';
 import PatientSignUp from './components/Patient/PatientSignUp';
 import PatientAddProfile from './components/Patient/PatientAddProfile';
 import { Login, Logout, Signup, Reset } from './components/Authentication'
+import DashboardTable from './components/Dashboard/Table/DashboardTable';
 
 function App() {
 	return (
@@ -24,6 +25,7 @@ function App() {
 						<Route path="signup" element={<Signup />} />
 						<Route path="reset" element={<Reset />} />
 						<Route path="logout" element={<Logout />} />
+						<Route index element={<DashboardTable />} />
 					</Routes>
 				</main>
 			</div>
