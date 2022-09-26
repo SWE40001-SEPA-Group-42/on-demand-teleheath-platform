@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+
+
 import {
     Table,
     Thead,
@@ -18,8 +21,22 @@ interface ColumnName {
   drLanguageSpoken: String
 }
 
+//works with redux to create handler
+
+
 
 const  DashboardTable = () => {
+
+  // const [data, setData] = useState("");
+
+  // useEffect(() =>{
+  //   axios.get("")
+  //   .then((res) => {
+  //       //save the fetched data to the current state - might need to change with redux
+  //       setData(res.data);
+  //   })
+  // }, []);
+
   const sampleData = [
     {
       drName: "Peter", 
@@ -45,7 +62,7 @@ const  DashboardTable = () => {
             <TableColumnNames />
             <Tbody>
                {sampleData.map(({drName, drBirthSex, drLanguageSpoken}) => (
-                  <TableRows drName={drName} drBirthSex={drBirthSex} drLanguageSpoken={drLanguageSpoken} />
+                  <TableRow drName={drName} drBirthSex={drBirthSex} drLanguageSpoken={drLanguageSpoken} />
                ))}
             </Tbody>
           </Table>
@@ -57,8 +74,7 @@ const  DashboardTable = () => {
 }
 
 
-//component for each row 
-const TableRows = ({drName, drBirthSex,drLanguageSpoken} : ColumnName) => {
+const TableRow = ({drName, drBirthSex,drLanguageSpoken} : ColumnName) => {
   return (
     <Tr>
       <Td>{drName}</Td>
