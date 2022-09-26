@@ -3,7 +3,6 @@ import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
@@ -12,10 +11,12 @@ import {
     Button
   } from '@chakra-ui/react'
 
-//creating interface or something
 
-
-
+interface ColumnName {
+  drName: String, 
+  drBirthSex: String, 
+  drLanguageSpoken: String
+}
 
 
 const  DashboardTable = () => {
@@ -41,38 +42,36 @@ const  DashboardTable = () => {
       <div className='w-5/6 mx-auto shadow-lg shadow-gray-100'>
         <TableContainer>
           <Table variant='simple'>
-            <TableProperties />
-
+            <TableColumnNames />
             <Tbody>
-               {sampleData.map((row,index) => {
-                  <Tr key={row.drName+"-"+index}>
-                    <Td>{row.drName}</Td>
-                    <Td>{row.drBirthSex}</Td>
-                    <Td>{row.drLanguageSpoken}</Td>
-                    <Td isNumeric><Button colorScheme='green'>Request</Button></Td>
-                  </Tr>
-               })}
-               {/* <Tr>
-                  <Td>haha</Td>
-                  <Td>haha</Td>
-                  <Td>dss</Td>
-                  <Td isNumeric><Button colorScheme='green'>Request</Button></Td>
-              </Tr>
-              <Tr>
-                  <Td>haha</Td>
-                  <Td>haha</Td>
-                  <Td>dss</Td>
-                  <Td isNumeric><Button colorScheme='green'>Request</Button></Td>
-              </Tr> */}
+               {sampleData.map(({drName, drBirthSex, drLanguageSpoken}) => (
+                  <TableRows drName={drName} drBirthSex={drBirthSex} drLanguageSpoken={drLanguageSpoken} />
+               ))}
             </Tbody>
           </Table>
         </TableContainer>
+
+
       </div>
     )
 }
 
 
-const TableProperties = () => {
+//component for each row 
+const TableRows = ({drName, drBirthSex,drLanguageSpoken} : ColumnName) => {
+  return (
+    <Tr>
+      <Td>{drName}</Td>
+      <Td>{drBirthSex}</Td>
+      <Td>{drLanguageSpoken}</Td>
+      <Td isNumeric><Button colorScheme='green'>Request</Button></Td>
+  </Tr>
+  )
+}
+
+
+//Contains a list of column names
+const TableColumnNames = () => {
   return (
     <Thead>
       <Tr>
