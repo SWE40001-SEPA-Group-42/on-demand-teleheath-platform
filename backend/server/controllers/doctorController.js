@@ -1,3 +1,4 @@
+// Handles the Doctor Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
 const Doctor = require('../models/doctor')
 
@@ -15,9 +16,9 @@ const getDoctor = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
+    } else {
+        res.status(200).json(doctor)
     }
-
-    res.status(200).json(doctor)
 })
 
 const getAvailDoctor = asyncHandler(async(req, res) => {
@@ -31,9 +32,10 @@ const getAvailDoctor = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
+    } else {
+        res.status(200).json(doctor)
     }
 
-    res.status(200).json(doctor)
 })
 
 // POST - Doctor
@@ -65,9 +67,9 @@ const addDoctor = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Details: Missing inputs found in the request!`)
+    } else {
+        res.status(200).json(doctor)
     }
-
-    res.status(200).json(doctor)
 })
 
 // PUT - Doctor using ID
@@ -77,15 +79,17 @@ const modifyDoctorByID = asyncHandler(async(req, res) => {
         req.params.id,
         req.body, {
             new: true,
+            runValidators: true, 
+            context: 'query' 
         }
     )
 
     if (!updatedDoctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Search for update!`)
+    } else {
+        res.status(200).json(updatedDoctor)
     }
-
-    res.status(200).json(updatedDoctor)
 })
 
 // PUT - Doctor using FirstName LastName
@@ -107,9 +111,9 @@ const modifyDoctorByName = asyncHandler(async(req, res) => {
     if (!updatedDoctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Search for update!`)
+    } else {
+        res.status(200).json(updatedDoctor)
     }
-
-    res.status(200).json(updatedDoctor)
 })
 
 // DELETE - Doctor using ID
@@ -119,10 +123,10 @@ const deleteDoctorByID = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Search for update!`)
+    } else {
+        await doctor.remove()
+        res.status(200).json(doctor)
     }
-
-    await doctor.remove()
-    res.status(200).json(doctor)
 })
 
 // DELETE - Doctor using Name
@@ -137,11 +141,13 @@ const deleteDoctorByName = asyncHandler(async(req, res) => {
     if (!doctor) {
         res.status(400)
         throw new Error(`Invalid Doctor Search for delete!`)
+    } else {
+        res.status(200).json(doctor)
     }
-
-    res.status(200).json(doctor)
 })
 
 module.exports = {
-    getDoctor, getAvailDoctor, modifyDoctorByID, modifyDoctorByName, deleteDoctorByID, deleteDoctorByName
+    getDoctor, getAvailDoctor, addDoctor, 
+    modifyDoctorByID, modifyDoctorByName, 
+    deleteDoctorByID, deleteDoctorByName
 }

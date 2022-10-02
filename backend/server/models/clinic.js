@@ -1,11 +1,14 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator');
+
 
 // Model refers to Schema collection `clinic` and passes it based on these requirements
 const clinicSchema = mongoose.Schema(
     {
         clName: {
             type: String,
-            required: [true, 'Please add a clinic name']
+            unique: true,
+            required: [true, 'Please add a clinic name'],
         },
         clAddress: {
             type: String,
@@ -54,6 +57,8 @@ const clinicSchema = mongoose.Schema(
     }
 )
 
+// Unique Validator
+clinicSchema.plugin(uniqueValidator)
 
 const Clinic = mongoose.model('clinics', clinicSchema)
 
