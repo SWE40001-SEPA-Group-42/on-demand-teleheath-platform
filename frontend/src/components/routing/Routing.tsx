@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ClinicForm from '../Clinic/ClinicForm';
-import DoctorForm from '../Doctor/DoctorForm';
+import DoctorAddProfile from '../Doctor/DoctorAddProfile';
 import PatientSignUp from '../Patient/PatientSignUp';
 import PatientAddProfile from '../Patient/PatientAddProfile';
 import { Login, Logout, Signup, Reset } from '../Authentication';
@@ -12,7 +12,7 @@ const Routing = () => {
 		<Routes>
 			<Route index element={<PatientSignUp />} />
 			<Route path="patient/profile/add" element={<PatientAddProfile />} />
-			<Route path="doctor/add" element={<DoctorForm />} />
+			<Route path="doctor/profile/add" element={<DoctorAddProfile />} />
 			<Route path="clinic/add" element={<ClinicForm />} />
 			<Route path="login" element={<Login />} />
 			<Route path="signup" element={<Signup />} />

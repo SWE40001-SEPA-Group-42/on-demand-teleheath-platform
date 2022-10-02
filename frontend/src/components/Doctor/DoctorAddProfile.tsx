@@ -2,15 +2,15 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
-import BirthSexField from '../../components/CustomFormFields/BirthSexField';
-import BirthSexSelectField from '../../components/CustomFormFields/BirthSexSelectField';
-import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
-import LanguagesSpokenSelectField from '../../components/CustomFormFields/LanguagesSpokenSelectField';
+import InputField from '../CustomFormFields/InputField';
+import BirthSexField from '../CustomFormFields/BirthSexField';
+import BirthSexSelectField from '../CustomFormFields/BirthSexSelectField';
+import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
+import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
-interface IDoctorForm {}
+interface IDoctorAddProfile {}
 
-const DoctorForm: React.FC<IDoctorForm> = () => {
+const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 	const currentDate = new Date().toISOString();
 	const birthSexOptions = ['male', 'female', 'other'];
 	const languagesSpokenOptions = [
@@ -277,4 +277,4 @@ const DoctorForm: React.FC<IDoctorForm> = () => {
 	);
 };
 
-export default DoctorForm;
+export default DoctorAddProfile;
