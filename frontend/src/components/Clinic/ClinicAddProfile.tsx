@@ -2,11 +2,11 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
+import InputField from '../CustomFormFields/InputField';
 
-interface IClinicForm {}
+interface IClinicAddProfile {}
 
-const ClinicForm: React.FC<IClinicForm> = () => {
+const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 	const currentDate = new Date().toISOString();
 
 	return (
@@ -174,4 +174,4 @@ const ClinicForm: React.FC<IClinicForm> = () => {
 	);
 };
 
-export default ClinicForm;
+export default ClinicAddProfile;
