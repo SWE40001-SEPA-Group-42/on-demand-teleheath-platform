@@ -183,7 +183,7 @@ describe("Doctor Routes", () => {
     drQualifications: "Physiotheraphy, Pediatrics",
     drLanguagesSpoken: "English, German",
     drClinicName: "testClinic",
-    drAvail: true
+    drAvail: true,
   });
 
   //POST Doctor REQUEST
@@ -254,7 +254,7 @@ describe("Doctor Routes", () => {
         drQualifications: "Orthopedics, Pediatrics",
         drLanguagesSpoken: "English, German",
         drClinicName: "testClinic",
-        drAvail: false
+        drAvail: false,
       });
       expect(responseGET.statusCode).toBe(200);
       expect(responseGET.headers["content-type"]).toEqual(
@@ -361,7 +361,7 @@ describe("Patient Routes", () => {
         ptDVAFileNo: mockPatient.ptDVAFileNo,
         ptDVAExpiryDate: "2023-05-10",
         ptHealthcareCardNo: mockPatient.ptHealthcareCardNo,
-        ptHealthcareCardExpiryDate:"2023-05-10",
+        ptHealthcareCardExpiryDate: "2023-05-10",
         ptPensionCardNo: mockPatient.ptPensionCardNo,
         ptPensionCardExpiryDate: "2023-05-10",
       });
