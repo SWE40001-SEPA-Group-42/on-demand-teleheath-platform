@@ -31,17 +31,37 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
 	{
+		label: 'Dashboard',
+		children: [
+			{
+				label: 'Home',
+				subLabel: '',
+				href: '/',
+			},
+			{
+				label: 'Patient Profile',
+				subLabel: '',
+				href: '/patient/profile',
+			},
+		],
+	},
+	{
 		label: 'Patient',
 		children: [
 			{
+				label: 'Sign up as patient',
+				subLabel: '',
+				href: '/signup/patient',
+			},
+			{
 				label: 'Add patient profile',
 				subLabel: '',
-				href: '/patient/add/profile',
+				href: '/patient/profile/add',
 			},
 			{
 				label: 'Update patient profile',
 				subLabel: '',
-				href: '/patient/update/profile',
+				href: '/patient/profile/update',
 			},
 		],
 	},
@@ -51,12 +71,12 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Add doctor profile',
 				subLabel: '',
-				href: '/doctor/add/profile',
+				href: '/doctor/profile/add',
 			},
 			{
 				label: 'Update doctor profile',
 				subLabel: '',
-				href: '/doctor/update/profile',
+				href: '/doctor/profile/add',
 			},
 		],
 	},
@@ -66,12 +86,12 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Add clinic profile',
 				subLabel: '',
-				href: '/clinic/add/profile',
+				href: '/clinic/profile/add',
 			},
 			{
 				label: 'Update clinic profile',
 				subLabel: '',
-				href: '/clinic/update/profile',
+				href: '/clinic/profile/add',
 			},
 		],
 	},
@@ -132,18 +152,17 @@ const Navbar = () => {
 						fontSize={'sm'}
 						fontWeight={400}
 						variant={'link'}
+						href={'/login'}
 					>
-						Sign In
+						Login
 					</Button>
 					<Button
-						display={{ base: 'none', md: 'inline-flex' }}
+						as={'a'}
+						display={{ base: 'none', md: 'inline-block' }}
 						fontSize={'sm'}
 						fontWeight={600}
-						color={'white'}
-						bg={'pink.400'}
-						_hover={{
-							bg: 'pink.300',
-						}}
+						variant={'link'}
+						href={'/signup'}
 					>
 						Sign Up
 					</Button>
@@ -214,13 +233,13 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 			display={'block'}
 			p={2}
 			rounded={'md'}
-			_hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
+			_hover={{ bg: useColorModeValue('blue.50', 'gray.900') }}
 		>
 			<Stack direction={'row'} align={'center'}>
 				<Box>
 					<Text
 						transition={'all .3s ease'}
-						_groupHover={{ color: 'pink.400' }}
+						_groupHover={{ color: 'blue.400' }}
 						fontWeight={500}
 					>
 						{label}
@@ -236,7 +255,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 					align={'center'}
 					flex={1}
 				>
-					<Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
+					<Icon color={'blue.400'} w={5} h={5} as={ChevronRightIcon} />
 				</Flex>
 			</Stack>
 		</Link>

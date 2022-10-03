@@ -1,5 +1,4 @@
-import React from "react";
-import DashboardTable from "./Table/DashboardTable";
+import DashboardTable from './Table/DashboardTable';
 import {
     Box,
     Button,
@@ -19,38 +18,23 @@ import {
     MenuOptionGroup,
     MenuDivider,
      Avatar, AvatarBadge, AvatarGroup, Text 
-  } from '@chakra-ui/react'
+  } from '@chakra-ui/react';
+import Navbar from '../Dashboard/Navbar';
 
+const patient = {
+    name: 'Emily Cooper',
+    imgSrc: 'https://images.unsplash.com/photo-1542740348-39501cd6e2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80',
+};
 
 const Dashboard = () => {
     return (
         <>
-            <NavBar />
-             <Text fontSize="2xl" textAlign="left" pl="30px" my="30px" style={{fontWeight: "bold"}}>DASHBOARD</Text>
+            <Navbar ptName={patient.name} ptImgSrc={patient.imgSrc} />
+             <Text fontSize="2xl" textAlign="left" pl="30px" my="30px" style={{fontWeight: "bold"}}>Welcome, {patient.name}</Text>
             <DashboardTable />
         </>
     )
-}
-
-
-
-const NavBar = () => {
-    return (
-        <Box as="nav" bg="bg-surface" boxShadow={useColorModeValue('sm', 'sm-dark')}>
-          <HStack  py={{ base: '4', lg: '5' }} px="20px">
-              <Flex justify="space-between" flex="1">
-                <h1>Logo here</h1>
-                <HStack spacing="3">
-
-                    {/* {This area is put for Profile} */}
-
-                </HStack>
-              </Flex>
-          </HStack>
-
-      </Box>
-    )
-}
+};
 
 
 {/* <Menu>
