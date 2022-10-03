@@ -6,6 +6,14 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": [
+      "@types/jest",
+      "@types/moment-duration-format",
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@types/yup"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
