@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv').config()
-const cors = require('cors')
+const http = require('http')
 const { connectDB, closeDB } = require('./config/db')
 const userController = require('./controllers/userController')
 const doctorRoutes = require('./routes/doctorRoutes')
@@ -12,6 +12,7 @@ const { errorHandler } = require('./middleware/errorMiddleware')
 const port = process.env.PORT || 8001 // Default port
 
 const app = express()
+const server = http.createServer(app)
 
 // For Logging
 app.use(cors())
@@ -28,7 +29,6 @@ const io = require("socket.io")(server, {
         methods: ["GET", "POST"]
     }
 })
-app.use(cors())
 
 io.on('connection', (socket) => {
     socket.emit('Current User', socket.id);

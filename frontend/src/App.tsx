@@ -7,6 +7,7 @@ import ClinicForm from './containers/Clinic/ClinicForm';
 import DoctorAddProfile from './containers/Doctor/DoctorAddProfile';
 import DoctorDetailsForm from './containers/Doctor/DoctorDetailsForm';
 import AddDoctorDetailsForm from './containers/Doctor/AddDoctorDetailsForm';
+import VideoCall from './containers/Doctor/VideoCall';
 
 //Patient
 import PatientSignupForm from './containers/Patient/PatientSignupForm';
@@ -48,6 +49,10 @@ function App() {
 						<Route 
 							path="doctor/profile/add" 
 							element={<AddDoctorDetailsForm />} 
+						/>
+						<Route 
+							path="videocall"
+							element={<VideoCall/>}
 						/>
 						{/* Clinic */}
 						<Route path="clinic/add" element={<ClinicForm />} />
