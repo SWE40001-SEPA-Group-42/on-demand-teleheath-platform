@@ -1,42 +1,42 @@
-const User = require('../models/user')
-const usersRouter = require('express').Router()
-const bcrypt = require('bcrypt')
+const User = require("../models/user");
+const usersRouter = require("express").Router();
+const bcrypt = require("bcrypt");
 
 // Router is handled in the same file as the Controller
-usersRouter.post('/', async (request, response, next) => {
-    try {
-        const body = request.body
+usersRouter.post("/", async (request, response, next) => {
+  try {
+    const body = request.body;
 
-        if (body.password === undefined || body.password.length < 3) {
-            return response
-                .status(400)
-                .json({ error: 'password is too short or missing' })
-        }
-
-        const saltRounds = 10
-        const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-        const user = new User({
-            username: body.username,
-            name: body.name,
-            passwordHash
-        })
-
-        const savedUser = await user.save()
-
-        response.json(savedUser)
-    } catch (exception) {
-        next(exception)
+    if (body.password === undefined || body.password.length < 3) {
+      return response
+        .status(400)
+        .json({ error: "password is too short or missing" });
     }
-})
 
-usersRouter.get('/', async (request, response, next) => {
-    try {
-        const users = await User.find({}).populate('users')
-        response.json(users)
-    } catch (exception) {
-        next(exception)
-    }
-})
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
-module.exports = usersRouter
+    const user = new User({
+      username: body.username,
+      name: body.name,
+      passwordHash,
+    });
+
+    const savedUser = await user.save();
+
+    response.json(savedUser);
+  } catch (exception) {
+    next(exception);
+  }
+});
+
+usersRouter.get("/", async (request, response, next) => {
+  try {
+    const users = await User.find({}).populate("users");
+    response.json(users);
+  } catch (exception) {
+    next(exception);
+  }
+});
+
+module.exports = usersRouter;

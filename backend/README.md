@@ -1,9 +1,10 @@
-
 ## Requirements to run database
+
 1. .env file containing the following variables:
-    * NODE_ENV (e.g. develop, uat production)
-    * PORT 
-    * MONGO_URI 
+   - NODE_ENV (e.g. develop, uat production)
+   - PORT
+   - MONGO_URI
+   - USERFRONT_PUBLIC_KEY
 2. Node, Nodemon & NPM
 3. Jest - For Unit Testing
 
@@ -28,4 +29,3 @@ Launches the Jest Testing Suite in the interactive watch mode.\
 See the section about [running tests]
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
