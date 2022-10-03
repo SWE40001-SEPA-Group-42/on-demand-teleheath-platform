@@ -15,7 +15,7 @@ const {
 const doctorRouter = express.Router();
 
 const jwt = require("jsonwebtoken");
-function authenticateUserToken(req, req, next) {
+function authenticateUserToken(res, req, next) {
   // Read and access the JWT access token from the header of a request
   const authHeader = req.headers["authorization"];
 
@@ -73,6 +73,9 @@ doctorRouter
     authenticateUserToken,
     modifyDoctorByID
   )
-  .delete(authenticateUserToken, deleteDoctorByID);
+  .delete(
+    authenticateUserToken, 
+    deleteDoctorByID
+  );
 
 module.exports = doctorRouter;

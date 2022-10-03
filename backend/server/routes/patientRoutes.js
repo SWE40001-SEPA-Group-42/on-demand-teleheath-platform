@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
 const {
   getPatient,
   addPatient,
@@ -13,8 +15,8 @@ const {
 } = require("../middleware/validatorMiddleware");
 const patientRouter = express.Router();
 
-const jwt = require("jsonwebtoken");
-function authenticateUserToken(req, req, next) {
+function authenticateUserToken(res, req, next) {
+
   // Read and access the JWT access token from the header of a request
   const authHeader = req.headers["authorization"];
 
@@ -71,6 +73,9 @@ patientRouter
     authenticateUserToken,
     modifyPatientByID
   )
-  .delete(authenticateUserToken, deletePatientByID);
+  .delete(
+    authenticateUserToken, 
+    deletePatientByID
+  );
 
 module.exports = patientRouter;

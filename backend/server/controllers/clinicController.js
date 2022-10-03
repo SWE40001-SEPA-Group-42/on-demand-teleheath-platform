@@ -3,10 +3,12 @@ const asyncHandler = require("express-async-handler");
 const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (request, response) => {
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
+
   if (authorization.roles.includes("member")) {
     const clName = request.body.clName;
     const clinics = await Clinic.find({ clName: clName });
-
     if (!clinics) {
       response.status(400);
       throw new Error(
@@ -20,9 +22,11 @@ const getClinic = asyncHandler(async (request, response) => {
     res.status(401);
     throw new Error(`Unauthorized access!`);
   }
+
 });
 
 const addClinic = asyncHandler(async (request, response, next) => {
+  
   const tenantId = req.auth.tenantId;
   const authorization = req.auth.authorization[`${tenantId}`] || {};
 

@@ -15,7 +15,7 @@ const { app } = require("../server");
 const clinicRouter = express.Router();
 
 const jwt = require("jsonwebtoken");
-function authenticateUserToken(req, req, next) {
+function authenticateUserToken(res, req, next) {
   // Read and access the JWT access token from the header of a request
   const authHeader = req.headers["authorization"];
 
@@ -36,6 +36,8 @@ function authenticateUserToken(req, req, next) {
     next();
   });
 }
+
+// && process.env.NODE_ENV == 'develop'
 
 // CRUD Operations -> Clinic
 clinicRouter
@@ -72,6 +74,9 @@ clinicRouter
     authenticateUserToken,
     updateClinicByID
   )
-  .delete(authenticateUserToken, deleteClinicByID);
+  .delete(
+    authenticateUserToken, 
+    deleteClinicByID
+  );
 
 module.exports = clinicRouter;

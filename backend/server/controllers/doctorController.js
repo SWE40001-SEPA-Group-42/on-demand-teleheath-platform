@@ -4,6 +4,9 @@ const Doctor = require("../models/doctor");
 
 // GET - Doctor
 const getDoctor = asyncHandler(async (req, res) => {
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
+
   if (authorization.roles.includes("member")) {
     const drGivenName = req.body.drGivenName;
     const drSurname = req.body.drSurname;
