@@ -3,21 +3,28 @@ const asyncHandler = require("express-async-handler");
 const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (request, response) => {
-  const clName = request.body.clName;
-  const clinics = await Clinic.find({ clName: clName });
+  if (authorization.roles.includes("member")) {
+    const clName = request.body.clName;
+    const clinics = await Clinic.find({ clName: clName });
 
-  if (!clinics) {
-    response.status(400);
-    throw new Error(
-      `Invalid Clinic Details: Missing inputs found in the request!`
-    );
+    if (!clinics) {
+      response.status(400);
+      throw new Error(
+        `Invalid Clinic Details: Missing inputs found in the request!`
+      );
+    } else {
+      response.status(200).json(clinics);
+    }
   } else {
-    response.status(200).json(clinics);
+    // Deny access
+    res.status(401);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
 const addClinic = asyncHandler(async (request, response, next) => {
-  const authorization = req.auth.authorization["demo1234"] || {};
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
 
   if (authorization.roles.includes("admin")) {
     const clinic = await Clinic.create({
@@ -44,11 +51,13 @@ const addClinic = asyncHandler(async (request, response, next) => {
   } else {
     // Deny access
     response.status(401);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
 const updateClinicByID = asyncHandler(async (request, response) => {
-  const authorization = req.auth.authorization["demo1234"] || {};
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
 
   if (authorization.roles.includes("admin")) {
     // Allow access
@@ -71,76 +80,80 @@ const updateClinicByID = asyncHandler(async (request, response) => {
   } else {
     // Deny access
     response.status(401);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
 // PUT - Clinic using Name
 const updateClinicByName = asyncHandler(async (req, res) => {
-  const authorization = req.auth.authorization["demo1234"] || {};
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
 
   if (authorization.roles.includes("admin")) {
-    // Allow access
+    const clName = req.body.clName;
+
+    const updatedClinic = await Clinic.findOneAndUpdate(
+      {
+        clName: clName,
+      },
+      req.body,
+      {
+        new: true,
+      }
+    );
+
+    if (!updatedClinic) {
+      res.status(400);
+      throw new Error(`Invalid Clinic Search for update!`);
+    } else {
+      res.status(200).json(updatedClinic);
+    }
   } else {
     // Deny access
-  }
-
-  const clName = req.body.clName;
-
-  const updatedClinic = await Clinic.findOneAndUpdate(
-    {
-      clName: clName,
-    },
-    req.body,
-    {
-      new: true,
-    }
-  );
-
-  if (!updatedClinic) {
-    res.status(400);
-    throw new Error(`Invalid Clinic Search for update!`);
-  } else {
-    res.status(200).json(updatedClinic);
+    res.status(401);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
 const deleteClinicByID = asyncHandler(async (req, res) => {
-  const authorization = req.auth.authorization["demo1234"] || {};
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
 
   if (authorization.roles.includes("admin")) {
-    // Allow access
+    const clinic = await Clinic.findById(req.params.id);
+    if (!clinic) {
+      res.status(400);
+      throw new Error(`Invalid Clinic search for delete!`);
+    } else {
+      await clinic.remove();
+      res.status(200).json(clinic);
+    }
   } else {
     // Deny access
-  }
-
-  const clinic = await Clinic.findById(req.params.id);
-  if (!clinic) {
     res.status(400);
-    throw new Error(`Invalid Clinic search for delete!`);
-  } else {
-    await clinic.remove();
-    res.status(200).json(clinic);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
 // DELETE - Clinic using name
 const deleteClinicByName = asyncHandler(async (req, res) => {
-  const authorization = req.auth.authorization["demo1234"] || {};
+  const tenantId = req.auth.tenantId;
+  const authorization = req.auth.authorization[`${tenantId}`] || {};
 
   if (authorization.roles.includes("admin")) {
-    // Allow access
+    const clName = req.body.clName;
+    const clinic = await Clinic.findOneAndRemove({ clName: clName });
+
+    if (!clinic) {
+      res.status(400);
+      throw new Error(`Invalid Clinic Search for update!`);
+    } else {
+      res.status(200).json(clinic);
+    }
   } else {
     // Deny access
-  }
-
-  const clName = req.body.clName;
-  const clinic = await Clinic.findOneAndRemove({ clName: clName });
-
-  if (!clinic) {
-    res.status(400);
-    throw new Error(`Invalid Clinic Search for update!`);
-  } else {
-    res.status(200).json(clinic);
+    res.status(401);
+    throw new Error(`Unauthorized access!`);
   }
 });
 
