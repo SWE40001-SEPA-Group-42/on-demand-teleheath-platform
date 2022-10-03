@@ -4,16 +4,17 @@ const {
     modifyPatientByID, modifyPatientByName, 
     deletePatientByID, deletePatientByName
 } = require('../controllers/patientController')
+const { patientValidator, validate } = require('../middleware/validatorMiddleware')
 const patientRouter = express.Router()
 
 // CRUD Operations -> Patient
 patientRouter.route('/')
-    .get(getPatient)
-    .post(addPatient)
-    .put(modifyPatientByName)
-    .delete(deletePatientByName)
+    .get(patientValidator(validationType = 'patientName'), validate, getPatient)
+    .post(patientValidator(validationType = 'patientBody'), validate, addPatient)
+    .put(patientValidator(validationType = 'patientBody'), validate, modifyPatientByName)
+    .delete(patientValidator(validationType = 'patientName'), validate, deletePatientByName)
 patientRouter.route('/:id')
-    .put(modifyPatientByID)
+    .put(patientValidator(validationType = 'patientName'), validate, modifyPatientByID)
     .delete(deletePatientByID)
 
 module.exports = patientRouter

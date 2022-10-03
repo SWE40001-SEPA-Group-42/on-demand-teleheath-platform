@@ -1,4 +1,5 @@
-// Handles the User Object API calls to the Back End
+// Handles the Patient Object API calls to the Back End
+const e = require('express')
 const asyncHandler = require('express-async-handler')
 const Patient = require('../models/patient')
 
@@ -16,9 +17,9 @@ const getPatient = asyncHandler(async(req, res) => {
     if (!patientFirstName || !patientLastName) {
         res.status(400)
         throw new Error(`Invalid Patient Details: Missing inputs found in the request!`)
-    } 
-    
-    res.status(200).json(patient)
+    } else {
+        res.status(200).json(patient)
+    }
 })
 
 // POST - Patient
@@ -40,9 +41,9 @@ const addPatient = asyncHandler(async(req, res) => {
     if (!patient) {
         res.status(400)
         throw new Error(`Invalid Patient Details: Missing inputs found in the request!`)
+    } else {
+        res.status(200).json(patient)
     }
-
-    res.status(200).json(patient)
 })
 
 // PUT - Patient using ID
@@ -51,18 +52,20 @@ const modifyPatientByID = asyncHandler(async(req, res) => {
         req.params.id,
         req.body, {
             new: true,
+            runValidators: true, 
+            context: 'query' 
         }
     )
 
     if (!updatedPatient) {
         res.status(400)
         throw new Error(`Invalid Patient Search for update!`)
+    } else {
+        res.status(200).json(updatedPatient)
     }
-
-    res.status(200).json(updatedPatient)
 })
 
-// PUT - Patient using ID
+// PUT - Patient using Name
 const modifyPatientByName = asyncHandler(async(req, res) => {
     
     const ptFirstName = req.body.ptFirstName
@@ -81,9 +84,9 @@ const modifyPatientByName = asyncHandler(async(req, res) => {
     if (!updatedPatient) {
         res.status(400)
         throw new Error(`Invalid Patient Search for update!`)
+    } else {
+        res.status(200).json(updatedPatient)
     }
-
-    res.status(200).json(updatedPatient)
 })
 
 // DELETE - Patient using ID
@@ -93,12 +96,10 @@ const deletePatientByID = asyncHandler(async(req, res) => {
     if (!patient) {
         res.status(400)
         throw new Error(`Invalid Patient Search for delete!`)
+    } else {
+        await patient.remove()
+        res.status(200).json(patient)
     }
-
-    await patient.remove()
-
-    res.status(200).json(patient)
-
 })
 
 // DELETE - Patient using Name
@@ -115,9 +116,9 @@ const deletePatientByName = asyncHandler(async(req, res) => {
     if (!patient) {
         res.status(400)
         throw new Error(`Invalid Patient Search for delete!`)
+    } else {
+        res.status(200).json(patient)
     }
-
-    res.status(200).json(patient)
 })
 
 

@@ -78,6 +78,11 @@ const doctorSchema = mongoose.Schema(
         drClinicName: {
             type: String,
             required: [true, 'Please add a doctor\'s clinic']
+        },
+        drAvail : {
+            type: Boolean,
+            default: true,
+            required: [true, 'Please add a doctor\'s availability'],
         }
     },
     {

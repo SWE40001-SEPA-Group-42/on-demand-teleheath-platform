@@ -1,3 +1,4 @@
+// Handles the Clinic Object API calls to the Back End
 const asyncHandler = require('express-async-handler')
 const Clinic = require("../models/clinic");
 
@@ -8,9 +9,9 @@ const getClinic = asyncHandler(async (request, response) => {
     if (!cName) {
         response.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
+    } else {
+        response.status(200).json(clinics)
     }
-
-    response.status(200).json(clinics)
 
 })
 
@@ -26,9 +27,9 @@ const addClinic = asyncHandler(async (request, response, next) => {
     if (!clinic) {
         response.status(400)
         throw new Error(`Invalid Clinic Details: Missing inputs found in the request!`)
+    } else {
+        response.status(200).json(clinic)
     }
-
-    response.status(200).json(clinic)
 })
 
 const updateClinicByID = asyncHandler(async(request, response) => {
@@ -36,15 +37,18 @@ const updateClinicByID = asyncHandler(async(request, response) => {
         request.params.id,
         request.body, {
             new: true,
+            runValidators: true, 
+            context: 'query' 
         }
     )
 
     if (!updatedClinic) {
         response.status(400)
         throw new Error(`Invalid Clinic Search for update!`)
+    } else {
+        response.status(200).json(updatedClinic)
     }
 
-    response.status(200).json(updatedClinic)
 })
 
 // PUT - Clinic using Name
@@ -56,16 +60,16 @@ const updateClinicByName = asyncHandler(async(req, res) => {
             clinicName: clinicName
         },
         req.body, {
-            new: true,
+            new: true
         }
     )
 
     if (!updatedClinic) {
         res.status(400)
         throw new Error(`Invalid Clinic Search for update!`)
+    } else {
+        res.status(200).json(updatedClinic)
     }
-
-    res.status(200).json(updatedClinic)
 })
 
 const deleteClinicByID = asyncHandler(async(req, res) => {
@@ -74,10 +78,10 @@ const deleteClinicByID = asyncHandler(async(req, res) => {
     if (!clinic) {
         res.status(400)
         throw new Error(`Invalid Clinic search for delete!`)
+    } else {
+        await clinic.remove()
+        res.status(200).json(clinic)
     }
-    await clinic.remove()
-
-    res.status(200).json(clinic)
 })
 
 // DELETE - Clinic using name
@@ -89,9 +93,9 @@ const deleteClinicByName = asyncHandler(async(req, res) => {
     if (!clinic) {
         res.status(400)
         throw new Error(`Invalid Clinic Search for update!`)
+    } else {
+        res.status(200).json(clinic)
     }
-
-    res.status(200).json(clinic)
 })
 
 
