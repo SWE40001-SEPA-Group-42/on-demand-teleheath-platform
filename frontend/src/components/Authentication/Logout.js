@@ -8,7 +8,7 @@ const LogoutButton = Userfront.build({
 
 function Logout() {
     return (
-        <Box mt='100px'>
+        <Box mx='auto'>
             <LogoutButton />
         </Box>
     )
