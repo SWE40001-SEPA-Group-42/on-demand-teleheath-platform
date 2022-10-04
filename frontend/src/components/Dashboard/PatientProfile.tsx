@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import FeatureCardContent from '../Dashboard/FeatureCardContent';
 import { Link as ReachLink } from 'react-router-dom';
-import { FaEllipsisV } from 'react-icons/fa';
+import { FaEdit, FaEllipsisV } from 'react-icons/fa';
 
 const currentDate = new Date();
 const dob = '23/10/1999';
@@ -94,7 +94,7 @@ interface IPatientProfileBasicDetails {}
 const PatientProfileBasicDetails: React.FC<
 	IPatientProfileBasicDetails
 > = () => {
-	const ptAddress = [
+	const patientAddress = [
 		patient.address.line1,
 		patient.address.line2,
 		patient.address.city,
@@ -104,6 +104,8 @@ const PatientProfileBasicDetails: React.FC<
 	]
 		.filter(Boolean)
 		.join(', ');
+	
+	const patientName = [patient.givenName, patient.surname].join(' ');
 
 	return (
 		<Box className="card-container">
@@ -112,11 +114,11 @@ const PatientProfileBasicDetails: React.FC<
 					<VStack className="flex justify-center text-center">
 						<Avatar
 							size="md"
-							name={patient.givenName + ' ' + patient.surname}
+							name={patientName}
 							src={patient.imgSrc}
 						/>
 						<Text size="lg" fontWeight="600">
-							{patient.givenName + ' ' + patient.surname}
+							{patientName}
 						</Text>
 					</VStack>
 					<SimpleGrid columns={3} spacing={10}>
@@ -148,7 +150,7 @@ const PatientProfileBasicDetails: React.FC<
 							<Text size="md" fontWeight="600" color="gray.600">
 								Address
 							</Text>
-							<Text>{ptAddress}</Text>
+							<Text>{patientAddress}</Text>
 						</Box>
 						<Box py={2}>
 							<Text size="md" fontWeight="600" color="gray.600">
@@ -183,15 +185,14 @@ const PatientProfileAdditionalDetails: React.FC<
 				<HStack>
 					<Text className="text-md">Additional details</Text>
 					<IconButton
-						aria-label="Notifications"
+						aria-label="Edit Profile"
 						size="md"
-						colorScheme=""
 						variant="unstyled"
-						icon={<FaEllipsisV />}
+						icon={<FaEdit />}
 					></IconButton>
 				</HStack>
 				<VStack align="flex-start">
-					<Heading as="h1" size="md" py={4}>
+					<Heading as="h1" className="text-md" py={4}>
 						Medicare and private health insurance
 					</Heading>
 					<FeatureCardContent
@@ -214,13 +215,12 @@ const PatientProfileAdditionalDetails: React.FC<
 						label="Private health fund number"
 						description={patient.privateHealthFundNo}
 					/>
-					<Heading as="h1" size="md" py={4}>
+					<Heading as="h1" className="text-md" py={4}>
 						Emergency contact
 					</Heading>
 					<FeatureCardContent
 						label="Name"
-						description={
-							patient.emgContactGivenName + ' ' + patient.emgContactSurname
+						description={[patient.emgContactGivenName, patient.emgContactSurname].join(' ')
 						}
 					/>
 					<FeatureCardContent
@@ -239,13 +239,13 @@ const PatientProfileAdditionalDetails: React.FC<
 						label="Work phone"
 						description={patient.emgContactWorkPhone}
 					/>
-					<Heading as="h1" size="md" py={4}>
+					<Heading as="h1" className="text-md" py={4}>
 						Next of kin
 					</Heading>
 					<FeatureCardContent
 						label="Name"
 						description={
-							patient.nextOfKinGivenName + ' ' + patient.nextOfKinSurname
+							[patient.nextOfKinGivenName, patient.nextOfKinSurname].join(' ')
 						}
 					/>
 					<FeatureCardContent
@@ -305,7 +305,7 @@ interface IPatientProfile {
 const PatientProfile: React.FC<IPatientProfile> = ({}) => {
 	return (
 		<Box className="w-screen">
-			<Heading as="h1" size="lg" className="text-center">
+			<Heading as="h1" className="text-lg text-center">
 				My Profile
 			</Heading>
 			<PatientProfileBasicDetails />

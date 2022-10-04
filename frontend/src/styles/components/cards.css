@@ -2,6 +2,6 @@
 
 @layer components {
   .card-container {
-    @apply bg-gray-50 text-black rounded-md shadow-md m-6 p-8;
+    @apply bg-gray-50 text-black rounded-md shadow m-6 p-8;
   }
 }

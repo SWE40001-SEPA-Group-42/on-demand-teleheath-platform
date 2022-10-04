@@ -23,8 +23,8 @@ const FeatureCardContent: React.FC<IFeatureCardContent> = ({
 }) => {
 	return (
 		<>
-			<Box>
-				<Text size="md" fontWeight="600">
+			<Box py={2}>
+				<Text size="md" fontWeight="600" color="gray.600">
 					{label}
 				</Text>
 				<Text>{description}</Text>
