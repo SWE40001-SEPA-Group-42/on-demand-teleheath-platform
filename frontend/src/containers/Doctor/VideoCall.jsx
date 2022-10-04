@@ -11,7 +11,7 @@ const socket = io.connect('http://localhost:8001',
     { transports: ["websocket"] }
 )
 
-function VideoCall() {
+const VideoCall = () => {
 
     socket.on("connect_error", (err) => {
         console.log(`connect_error due to ${err.message}`);
