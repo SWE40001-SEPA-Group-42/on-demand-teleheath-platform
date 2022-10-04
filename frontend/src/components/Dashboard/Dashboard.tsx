@@ -23,6 +23,9 @@ import {
   } from '@chakra-ui/react';
 import DashboardNavbar from '../Dashboard/DashboardNavbar';
 import PatientTable from '../Dashboard/Table/PatientTable';
+import { useTable } from 'react-table'
+
+
 const patient = {
     imgSrc: 'https://images.unsplash.com/photo-1542740348-39501cd6e2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80',
 	givenName: 'Emily',
@@ -31,6 +34,53 @@ const patient = {
 
 const Dashboard = () => {
     const patientName = [patient.givenName, patient.surname].join(' ');
+    const columns = React.useMemo(
+        () => [
+          {
+            Header: 'Name',
+            columns: [
+              {
+                Header: 'First Name',
+                accessor: 'firstName',
+              },
+              {
+                Header: 'Last Name',
+                accessor: 'lastName',
+              },
+            ],
+          },
+          {
+            Header: 'Info',
+            columns: [
+              {
+                Header: 'Age',
+                accessor: 'age',
+              },
+              {
+                Header: 'Visits',
+                accessor: 'visits',
+              },
+              {
+                Header: 'Status',
+                accessor: 'status',
+              },
+              {
+                Header: 'Profile Progress',
+                accessor: 'progress',
+              },
+            ],
+          },
+        ],
+        []
+      )
+    
+      const data = React.useMemo(() => makeData(20), [])
+    
+      return (
+        <Styles>
+          <Table columns={columns} data={data} />
+        </Styles>
+      )
 
     return (
         <>

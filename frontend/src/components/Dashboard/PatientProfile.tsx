@@ -146,6 +146,7 @@ const PatientProfileBasicDetails: React.FC<
 				</Box>
 				<Box className="w-3/5">
 					<VStack align="flex-start" className="text-left">
+						
 						<Box py={2}>
 							<Text size="md" fontWeight="600" color="gray.600">
 								Address
@@ -191,7 +192,7 @@ const PatientProfileAdditionalDetails: React.FC<
 						icon={<FaEdit />}
 					></IconButton>
 				</HStack>
-				<VStack align="flex-start">
+				<VStack align="flex-start ">
 					<Heading as="h1" className="text-md" py={4}>
 						Medicare and private health insurance
 					</Heading>
