@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -10,37 +10,45 @@ import {
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
-import DoctorDTO from '../../DTOs/DoctorDTO';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchDoctors } from '../../redux/Doctor/doctorsSlice';
+import { useParams } from 'react-router-dom';
 
 interface FormModel {
-	drUsername: string;
-    drPassword: string;
-	drDateCreated: string;
-	drGivenName: string;
-	drSurname: string;
-	drDOB: string;
-	drBirthSex: string;
-	drPreferredName?: string;
-	drEmail: string;
-	drPhone: string;
-	drAddress: {
-		line1: string;
-		line2?: string;
-		city: string;
-		state: string;
-		postcode: string;
-		country: string;
-	};
-	drCode: string;
-	drPrescribeCode: string;
-	drClinicName: string;
-	drQualif: string;
-	drLanguages: [string];
+	drGivenName: string,
+    drSurname: string,
+    drPreferredName: string
+    drDOB: string,
+    drBirthSex: string,
+    drEmail: string,
+    drPhone: string,
+    drAddress: string,
+    line1: string,
+    line2: string,
+    city: string,
+    state: string,
+    postcode: string,
+    country: string
+    drCode: string,
+    drPrescriberNo: string,
+    drQualifications: string,
+    drLanguagesSpoken: string,
+    drClinicName: string
 }
 
 const DoctorDetailsForm = () => {
 	const currentDate = new Date();
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+	if (doctors.data.length == 0) {
+		dispatch(fetchDoctors())
+	}
 
+	const id = useParams()
+
+	//find by name, change later
+
+	
 
 	return (
 		<Formik
