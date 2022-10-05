@@ -14,7 +14,7 @@ export const fetchDoctors = createAsyncThunk(
                     drSurname: "Fury"
                 }
             })
-            console.log(response.data)
+
             return response.data
         } catch(err) {
             console.log(err)

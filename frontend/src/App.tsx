@@ -19,12 +19,12 @@ import { fetchDoctors } from './redux/Doctor/doctorsSlice';
 
 
 function App() {
-	// const dispatch = useAppDispatch()
-	// const doctors = useAppSelector(state => state.doctors)
-	// if (doctors.data.length == 0) {
-	// 	dispatch(fetchDoctors())
-	// }
-	// console.log(doctors)
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+	if (doctors.data.length == 0) {
+		dispatch(fetchDoctors())
+	}
+	console.log(doctors)
 
 	return (
 		<BrowserRouter>

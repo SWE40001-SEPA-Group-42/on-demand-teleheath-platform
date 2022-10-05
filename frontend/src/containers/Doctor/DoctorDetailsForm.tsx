@@ -44,7 +44,7 @@ const DoctorDetailsForm = () => {
 		dispatch(fetchDoctors())
 	}
 
-	const id = useParams()
+	// const id = useParams()
 
 	//find by name, change later
 
