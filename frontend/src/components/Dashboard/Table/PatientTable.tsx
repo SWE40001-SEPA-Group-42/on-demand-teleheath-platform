@@ -1,170 +1,90 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
-import { Column, useSortBy, useTable} from "react-table"
+import React from "react";
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-    TableContainer,
-    Button
-  } from '@chakra-ui/react'
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button
+} from '@chakra-ui/react'
 
-interface Patient {
-  drName: string;
-  drBirthSex: string;
-  drLanguageSpoken: string;
-  drSpecialisation: string;
-}
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  ColumnDef,
+  SortingState,
+  getSortedRowModel
+} from "@tanstack/react-table";
 
+export type DataTableProps<Data extends object> = {
+  data: Data[];
+  columns: ColumnDef<Data, any>[];
+};
 
-const PatientTable = () => {
-  const data : Array<Patient> = React.useMemo(
-    () => [
-        {
-          drName: "Peter", 
-          drBirthSex: "Male",
-          drLanguageSpoken: "Vietnamese", 
-          drSpecialisation: "Men Health"
-        },
-        {
-          drName: "Katy", 
-          drBirthSex: "Female",
-          drLanguageSpoken: "English",
-          drSpecialisation: "Woman Health"
-        },
-        {
-          drName: "Cath", 
-          drBirthSex: "Female",
-          drLanguageSpoken: "English",
-          drSpecialisation: "Woman Health"
-        }, 
-      ]
-  , [])
-
-
-
-  const columns: Column<Patient>[] = React.useMemo(() => 
-  [
-    {
-      Header: 'Name', 
-      accessor: 'drName',
-    }, 
-    {
-      Header: 'Gender', 
-      accessor: 'drBirthSex',
-    }, 
-    {
-      Header: 'Language Spoken', 
-      accessor: 'drLanguageSpoken',
-    }, 
-    {
-      Header: 'Specilisation',
-      accessor: 'drSpecialisation',
+export function PatientTable<Data extends object>({
+  data,
+  columns
+}: DataTableProps<Data>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const table = useReactTable({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting
     }
-  ], [])
+  });
 
-  //NJ - This is the error
-  // const tableIntance = useTable({columns, data})
-
-
-
-    //  const {
-    //   getTableProps,
-    //   getTableBodyProps,
-    //   headerGroups,
-    //   rows,
-    //   prepareRow,
-    // } = tableIntance
-    
-    return (
-      <div className='w-5/6 mx-auto shadow-lg shadow-gray-100'>
-          {/* <table {...getTableProps()}>
-              <thead>
-                {
-                headerGroups.map(headerGroup => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {
-                    headerGroup.headers.map(column => (
-                      <th {...column.getHeaderProps()}>
-                        {
-                        column.render('Header')}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                 {
-                  rows.map(row => {
-                    
-                    prepareRow(row)
-                    return (
-                     
-                      <tr {...row.getRowProps()}>
-                        {
-                        row.cells.map(cell => {
-                         
-                          return (
-                            <td {...cell.getCellProps()}>
-                              {
-                              cell.render('Cell')}
-                            </td>
-                          )
-                        })}
-          </tr>
-        )
-      })}
-              </tbody>
-          </table> */}
-          <h1>Fixing Dashboard</h1>
-      </div>
-    )
-}
-
-
-
-
-// const TableRow = ({drName, drBirthSex,drLanguageSpoken} : ColumnName) => {
-//   return (
-//     <Tr>
-//       <Td>{drName}</Td>
-//       <Td>{drBirthSex}</Td>
-//       <Td>{drLanguageSpoken}</Td>
-//       <Td isNumeric><Button colorScheme='green'>Request</Button></Td>
-//   </Tr>
-//   )
-// }
-
-
-//Contains a list of column names
-const TableColumnNames = () => {
   return (
-    <Thead>
-      <Tr>
-        <Th>Name</Th>
-        <Th>Gender</Th>
-        <Th >Language Spoken</Th>
-        <Th >Language Spoken</Th>
-        <Th isNumeric></Th>
-      </Tr>
-    </Thead>
-  )
+    <div className='w-10/12 mx-auto'>
+    <Table>
+      <Thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <Tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              const meta: any = header.column.columnDef.meta;
+              return (
+                <Th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  isNumeric={meta?.isNumeric}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+
+                </Th>
+              );
+            })}
+            <Td></Td>
+          </Tr>
+        ))}
+      </Thead>
+      <Tbody>
+        {table.getRowModel().rows.map((row) => (
+          <Tr key={row.id}>
+            {row.getVisibleCells().map((cell) => {
+              const meta: any = cell.column.columnDef.meta;
+              return (
+                <>
+                  <Td key={cell.id} isNumeric={meta?.isNumeric}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Td>
+                </>
+              );
+            })}
+            <Td><Button colorScheme="green">Request</Button></Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+    </div>
+  );
 }
-
-
-{/* <TableContainer>
-          <Table variant='simple'>
-            <TableColumnNames />
-            <Tbody>
-               {sampleData.map(({drName, drBirthSex, drLanguageSpoken}) => (
-                  <TableRow drName={drName} drBirthSex={drBirthSex} drLanguageSpoken={drLanguageSpoken} />
-               ))}
-            </Tbody>
-          </Table>
-        </TableContainer> */}
 
 export default PatientTable;
