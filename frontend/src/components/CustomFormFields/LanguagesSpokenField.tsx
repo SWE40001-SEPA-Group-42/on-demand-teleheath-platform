@@ -1,11 +1,6 @@
 import { InputHTMLAttributes } from 'react';
-import { Field, useField } from 'formik';
-import {
-	FormControl,
-	FormErrorMessage,
-	FormLabel,
-} from '@chakra-ui/react';
-import LanguagesSpokenSelectField from './LanguagesSpokenSelectField';
+import { useField } from 'formik';
+import { FormControl, FormLabel } from '@chakra-ui/react';
 
 type Props = InputHTMLAttributes<HTMLElement> & {
 	label: string;
@@ -15,10 +10,12 @@ type Props = InputHTMLAttributes<HTMLElement> & {
 const LanguagesSpokenField: React.FC<Props> = ({ label, ...props }) => {
 	const [field, meta] = useField(props);
 	return (
-		<FormControl isRequired isInvalid={Boolean(meta.error && meta.touched)} py={2}>
-			<FormLabel htmlFor={field.name}>{label}</FormLabel>
-			<Field as={LanguagesSpokenSelectField} {...field} {...props} />
-			<FormErrorMessage>{meta.error}</FormErrorMessage>
+		<FormControl py={2}>
+			<FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+			<select {...field} {...props} className="css-10ex9a1" />
+			{meta.touched && meta.error ? (
+				<div className="error">{meta.error}</div>
+			) : null}
 		</FormControl>
 	);
 };

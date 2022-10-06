@@ -8,9 +8,9 @@ import {
 	SimpleGrid,
 	useToast,
 } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
-import BirthSexField from '../../components/CustomFormFields/BirthSexField';
-import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
+import InputField from '../../components/CustomFormFields/InputField'
+import BirthSexField from '../../components/CustomFormFields/BirthSexField'
+import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 interface FormModel {
