@@ -7,9 +7,7 @@ import './video.css'
 import { CopyToClipboard } from "react-copy-to-clipboard"
 
 
-const socket = io.connect('http://localhost:8001',
-    { transports: ["websocket"] }
-)
+const socket = io.connect('http://localhost:8001')
 
 const VideoCall = () => {
 

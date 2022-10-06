@@ -46,6 +46,7 @@ export const fetchDoctorById = createAsyncThunk(
 )
 
 type Doctor = {
+    _id: string,
     drGivenName: string,
     drSurname: string,
     drPreferredName: string

@@ -55,7 +55,7 @@ app.use('/api/users', userController)
 //Establish connection - TODO Move this and app.listen from the server.js to separate file (get's called multiple times in the test)
 connectDB()
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Web RTC Server initialised on port ${port}`)
 })
 
