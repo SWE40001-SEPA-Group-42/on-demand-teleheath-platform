@@ -11,8 +11,6 @@ import {
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
-import DoctorDAO from '../../DAOs/DoctorDAO';
-import DoctorDTO from '../../DTOs/DoctorDTO';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 interface FormModel {
@@ -249,7 +247,7 @@ const DoctorAddProfile = () => {
 								placeholder="Qualifications"
 							/>
 						</SimpleGrid>
-						<LanguagesSpokenField name="drLanguages" label="Languages spoken" />
+						<LanguagesSpokenField name="drLanguages" label="Languages spoken"/>
 						<Button
 							type="submit"
 							colorScheme="blue"
