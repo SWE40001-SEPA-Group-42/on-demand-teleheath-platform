@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
@@ -8,11 +8,44 @@ import BirthSexSelectField from '../CustomFormFields/BirthSexSelectField';
 import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
-interface IDoctorAddProfile {}
+import { EditIcon } from '@chakra-ui/icons';
 
-const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { modifyDoctorById } from '../../redux/Doctor/doctorsSlice';
+
+type Doctor = {
+	_id: string,
+	drGivenName: string,
+	drSurname: string,
+	drPreferredName: string
+	drDOB: string,
+	drBirthSex: string,
+	drEmail: string,
+	drPhone: string,
+	drAddress: string,
+	line1: string,
+	line2: string,
+	city: string,
+	state: string,
+	postcode: string,
+	country: string
+	drCode: string,
+	drPrescriberNo: string,
+	drQualifications: string,
+	drLanguagesSpoken: string,
+	drClinicName: string
+}
+
+interface IDoctorUpdateProfile {
+	doctor: Doctor
+}
+
+const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
+	const doctor = props.doctor
 	const currentDate = new Date().toISOString();
-	const birthSexOptions = ['male', 'female', 'other'];
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+	const birthSexOptions = ['Male', 'Female', 'Other'];
 	const languagesSpokenOptions = [
 		'english',
 		'mandarin',
@@ -24,28 +57,18 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 	];
 
 	const initialValues = {
-		drCreatedAt: currentDate,
-		drGivenName: '',
-		drSurname: '',
-		drPreferredName: '',
-		drDOB: '',
-		drBirthSex: '',
-		drEmail: '',
-		drPhone: '',
-		drAddress: {
-			line1: '',
-			line2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-		},
-		drCode: '',
-		drPrescriberNo: '',
-		drClinicName: '',
-		drQualifications: '',
-		drLanguagesSpoken: [''],
+		...doctor,
+		drDOB: doctor.drDOB.substring(0, 10)
 	};
+
+	// console.log('Form', doctor)
+
+	const [edited, setEdited] = useState<boolean>(false)
+	const [editable, setEditable] = useState<boolean>(false)
+
+	const toggleEdit = () => {
+		setEditable(prev => !prev)
+	}
 
 	const validationSchema = Yup.object({
 		drGivenName: Yup.string()
@@ -110,10 +133,10 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 		),
 		drClinicName: Yup.string()
 			.required('Clinic cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drQualifications: Yup.string()
 			.required('Qualifications cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drLanguagesSpoken: Yup.string()
 			.required('Please select languages spoken')
 			.oneOf(languagesSpokenOptions),
@@ -125,29 +148,61 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
+				dispatch(modifyDoctorById(values))
+				console.log(doctors)
 			}}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 20, 40]} h="100vh">
 					<Box py={4}>
 						<Heading as="h1" size="lg" py={4}>
-							Practioner's details
+							<div style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center'
+							}}>
+								<h2>Doctor's Details</h2>
+								<div style={{
+									display: 'flex',
+									justifyContent: 'space-between',
+									alignItems: 'center'
+								}}>
+									<Button
+										onClick={toggleEdit}
+										style={{
+											marginRight: '1rem',
+											display: `${editable === true ? 'block' : 'none'}`
+										}}
+									>Cancel</Button>
+									<button onClick={toggleEdit}><EditIcon /></button>
+								</div>
+							</div>
 						</Heading>
 						<hr />
 					</Box>
-					<form onSubmit={formik.handleSubmit}>
+					<form onSubmit={formik.handleSubmit} style={{ paddingBottom: '100px' }}>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
 							<InputField
 								name="drGivenName"
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
 								name="drSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<InputField
@@ -155,14 +210,33 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 							type="text"
 							label="Preferred name"
 							placeholder="Preferred name (optional)"
+							onChange={(e) => {
+								setEdited(true)
+								formik.handleChange(e)
+							}}
+							readOnly={!editable}
 						/>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
 							<InputField
 								name="drDOB"
 								type="date"
 								label="Date of birth (dd/mm/yyyy)"
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
+								readOnly={!editable}
 							/>
-							<BirthSexField name="drBirthSex" label="Birth sex">
+							<BirthSexField 
+								name="drBirthSex" 
+								label="Birth sex" 
+								value={doctor.drBirthSex} 
+								disabled={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
+							>
 								<BirthSexSelectField />
 							</BirthSexField>
 						</SimpleGrid>
@@ -178,12 +252,22 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="email"
 								label="Email adress"
 								placeholder="Email address"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
 								name="drPhone"
 								type="text"
 								label="Phone number"
 								placeholder="Phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={1} spacing={0}>
@@ -192,6 +276,11 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Address Line 1"
 								placeholder="Street address, P.O. box, company name, c/o"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={1} spacing={0}>
@@ -200,6 +289,11 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Address Line 2"
 								placeholder="Apt, Suite, Unit, Building, Floor"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -208,12 +302,22 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="City"
 								placeholder="City"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
 								name="drAddress.state"
 								type="text"
 								label="State"
 								placeholder="State"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -222,12 +326,22 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Postcode"
 								placeholder="Postcode"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
 								name="drAddress.country"
 								type="text"
 								label="Country"
 								placeholder="Country"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -236,12 +350,22 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Practioner's code"
 								placeholder="Practioner's code"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
-								name="drPrescriberCode"
+								name="drPrescriberNo"
 								type="text"
-								label="Prescriber Code"
+								label="Prescriber No"
 								placeholder="Prescriber code"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -250,12 +374,22 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Clinic name"
 								placeholder="Clinic name"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 							<InputField
 								name="drQualifications"
 								type="text"
 								label="Qualifications"
 								placeholder="Qualifications"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true)
+									formik.handleChange(e)
+								}}
 							/>
 						</SimpleGrid>
 						<LanguagesSpokenField name="drLanguages" label="Languages spoken">
@@ -267,8 +401,12 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 							variant="solid"
 							w="100%"
 							my={5}
+							disabled={!edited}
+							style={{
+								display: `${editable === true ? 'block' : 'none'}`
+							}}
 						>
-							Add doctor
+							Update Profile
 						</Button>
 					</form>
 				</Box>
@@ -277,4 +415,4 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 	);
 };
 
-export default DoctorAddProfile;
+export default DoctorUpdateProfileForm;

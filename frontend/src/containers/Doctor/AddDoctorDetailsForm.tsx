@@ -12,7 +12,6 @@ import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import LanguagesSpokenField from '../../components/CustomFormFields/LanguagesSpokenField';
 
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { addDoctor, getDoctors } from '../../redux/Doctor/doctorsSlice';
 
 interface FormModel {
 	drUsername: string;
@@ -43,8 +42,6 @@ interface FormModel {
 const AddDoctorDetailsForm = () => {
 	const currentDate = new Date();
 	const dispatch = useAppDispatch()
-	const doctors = dispatch(getDoctors);
-	console.log(doctors);
 
 	return (
 		<Formik

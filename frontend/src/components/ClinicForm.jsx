@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import FormInput from './shared/FormInput'
+import FormInput from './Shared/FormInput'
 
 function ClinicForm() {
 	const [isSubmit, setIsSubmit] = useState(false)

@@ -8,11 +8,39 @@ import BirthSexSelectField from '../CustomFormFields/BirthSexSelectField';
 import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
-interface IDoctorUpdateProfile {}
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
-const DoctorUpdateProfile: React.FC<IDoctorUpdateProfile> = () => {
+type Doctor = {
+	_id: string,
+	drGivenName: string,
+	drSurname: string,
+	drPreferredName: string
+	drDOB: string,
+	drBirthSex: string,
+	drEmail: string,
+	drPhone: string,
+	drAddress: string,
+	line1: string,
+	line2: string,
+	city: string,
+	state: string,
+	postcode: string,
+	country: string
+	drCode: string,
+	drPrescriberNo: string,
+	drQualifications: string,
+	drLanguagesSpoken: string,
+	drClinicName: string
+}
+
+interface IDoctorAddProfile {
+}
+
+const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 	const currentDate = new Date().toISOString();
-	const birthSexOptions = ['male', 'female', 'other'];
+	const dispatch = useAppDispatch()
+	const doctors = useAppSelector(state => state.doctors)
+	const birthSexOptions = ['Male', 'Female', 'Other'];
 	const languagesSpokenOptions = [
 		'english',
 		'mandarin',
@@ -277,4 +305,4 @@ const DoctorUpdateProfile: React.FC<IDoctorUpdateProfile> = () => {
 	);
 };
 
-export default DoctorUpdateProfile;
+export default DoctorAddProfileForm;

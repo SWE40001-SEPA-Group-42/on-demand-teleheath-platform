@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
+import PatientUpdateProfile from '../../components/Patient/PatientUpdateProfile'
 
 interface FormValues {
 	// ptDateJoined: string;
