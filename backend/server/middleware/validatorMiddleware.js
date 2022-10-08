@@ -15,7 +15,6 @@ const clinicValidator = (validationType) => {
         .notEmpty()
         .withMessage("must provide a valid clinic name"),
       body("clAddress")
-        .isString()
         .notEmpty()
         .withMessage("must provide a valid clinic address"),
       body("line1")
@@ -125,10 +124,7 @@ const doctorValidator = (validationType) => {
         .withMessage("must provide a valid contact number")
         .notEmpty()
         .withMessage("must provide a contact number"),
-      body("drAddress")
-        .isString()
-        .notEmpty()
-        .withMessage("must provide a valid address"),
+      body("drAddress").notEmpty().withMessage("must provide a valid address"),
       body("line1")
         .isString()
         .notEmpty()
@@ -260,10 +256,7 @@ const patientValidator = (validationType) => {
           }
         })
         .withMessage("must provide a valid work number"),
-      body("ptAddress")
-        .isString()
-        .notEmpty()
-        .withMessage("must provide a valid address"),
+      body("ptAddress").notEmpty().withMessage("must provide a valid address"),
       body("line1")
         .isString()
         .notEmpty()
