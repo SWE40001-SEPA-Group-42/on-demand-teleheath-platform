@@ -116,143 +116,145 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = () => {
 	});
 
 	return (
-		<Formik
-			initialValues={initialValues}
-			validationSchema={validationSchema}
-			onSubmit={(values) => {
-				console.log(JSON.stringify(values));
-			}}
-		>
-			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<Box py={4}>
-						<Heading as="h1" size="lg" py={4}>
-							About me
-						</Heading>
-						<hr />
+		<Box>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => {
+					console.log(JSON.stringify(values));
+				}}
+			>
+				{(formik) => (
+					<Box px={[4, 4, 20, 40]} h="100vh" className='form-margin-bottom'>
+						<form onSubmit={formik.handleSubmit} className='form-container'>
+							<Box py={4}>
+								<Heading as="h1" size="lg" py={4} >
+									About me
+								</Heading>
+								<hr />
+							</Box>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptGivenName"
+									type="text"
+									label="Given name(s)"
+									placeholder="Given name(s)"
+								/>
+								<InputField
+									name="ptSurname"
+									type="text"
+									label="Surname"
+									placeholder="Surname"
+								/>
+							</SimpleGrid>
+							<InputField
+								name="ptPreferredName"
+								type="text"
+								label="Preferred name"
+								placeholder="Preferred name (optional)"
+							/>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptDOB"
+									type="date"
+									label="Date of birth (dd/mm/yyyy)"
+								/>
+								<BirthSexField name="ptBirthSex" label="Birth sex">
+									<BirthSexSelectField />
+								</BirthSexField>
+							</SimpleGrid>
+							<Box py={4}>
+								<Heading as="h1" size="lg" py={4}>
+									Contact details
+								</Heading>
+								<hr />
+							</Box>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptEmailAddress"
+									type="email"
+									label="Email address"
+									placeholder="Email address"
+								/>
+								<InputField
+									name="ptMobilePhone"
+									type="text"
+									label="Mobile phone number"
+									placeholder="Mobile phone number"
+								/>
+							</SimpleGrid>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptHomePhone"
+									type="text"
+									label="Home phone number"
+									placeholder="Home phone number"
+								/>
+								<InputField
+									name="ptWorkPhone"
+									type="text"
+									label="Work phone number"
+									placeholder="Work phone number"
+								/>
+							</SimpleGrid>
+							<SimpleGrid columns={1} spacing={0}>
+								<InputField
+									name="ptAddress.line1"
+									type="text"
+									label="Address Line 1"
+									placeholder="Street address, P.O. box, company name, c/o"
+								/>
+							</SimpleGrid>
+							<SimpleGrid columns={1} spacing={0}>
+								<InputField
+									name="ptAddress.line2"
+									type="text"
+									label="Address Line 2"
+									placeholder="Apt, Suite, Unit, Building, Floor"
+								/>
+							</SimpleGrid>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptAddress.city"
+									type="text"
+									label="City"
+									placeholder="City"
+								/>
+								<InputField
+									name="ptAddress.state"
+									type="text"
+									label="State"
+									placeholder="State"
+								/>
+							</SimpleGrid>
+							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+								<InputField
+									name="ptAddress.postcode"
+									type="text"
+									label="Postcode"
+									placeholder="Postcode"
+								/>
+								<InputField
+									name="ptAddress.country"
+									type="text"
+									label="Country"
+									placeholder="Country"
+								/>
+							</SimpleGrid>
+							<Button
+								type="submit"
+								colorScheme="blue"
+								variant="solid"
+								w="100%"
+								my={5}
+							>
+								Save changes
+							</Button>
+						</form>
 					</Box>
-					<form onSubmit={formik.handleSubmit}>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptGivenName"
-								type="text"
-								label="Given name(s)"
-								placeholder="Given name(s)"
-							/>
-							<InputField
-								name="ptSurname"
-								type="text"
-								label="Surname"
-								placeholder="Surname"
-							/>
-						</SimpleGrid>
-						<InputField
-							name="ptPreferredName"
-							type="text"
-							label="Preferred name"
-							placeholder="Preferred name (optional)"
-						/>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptDOB"
-								type="date"
-								label="Date of birth (dd/mm/yyyy)"
-							/>
-							<BirthSexField name="ptBirthSex" label="Birth sex">
-								<BirthSexSelectField />
-							</BirthSexField>
-						</SimpleGrid>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
-								Contact details
-							</Heading>
-							<hr />
-						</Box>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptEmailAddress"
-								type="email"
-								label="Email address"
-								placeholder="Email address"
-							/>
-							<InputField
-								name="ptMobilePhone"
-								type="text"
-								label="Mobile phone number"
-								placeholder="Mobile phone number"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptHomePhone"
-								type="text"
-								label="Home phone number"
-								placeholder="Home phone number"
-							/>
-							<InputField
-								name="ptWorkPhone"
-								type="text"
-								label="Work phone number"
-								placeholder="Work phone number"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={1} spacing={0}>
-							<InputField
-								name="ptAddress.line1"
-								type="text"
-								label="Address Line 1"
-								placeholder="Street address, P.O. box, company name, c/o"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={1} spacing={0}>
-							<InputField
-								name="ptAddress.line2"
-								type="text"
-								label="Address Line 2"
-								placeholder="Apt, Suite, Unit, Building, Floor"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptAddress.city"
-								type="text"
-								label="City"
-								placeholder="City"
-							/>
-							<InputField
-								name="ptAddress.state"
-								type="text"
-								label="State"
-								placeholder="State"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="ptAddress.postcode"
-								type="text"
-								label="Postcode"
-								placeholder="Postcode"
-							/>
-							<InputField
-								name="ptAddress.country"
-								type="text"
-								label="Country"
-								placeholder="Country"
-							/>
-						</SimpleGrid>
-						<Button
-							type="submit"
-							colorScheme="blue"
-							variant="solid"
-							w="100%"
-							my={5}
-						>
-							Save changes
-						</Button>
-					</form>
-				</Box>
-			)}
-		</Formik>
+				)}
+			</Formik>
+		</Box>
 	);
 };
 
