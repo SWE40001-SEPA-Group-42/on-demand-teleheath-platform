@@ -1,0 +1,11 @@
+@tailwind components;
+
+@layer components {
+    .form-container {
+        @apply w-10/12 mx-auto shadow-lg shadow-gray-200 px-20 pb-5 mb-20;
+    }
+    .form-margin-bottom {
+        @apply mb-36 mt-12;
+    }
+  }
+
