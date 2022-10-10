@@ -9,29 +9,7 @@ import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-
-type Doctor = {
-	_id: string,
-	drGivenName: string,
-	drSurname: string,
-	drPreferredName: string
-	drDOB: string,
-	drBirthSex: string,
-	drEmail: string,
-	drPhone: string,
-	drAddress: string,
-	line1: string,
-	line2: string,
-	city: string,
-	state: string,
-	postcode: string,
-	country: string
-	drCode: string,
-	drPrescriberNo: string,
-	drQualifications: string,
-	drLanguagesSpoken: string,
-	drClinicName: string
-}
+import { Doctor } from '../../types/Doctor'
 
 interface IDoctorAddProfile {
 }
@@ -52,27 +30,26 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 	];
 
 	const initialValues = {
-		drCreatedAt: currentDate,
-		drGivenName: '',
-		drSurname: '',
-		drPreferredName: '',
-		drDOB: '',
-		drBirthSex: '',
-		drEmail: '',
-		drPhone: '',
+		drGivenName: "",
+		drSurname: "",
+		drPreferredName: "",
+		drDOB: "",
+		drBirthSex: "",
+		drEmail: "",
+		drPhone: "",
 		drAddress: {
-			line1: '',
-			line2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
+			line1: "",
+			line2: "",
+			city: "",
+			state: "",
+			postcode: "",
+			country: ""
 		},
-		drCode: '',
-		drPrescriberNo: '',
-		drClinicName: '',
-		drQualifications: '',
-		drLanguagesSpoken: [''],
+		drCode: "",
+		drPrescriberNo: "",
+		drQualifications: "",
+		drLanguagesSpoken: "",
+		drClinicName: ""
 	};
 
 	const validationSchema = Yup.object({

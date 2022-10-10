@@ -13,28 +13,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { modifyDoctorById } from '../../redux/Doctor/doctorsSlice';
 
-type Doctor = {
-	_id: string,
-	drGivenName: string,
-	drSurname: string,
-	drPreferredName: string
-	drDOB: string,
-	drBirthSex: string,
-	drEmail: string,
-	drPhone: string,
-	drAddress: string,
-	line1: string,
-	line2: string,
-	city: string,
-	state: string,
-	postcode: string,
-	country: string
-	drCode: string,
-	drPrescriberNo: string,
-	drQualifications: string,
-	drLanguagesSpoken: string,
-	drClinicName: string
-}
+import { Doctor } from '../../types/Doctor'
 
 interface IDoctorUpdateProfile {
 	doctor: Doctor

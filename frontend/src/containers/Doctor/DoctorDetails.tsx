@@ -3,29 +3,7 @@ import DoctorUpdateProfileForm from '../../components/Doctor/DoctorUpdateProfile
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchDoctors } from '../../redux/Doctor/doctorsSlice';
 import { useParams } from 'react-router-dom';
-
-type Doctor = {
-	_id: string,
-	drGivenName: string,
-	drSurname: string,
-	drPreferredName: string
-	drDOB: string,
-	drBirthSex: string,
-	drEmail: string,
-	drPhone: string,
-	drAddress: string,
-	line1: string,
-	line2: string,
-	city: string,
-	state: string,
-	postcode: string,
-	country: string
-	drCode: string,
-	drPrescriberNo: string,
-	drQualifications: string,
-	drLanguagesSpoken: string,
-	drClinicName: string
-}
+import { Doctor } from '../../types/Doctor';
 
 const DoctorDetails = () => {
 	const currentDate = new Date();
@@ -40,13 +18,14 @@ const DoctorDetails = () => {
 		drBirthSex: "",
 		drEmail: "",
 		drPhone: "",
-		drAddress: "",
-		line1: "",
-		line2: "",
-		city: "",
-		state: "",
-		postcode: "",
-		country: "",
+		drAddress: {
+			line1: "",
+			line2: "",
+			city: "",
+			state: "",
+			postcode: "",
+			country: ""
+		},
 		drCode: "",
 		drPrescriberNo: "",
 		drQualifications: "",
