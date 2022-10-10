@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../CustomFormFields/InputField';
 import BirthSexField from '../CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../CustomFormFields/BirthSexSelectField';
@@ -105,9 +105,7 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 				),
 		}),
 		drCode: Yup.string().required("Doctor's code cannot be blank"),
-		drPrescribeCode: Yup.string().required(
-			'Prescriber Code cannot be blank'
-		),
+		drPrescribeCode: Yup.string().required('Prescriber Code cannot be blank'),
 		drClinicName: Yup.string()
 			.required('Clinic cannot be blank')
 			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
@@ -128,15 +126,18 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<Box py={4}>
-						<Heading as="h1" size="lg" py={4}>
-							Practioner's details
-						</Heading>
-						<hr />
-					</Box>
-					<form onSubmit={formik.handleSubmit}>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+					<form onSubmit={formik.handleSubmit} className="form-container">
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
+								Practioner's details
+							</Heading>
+							<Divider orientation="horizontal" />
+						</Box>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drGivenName"
 								type="text"
@@ -156,23 +157,25 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 							label="Preferred name"
 							placeholder="Preferred name (optional)"
 						/>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="drDOB"
-								type="date"
-								label="Date of birth (dd/mm/yyyy)"
-							/>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField name="drDOB" type="date" label="Date of birth" />
 							<BirthSexField name="drBirthSex" label="Birth sex">
 								<BirthSexSelectField />
 							</BirthSexField>
 						</SimpleGrid>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
 								Contact details
 							</Heading>
-							<hr />
+							<Divider orientation="horizontal" />
 						</Box>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drEmail"
 								type="email"
@@ -202,7 +205,10 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								placeholder="Apt, Suite, Unit, Building, Floor"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drAddress.city"
 								type="text"
@@ -216,7 +222,10 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								placeholder="State"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drAddress.postcode"
 								type="text"
@@ -230,7 +239,10 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								placeholder="Country"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drCode"
 								type="text"
@@ -244,7 +256,10 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 								placeholder="Prescriber code"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="drClinicName"
 								type="text"
