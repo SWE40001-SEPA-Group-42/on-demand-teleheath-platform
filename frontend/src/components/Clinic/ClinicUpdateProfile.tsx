@@ -80,95 +80,100 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = () => {
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<Box py={4}>
-						<Heading as="h1" size="lg" py={4}>
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+				<form onSubmit={formik.handleSubmit} className="form-container">
+					<Box py={4} className="text-center">
+						<Heading as="h1" size="md" py={4}>
 							Clinic's details
 						</Heading>
 						<hr />
 					</Box>
-					<form onSubmit={formik.handleSubmit}>
+					<InputField
+						name="clName"
+						type="text"
+						label="Clinic name"
+						placeholder="Clinic name"
+					/>
+					<SimpleGrid
+						columns={[1, 1, 1, 1, 1, 2]}
+						spacing={[1, 1, 1, 1, 1, 4]}
+					>
 						<InputField
-							name="clName"
-							type="text"
-							label="Clinic name"
-							placeholder="Clinic name"
+							name="clEmail"
+							type="email"
+							label="Email address"
+							placeholder="Email address"
 						/>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="clEmail"
-								type="email"
-								label="Email address"
-								placeholder="Email address"
-							/>
-							<InputField
-								name="clPhone"
-								type="text"
-								label="Phone number"
-								placeholder="Phone number"
-							/>
-						</SimpleGrid>
 						<InputField
-							name="clUrl"
+							name="clPhone"
 							type="text"
-							label="Website"
-							placeholder="Website"
+							label="Phone number"
+							placeholder="Phone number"
 						/>
-						<SimpleGrid columns={1} spacing={0}>
-							<InputField
-								name="clAddress.line1"
-								type="text"
-								label="Address Line 1"
-								placeholder="Street address, P.O. box, company name, c/o"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={1} spacing={0}>
-							<InputField
-								name="clAddress.line2"
-								type="text"
-								label="Address Line 2"
-								placeholder="Apt, Suite, Unit, Building, Floor"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="clAddress.city"
-								type="text"
-								label="City"
-								placeholder="City"
-							/>
-							<InputField
-								name="clAddress.state"
-								type="text"
-								label="State"
-								placeholder="State"
-							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-							<InputField
-								name="clAddress.postcode"
-								type="text"
-								label="Postcode"
-								placeholder="Postcode"
-							/>
-							<InputField
-								name="clAddress.country"
-								type="text"
-								label="Country"
-								placeholder="Country"
-							/>
-						</SimpleGrid>
-						<Button
-							type="submit"
-							colorScheme="blue"
-							variant="solid"
-							w="100%"
-							my={5}
-						>
-							Add clinic
-						</Button>
-					</form>
-				</Box>
+					</SimpleGrid>
+					<InputField
+						name="clUrl"
+						type="text"
+						label="Website"
+						placeholder="Website"
+					/>
+						<InputField
+							name="clAddress.line1"
+							type="text"
+							label="Address Line 1"
+							placeholder="Street address, P.O. box, company name, c/o"
+						/>
+						<InputField
+							name="clAddress.line2"
+							type="text"
+							label="Address Line 2"
+							placeholder="Apt, Suite, Unit, Building, Floor"
+						/>
+					<SimpleGrid
+						columns={[1, 1, 1, 1, 1, 2]}
+						spacing={[1, 1, 1, 1, 1, 4]}
+					>
+						<InputField
+							name="clAddress.city"
+							type="text"
+							label="City"
+							placeholder="City"
+						/>
+						<InputField
+							name="clAddress.state"
+							type="text"
+							label="State"
+							placeholder="State"
+						/>
+					</SimpleGrid>
+					<SimpleGrid
+						columns={[1, 1, 1, 1, 1, 2]}
+						spacing={[1, 1, 1, 1, 1, 4]}
+					>
+						<InputField
+							name="clAddress.postcode"
+							type="text"
+							label="Postcode"
+							placeholder="Postcode"
+						/>
+						<InputField
+							name="clAddress.country"
+							type="text"
+							label="Country"
+							placeholder="Country"
+						/>
+					</SimpleGrid>
+					<Button
+						type="submit"
+						colorScheme="blue"
+						variant="solid"
+						w="100%"
+						my={5}
+					>
+						Add clinic
+					</Button>
+				</form>
+			</Box>
 			)}
 		</Formik>
 	);
