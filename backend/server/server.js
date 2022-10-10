@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
+const cors = require("cors");
 const { connectDB, closeDB } = require('./config/db')
 const userController = require('./controllers/userController')
 const doctorRoutes = require('./routes/doctorRoutes')
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extended: false}))
 
 // Error Handler --> Overwrites Default
 app.use(errorHandler)
+app.use(cors())
 
 // Routes
 app.use('/api/clinics', clinicRoutes)
