@@ -9,7 +9,7 @@ const doctorRouter = express.Router()
 
 // CRUD Operations -> Doctor
 doctorRouter.route('/')
-    .get(doctorValidator(validationType = 'doctorName'), validate, getDoctor)
+    .get(getDoctor)
     .post(doctorValidator(validationType = 'doctorBody'), validate, addDoctor)
     .put(doctorValidator(validationType = 'doctorBody'), validate, modifyDoctorByName)
     .delete(doctorValidator(validationType = 'doctorName'), validate, deleteDoctorByName)
