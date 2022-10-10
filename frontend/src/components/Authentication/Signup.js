@@ -2,10 +2,10 @@ import Userfront from "@userfront/react";
 import { Box } from "@chakra-ui/react"
 
 
-Userfront.init("xbrr9qdb");
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 const SignupForm = Userfront.build({
-    toolId: "kbmknn"
+    toolId: process.env.REACT_APP_USERFRONT_SIGNUP
   });
 
 function Signup() {
@@ -15,7 +15,5 @@ function Signup() {
         </Box>
     )
 }
-
-
 
 export default Signup;
