@@ -9,7 +9,7 @@ const patientRouter = express.Router()
 
 // CRUD Operations -> Patient
 patientRouter.route('/')
-    .get(patientValidator(validationType = 'patientName'), validate, getPatient)
+    .get(getPatient)
     .post(patientValidator(validationType = 'patientBody'), validate, addPatient)
     .put(patientValidator(validationType = 'patientBody'), validate, modifyPatientByName)
     .delete(patientValidator(validationType = 'patientName'), validate, deletePatientByName)
