@@ -1,31 +1,36 @@
 const mongoose = require("mongoose");
 
-const addressSchema = mongoose.Schema({
-  line1: {
-    type: String,
-    required: [true, "Please add an address"],
+const addressSchema = mongoose.Schema(
+  {
+    line1: {
+      type: String,
+      required: [true, "Please add an address"],
+    },
+    line2: {
+      type: String,
+      required: false,
+    },
+    city: {
+      type: String,
+      required: [true, "Please add a city"],
+    },
+    state: {
+      type: String,
+      required: [true, "Please add a state"],
+    },
+    postcode: {
+      type: String,
+      required: [true, "Please add a postcode"],
+    },
+    country: {
+      type: String,
+      required: [true, "Please add country"],
+    },
   },
-  line2: {
-    type: String,
-    required: false,
-  },
-  city: {
-    type: String,
-    required: [true, "Please add a city"],
-  },
-  state: {
-    type: String,
-    required: [true, "Please add a state"],
-  },
-  postcode: {
-    type: String,
-    required: [true, "Please add a postcode"],
-  },
-  country: {
-    type: String,
-    required: [true, "Please add country"],
-  },
-});
+  {
+    _id: false
+  }
+);
 
 // Model refers to Schema collection `clinic` and passes it based on these requirements
 const doctorSchema = mongoose.Schema(

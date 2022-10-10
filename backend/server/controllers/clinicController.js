@@ -20,12 +20,12 @@ const addClinic = asyncHandler(async (request, response, next) => {
   const clinic = await Clinic.create({
     clName: request.body.clName,
     clAddress: {
-      line1: request.body.line1,
-      line2: request.body.line2,
-      city: request.body.city,
-      state: request.body.state,
-      postcode: request.body.postcode,
-      country: request.body.country,
+      line1: request.body.clAddress.line1,
+      line2: request.body.clAddress.line2,
+      city: request.body.clAddress.city,
+      state: request.body.clAddress.state,
+      postcode: request.body.clAddress.postcode,
+      country: request.body.clAddress.country,
     },
     clPhone: request.body.clPhone,
     clEmailAddress: request.body.clEmailAddress,
