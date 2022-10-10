@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 import {
 	Box,
 	Button,
+	Divider,
 	Heading,
 	SimpleGrid,
 	Tabs,
 	TabList,
 	TabPanels,
 	Tab,
-	TabPanel
+	TabPanel,
 } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
@@ -116,145 +117,163 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = () => {
 	});
 
 	return (
-		<Box>
-			<Formik
-				initialValues={initialValues}
-				validationSchema={validationSchema}
-				onSubmit={(values) => {
-					console.log(JSON.stringify(values));
-				}}
-			>
-				{(formik) => (
-					<Box px={[4, 4, 20, 40]} h="100vh" className='form-margin-bottom'>
-						<form onSubmit={formik.handleSubmit} className='form-container'>
-							<Box py={4}>
-								<Heading as="h1" size="lg" py={4} >
-									About me
-								</Heading>
-								<hr />
-							</Box>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptGivenName"
-									type="text"
-									label="Given name(s)"
-									placeholder="Given name(s)"
-								/>
-								<InputField
-									name="ptSurname"
-									type="text"
-									label="Surname"
-									placeholder="Surname"
-								/>
-							</SimpleGrid>
+		<Formik
+			initialValues={initialValues}
+			validationSchema={validationSchema}
+			onSubmit={(values) => {
+				console.log(JSON.stringify(values));
+			}}
+		>
+			{(formik) => (
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+					<form onSubmit={formik.handleSubmit} className="form-container">
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
+								About me
+							</Heading>
+							<Divider orientation="horizontal" />
+						</Box>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
-								name="ptPreferredName"
+								name="ptGivenName"
 								type="text"
-								label="Preferred name"
-								placeholder="Preferred name (optional)"
+								label="Given name(s)"
+								placeholder="Given name(s)"
 							/>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptDOB"
-									type="date"
-									label="Date of birth (dd/mm/yyyy)"
-								/>
-								<BirthSexField name="ptBirthSex" label="Birth sex">
-									<BirthSexSelectField />
-								</BirthSexField>
-							</SimpleGrid>
-							<Box py={4}>
-								<Heading as="h1" size="lg" py={4}>
-									Contact details
-								</Heading>
-								<hr />
-							</Box>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptEmailAddress"
-									type="email"
-									label="Email address"
-									placeholder="Email address"
-								/>
-								<InputField
-									name="ptMobilePhone"
-									type="text"
-									label="Mobile phone number"
-									placeholder="Mobile phone number"
-								/>
-							</SimpleGrid>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptHomePhone"
-									type="text"
-									label="Home phone number"
-									placeholder="Home phone number"
-								/>
-								<InputField
-									name="ptWorkPhone"
-									type="text"
-									label="Work phone number"
-									placeholder="Work phone number"
-								/>
-							</SimpleGrid>
-							<SimpleGrid columns={1} spacing={0}>
-								<InputField
-									name="ptAddress.line1"
-									type="text"
-									label="Address Line 1"
-									placeholder="Street address, P.O. box, company name, c/o"
-								/>
-							</SimpleGrid>
-							<SimpleGrid columns={1} spacing={0}>
-								<InputField
-									name="ptAddress.line2"
-									type="text"
-									label="Address Line 2"
-									placeholder="Apt, Suite, Unit, Building, Floor"
-								/>
-							</SimpleGrid>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptAddress.city"
-									type="text"
-									label="City"
-									placeholder="City"
-								/>
-								<InputField
-									name="ptAddress.state"
-									type="text"
-									label="State"
-									placeholder="State"
-								/>
-							</SimpleGrid>
-							<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
-								<InputField
-									name="ptAddress.postcode"
-									type="text"
-									label="Postcode"
-									placeholder="Postcode"
-								/>
-								<InputField
-									name="ptAddress.country"
-									type="text"
-									label="Country"
-									placeholder="Country"
-								/>
-							</SimpleGrid>
-							<Button
-								type="submit"
-								colorScheme="blue"
-								variant="solid"
-								w="100%"
-								my={5}
-							>
-								Save changes
-							</Button>
-						</form>
-					</Box>
-				)}
-			</Formik>
-		</Box>
+							<InputField
+								name="ptSurname"
+								type="text"
+								label="Surname"
+								placeholder="Surname"
+							/>
+						</SimpleGrid>
+						<InputField
+							name="ptPreferredName"
+							type="text"
+							label="Preferred name"
+							placeholder="Preferred name (optional)"
+						/>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField name="ptDOB" type="date" label="Date of birth" />
+							<BirthSexField name="ptBirthSex" label="Birth sex">
+								<BirthSexSelectField />
+							</BirthSexField>
+						</SimpleGrid>
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
+								Contact details
+							</Heading>
+							<Divider orientation="horizontal" />
+						</Box>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptEmailAddress"
+								type="email"
+								label="Email address"
+								placeholder="Email address"
+							/>
+							<InputField
+								name="ptMobilePhone"
+								type="text"
+								label="Mobile phone number"
+								placeholder="Mobile phone number"
+							/>
+						</SimpleGrid>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptHomePhone"
+								type="text"
+								label="Home phone number"
+								placeholder="Home phone number"
+							/>
+							<InputField
+								name="ptWorkPhone"
+								type="text"
+								label="Work phone number"
+								placeholder="Work phone number"
+							/>
+						</SimpleGrid>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptAddress.line1"
+								type="text"
+								label="Address Line 1"
+								placeholder="Street address, P.O. box, company name, c/o"
+							/>
+						</SimpleGrid>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptAddress.line2"
+								type="text"
+								label="Address Line 2"
+								placeholder="Apt, Suite, Unit, Building, Floor"
+							/>
+						</SimpleGrid>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptAddress.city"
+								type="text"
+								label="City"
+								placeholder="City"
+							/>
+							<InputField
+								name="ptAddress.state"
+								type="text"
+								label="State"
+								placeholder="State"
+							/>
+						</SimpleGrid>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
+							<InputField
+								name="ptAddress.postcode"
+								type="text"
+								label="Postcode"
+								placeholder="Postcode"
+							/>
+							<InputField
+								name="ptAddress.country"
+								type="text"
+								label="Country"
+								placeholder="Country"
+							/>
+						</SimpleGrid>
+						<Button
+							type="submit"
+							colorScheme="blue"
+							variant="solid"
+							w="100%"
+							my={5}
+						>
+							Save changes
+						</Button>
+					</form>
+				</Box>
+			)}
+		</Formik>
 	);
 };
 
@@ -389,19 +408,15 @@ const PatientAdditionalDetails: React.FC<
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
 			}}
-			// onSubmit={async(values) => {
-			// 	await new Promise((r) => setTimeout(r, 500));
-			// 	alert(JSON.stringify(values, null, 2));
-			// }}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<form onSubmit={formik.handleSubmit}>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+					<form onSubmit={formik.handleSubmit} className="form-container">
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
 								Medicare and private health insurance
 							</Heading>
-							<hr />
+							<Divider orientation="horizontal" />
 						</Box>
 						<InputField
 							name="ptMedicareCardNo"
@@ -409,7 +424,10 @@ const PatientAdditionalDetails: React.FC<
 							label="Medicare number"
 							placeholder="Medicare number"
 						/>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 2, 2]}
+							spacing={[1, 1, 1, 1, 4, 4]}
+						>
 							<InputField
 								name="ptMedicareCardIRN"
 								type="text"
@@ -435,13 +453,16 @@ const PatientAdditionalDetails: React.FC<
 							label="Private health fund number"
 							placeholder="Private health fund number"
 						/>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
 								Emergency contact
 							</Heading>
-							<hr />
+							<Divider orientation="horizontal" />
 						</Box>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptEmgGivenName"
 								type="text"
@@ -455,7 +476,10 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Surname"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptEmgRelationship"
 								type="text"
@@ -469,7 +493,10 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Mobile phone number"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptEmgHomePhone"
 								type="text"
@@ -483,13 +510,16 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Work phone number"
 							/>
 						</SimpleGrid>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
 								Next of kin
 							</Heading>
-							<hr />
+							<Divider orientation="horizontal" />
 						</Box>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptNextOfKinGivenName"
 								type="text"
@@ -503,7 +533,10 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Surname"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptNextOfKinRelationship"
 								type="text"
@@ -517,7 +550,10 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Mobile phone number"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptNextOfKinHomePhone"
 								type="text"
@@ -531,13 +567,16 @@ const PatientAdditionalDetails: React.FC<
 								placeholder="Work phone number"
 							/>
 						</SimpleGrid>
-						<Box py={4}>
-							<Heading as="h1" size="lg" py={4}>
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
 								DVA, healthcare and pension cards
 							</Heading>
-							<hr />
+							<Divider orientation="horizontal" />
 						</Box>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptDVAFileNo"
 								type="text"
@@ -550,7 +589,10 @@ const PatientAdditionalDetails: React.FC<
 								label="DVA valid until"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptHealthcareCardNo"
 								type="text"
@@ -563,7 +605,10 @@ const PatientAdditionalDetails: React.FC<
 								label="Healthcare card valid until"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptPensionCardNo"
 								type="text"
