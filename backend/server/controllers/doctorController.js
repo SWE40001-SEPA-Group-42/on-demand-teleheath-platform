@@ -40,6 +40,20 @@ const getAvailDoctor = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllDoctors = asyncHandler(async (req, res) => {
+
+  const doctor = await Doctor.find({});
+
+  if (!doctor) {
+    res.status(400);
+    throw new Error(
+      `Unable to find Doctor's table`
+    );
+  } else {
+    res.status(200).json(doctor);
+  }
+});
+
 // POST - Doctor
 const addDoctor = asyncHandler(async (req, res) => {
   const doctor = await Doctor.create({
@@ -153,6 +167,7 @@ const deleteDoctorByName = asyncHandler(async (req, res) => {
 module.exports = {
   getDoctor,
   getAvailDoctor,
+  getAllDoctors,
   addDoctor,
   modifyDoctorByID,
   modifyDoctorByName,

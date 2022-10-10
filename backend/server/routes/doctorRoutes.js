@@ -1,7 +1,7 @@
 const express = require('express')
 const {
-    getDoctor, getAvailDoctor, addDoctor,
-    modifyDoctorByID, modifyDoctorByName, 
+    getDoctor, getAvailDoctor, getAllDoctors,
+    addDoctor, modifyDoctorByID, modifyDoctorByName, 
     deleteDoctorByID, deleteDoctorByName
 } = require('../controllers/doctorController')
 const { doctorValidator, validate } = require('../middleware/validatorMiddleware')
@@ -15,6 +15,8 @@ doctorRouter.route('/')
     .delete(doctorValidator(validationType = 'doctorName'), validate, deleteDoctorByName)
 doctorRouter.route('/status/')
     .get(getAvailDoctor)
+doctorRouter.route('/list/')
+    .get(getAllDoctors)
 doctorRouter.route('/:id')
     .put(doctorValidator(validationType = 'doctorBody'), validate, modifyDoctorByID)
     .delete(deleteDoctorByID)
