@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 
 interface IPatientSignUpProps {}
@@ -47,15 +47,18 @@ const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<Box py={4}>
-						<Heading as="h1" size="lg">
-							Patient sign up
-						</Heading>
-						<hr />
-					</Box>
-					<form onSubmit={formik.handleSubmit}>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+					<form onSubmit={formik.handleSubmit} className="form-container">
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
+								Patient sign up
+							</Heading>
+							<Divider orientation="horizontal" />
+						</Box>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptUsername"
 								type="email"
@@ -69,7 +72,10 @@ const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
 								placeholder="Confirm email address"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="ptPassword"
 								type="password"
