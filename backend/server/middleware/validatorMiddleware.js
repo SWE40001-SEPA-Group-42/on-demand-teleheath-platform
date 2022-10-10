@@ -124,7 +124,7 @@ const doctorValidator = (validationType) => {
         .withMessage("must provide a valid contact number")
         .notEmpty()
         .withMessage("must provide a contact number"),
-      body("drAddress").notEmpty().withMessage("must provide a valid address"),
+      body("drAddress").notEmpty().withMessage("must provide an address"),
       body("drAddress.line1")
         .isString()
         .notEmpty()

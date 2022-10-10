@@ -199,6 +199,44 @@ describe("Doctor Routes", () => {
     drAvail: true,
   });
 
+  const mockInvalidClinic = new Clinic({
+    clName: "testClinic",
+    clAddress: {
+      line1: "",
+      line2: "345 Test Ln",
+      city: "",
+      state: "",
+      postcode: 1234,
+      country: "",
+    },
+    clPhone: "",
+    clEmailAddress: "",
+  });
+
+  const mockInvalidDoctor = new Doctor({
+    drGivenName: "Timothy",
+    drSurname: "Limmen",
+    drPreferredName: "Tim",
+    drDOB: "",
+    drBirthSex: "Male",
+    drEmail: "",
+    drPhone: "",
+    drAddress: {
+      line1: "234 Tim St",
+      line2: "",
+      city: "",
+      state: "",
+      postcode: "",
+      country: "",
+    },
+    drCode: "",
+    drPrescriberNo: "",
+    drQualifications: "",
+    drLanguagesSpoken: "",
+    drClinicName: "",
+    drAvail: false,
+  });
+
   //POST Doctor REQUEST
   //Date has to be passed in manually...
   describe("Given a doctor's details", () => {
@@ -232,6 +270,37 @@ describe("Doctor Routes", () => {
       expect(responsePOST.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
+    });
+  });
+
+  describe("Given a doctor's incorrect details", () => {
+    test("a doctor record should not be created with a 422 status code", async () => {
+      const response = await request(app)
+        .post("/api/doctors/")
+        .send({
+          drGivenName: mockInvalidDoctor.drGivenName,
+          drSurname: mockInvalidDoctor.drSurname,
+          drPreferredName: mockInvalidDoctor.drPreferredName,
+          drDOB: "1992-10-10",
+          drBirthSex: mockInvalidDoctor.drBirthSex,
+          drEmail: mockInvalidDoctor.drEmail,
+          drPhone: mockInvalidDoctor.drPhone,
+          drAddress: {
+            line1: mockInvalidDoctor.drAddress.line1,
+            line2: mockInvalidDoctor.drAddress.line2,
+            city: mockInvalidDoctor.drAddress.city,
+            state: mockInvalidDoctor.drAddress.state,
+            postcode: mockInvalidDoctor.drAddress.postcode,
+            country: mockInvalidDoctor.drAddress.country,
+          },
+          drCode: mockInvalidDoctor.drCode,
+          drPrescriberNo: mockInvalidDoctor.drPrescriberNo,
+          drQualifications: mockInvalidDoctor.drQualifications,
+          drLanguagesSpoken: mockInvalidDoctor.drLanguagesSpoken,
+          drClinicName: mockInvalidDoctor.drClinicName,
+          drAvail: mockInvalidDoctor.drAvail,
+        });
+      expect(response.statusCode).toBe(422);
     });
   });
 
@@ -341,6 +410,49 @@ describe("Patient Routes", () => {
     ptPensionCardExpiryDate: "2023-05-10",
   });
 
+  const mockInvalidPatient = new Patient({
+    ptGivenName: "Eddard",
+    ptSurname: "Stark",
+    ptPreferredName: "Ned",
+    ptDOB: "",
+    ptBirthSex: "Male",
+    ptEmailAddress: "e.@stark@gmail.com",
+    ptMobilePhone: "",
+    ptHomePhone: "",
+    ptWorkPhone: "",
+    ptAddress: {
+      line1: "",
+      line2: "",
+      city: "",
+      state: "VIC",
+      postcode: "",
+      country: "",
+    },
+    ptMedicareCardNo: 1234556,
+    ptMedicareCardIRN: 3,
+    ptMedicareCardExpiryDate: "2023-05-10",
+    ptPrivateHealthFund: "Medibank",
+    ptPrivateHealthFundNo: 1234556,
+    ptEmgContactGivenName: "",
+    ptEmgContactSurname: "",
+    ptEmgContactRelationship: "",
+    ptEmgContactMobilePhone: 4456744,
+    ptEmgContactHomePhone: "",
+    ptEmgContactWorkPhone: "",
+    ptNextOfKinGivenName: "",
+    ptNextOfKinSurname: "",
+    ptNextOfKinRelationship: "",
+    ptNextOfKinMobilePhone: "",
+    ptNextOfKinHomePhone: "",
+    ptNextofKinWorkPhone: "",
+    ptDVAFileNo:  1234556,
+    ptDVAExpiryDate: "2023-05-10",
+    ptHealthcareCardNo:  1234556,
+    ptHealthcareCardExpiryDate: "2023-05-10",
+    ptPensionCardNo:  1234556,
+    ptPensionCardExpiryDate: "2023-05-10",
+  });
+
   //POST Patient REQUEST
   describe("Given a patient's details", () => {
     test("a patient record should be created with a 200 status code", async () => {
@@ -392,6 +504,57 @@ describe("Patient Routes", () => {
       expect(responsePOST.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
+    });
+  });
+
+  //POST Patient REQUEST
+  describe("Given a patient's incorrect details", () => {
+    test("a patient record should not be created with a 422 status code", async () => {
+      const responsePOST = await request(app)
+        .post("/api/patients/")
+        .send({
+          ptGivenName: mockInvalidPatient.ptGivenName,
+          ptSurname: mockInvalidPatient.ptSurname,
+          ptPreferredName: mockInvalidPatient.ptPreferredName,
+          ptDOB: "2003-01-01",
+          ptBirthSex: mockInvalidPatient.ptBirthSex,
+          ptEmailAddress: mockInvalidPatient.ptEmailAddress,
+          ptMobilePhone: mockInvalidPatient.ptMobilePhone,
+          ptHomePhone: mockInvalidPatient.ptHomePhone,
+          ptWorkPhone: mockInvalidPatient.ptWorkPhone,
+          ptAddress: {
+            line1: mockInvalidPatient.ptAddress.line1,
+            line2: mockInvalidPatient.ptAddress.line2,
+            city: mockInvalidPatient.ptAddress.city,
+            state: mockInvalidPatient.ptAddress.state,
+            postcode: mockInvalidPatient.ptAddress.postcode,
+            country: mockInvalidPatient.ptAddress.country,
+          },
+          ptMedicareCardNo: mockInvalidPatient.ptMedicareCardNo,
+          ptMedicareCardIRN: mockInvalidPatient.ptMedicareCardIRN,
+          ptMedicareCardExpiryDate: "2023-99-99",
+          ptPrivateHealthFund: mockInvalidPatient.ptPrivateHealthFund,
+          ptPrivateHealthFundNo: mockInvalidPatient.ptPrivateHealthFundNo,
+          ptEmgContactGivenName: mockInvalidPatient.ptEmgContactGivenName,
+          ptEmgContactSurname: mockInvalidPatient.ptEmgContactSurname,
+          ptEmgContactRelationship: mockInvalidPatient.ptEmgContactRelationship,
+          ptEmgContactMobilePhone: mockInvalidPatient.ptEmgContactMobilePhone,
+          ptEmgContactHomePhone: mockInvalidPatient.ptEmgContactHomePhone,
+          ptEmgContactWorkPhone: mockInvalidPatient.ptEmgContactWorkPhone,
+          ptNextOfKinGivenName: mockInvalidPatient.ptNextOfKinGivenName,
+          ptNextOfKinSurname: mockInvalidPatient.ptNextOfKinSurname,
+          ptNextOfKinRelationship: mockInvalidPatient.ptNextOfKinRelationship,
+          ptNextOfKinMobilePhone: mockInvalidPatient.ptNextOfKinMobilePhone,
+          ptNextOfKinHomePhone: mockInvalidPatient.ptNextOfKinHomePhone,
+          ptNextofKinWorkPhone: mockInvalidPatient.ptNextofKinWorkPhone,
+          ptDVAFileNo: mockInvalidPatient.ptDVAFileNo,
+          ptDVAExpiryDate: "2023-05-10",
+          ptHealthcareCardNo: mockInvalidPatient.ptHealthcareCardNo,
+          ptHealthcareCardExpiryDate: "2023-05-10",
+          ptPensionCardNo: mockInvalidPatient.ptPensionCardNo,
+          ptPensionCardExpiryDate: "2023-05-10",
+        });
+      expect(responsePOST.statusCode).toBe(422);
     });
   });
 
