@@ -1,30 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { Doctor } from '../../types/Doctor'
 
 const baseURL = 'http://localhost:8001/api/doctors'
-
-type Doctor = {
-    _id: string,
-    drGivenName: string,
-    drSurname: string,
-    drPreferredName: string
-    drDOB: string,
-    drBirthSex: string,
-    drEmail: string,
-    drPhone: string,
-    drAddress: string,
-    line1: string,
-    line2: string,
-    city: string,
-    state: string,
-    postcode: string,
-    country: string
-    drCode: string,
-    drPrescriberNo: string,
-    drQualifications: string,
-    drLanguagesSpoken: string,
-    drClinicName: string
-}
 
 export const fetchDoctors = createAsyncThunk(
     //action name

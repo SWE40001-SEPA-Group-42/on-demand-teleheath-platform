@@ -1,50 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { modifyDoctorById } from '../Doctor/doctorsSlice'
+import { Patient } from '../../types/Patient'
 
 const baseURL = 'http://localhost:8001/api/doctors'
-
-type Patient = {
-    ptGiveName: string,
-    ptSurname: string,
-    ptPreferredName: string,
-    ptDOB: string,
-    ptBirthSex: string,
-    ptEmailAddress: string,
-    ptMobilePhone: string,
-    ptHomePhone: string,
-    ptWorkPhone: string,
-    ptAddress: string,
-    line1: string,
-    line2: string,
-    city: string,
-    state: string,
-    postcode: string,
-    country: string,
-    ptMedicareCardNo: string,
-    ptMedicareCardIRN: string,
-    ptMedicareCardExpiryDate: string,
-    ptPrivateHealthFund: string,
-    ptPrivateHealthFundNo: string,
-    ptEmgContactGivenName: string,
-    ptEmgContactSurname: string,
-    ptEmgContactRelationship: string,
-    ptEmgContactMobilePhone: string,
-    ptEmgContactHomePhone: string,
-    ptEmgContactWorkPhone: string,
-    ptNextOfKinGivenName: string,
-    ptNextOfKinSurname: string,
-    ptNextOfKinRelationship: string,
-    ptNextOfKinMobilePhone: string,
-    ptNextOfKinHomePhone: string,
-    ptNextofKinWorkPhone: string,
-    ptDVAFileNo: string,
-    ptDVAExpiryDate: string,
-    ptHealthcareCardNo: string,
-    ptHealthcareCardExpiryDate: string,
-    ptPensionCardNo: string,
-    ptPensionCardExpiryDate: string,
-}
 
 export const getPatient = createAsyncThunk(
     //action name
