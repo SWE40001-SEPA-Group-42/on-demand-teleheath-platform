@@ -3,10 +3,9 @@ const asyncHandler = require("express-async-handler");
 const Doctor = require("../models/doctor");
 
 // GET - Doctor
-const getDoctor = asyncHandler(async(req, res) => {
-
-    const drGivenName = req.query.drGivenName
-    const drSurname = req.query.drSurname
+const getDoctor = asyncHandler(async (req, res) => {
+  const drGivenName = req.query.drGivenName;
+  const drSurname = req.query.drSurname;
 
   const doctor = await Doctor.find({
     drGivenName: drGivenName,
