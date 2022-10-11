@@ -76,7 +76,7 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Update doctor profile',
 				subLabel: '',
-				href: '/doctor/profile/update',
+				href: '/doctor/profile/add',
 			},
 		],
 	},
