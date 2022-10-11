@@ -80,21 +80,24 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 20, 40]} h="100vh">
-					<Box py={4}>
-						<Heading as="h1" size="lg" py={4}>
-							Clinic's details
-						</Heading>
-						<hr />
-					</Box>
-					<form onSubmit={formik.handleSubmit}>
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+					<form onSubmit={formik.handleSubmit} className="form-container">
+						<Box py={4} className="text-center">
+							<Heading as="h1" size="md" py={4}>
+								Clinic's details
+							</Heading>
+							<hr />
+						</Box>
 						<InputField
 							name="clName"
 							type="text"
 							label="Clinic name"
 							placeholder="Clinic name"
 						/>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="clEmail"
 								type="email"
@@ -114,23 +117,22 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 							label="Website"
 							placeholder="Website"
 						/>
-						<SimpleGrid columns={1} spacing={0}>
 							<InputField
 								name="clAddress.line1"
 								type="text"
 								label="Address Line 1"
 								placeholder="Street address, P.O. box, company name, c/o"
 							/>
-						</SimpleGrid>
-						<SimpleGrid columns={1} spacing={0}>
 							<InputField
 								name="clAddress.line2"
 								type="text"
 								label="Address Line 2"
 								placeholder="Apt, Suite, Unit, Building, Floor"
 							/>
-						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="clAddress.city"
 								type="text"
@@ -144,7 +146,10 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 								placeholder="State"
 							/>
 						</SimpleGrid>
-						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
+						<SimpleGrid
+							columns={[1, 1, 1, 1, 1, 2]}
+							spacing={[1, 1, 1, 1, 1, 4]}
+						>
 							<InputField
 								name="clAddress.postcode"
 								type="text"
