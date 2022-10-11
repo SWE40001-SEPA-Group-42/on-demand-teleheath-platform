@@ -51,7 +51,7 @@ export const addDoctor = createAsyncThunk(
     'doctors/addDoctor',
     async (data: Doctor) => {
         try {
-            const response = await axios.put(`${baseURL}/`, {
+            const response = await axios.post(`${baseURL}/`, {
                 ...data
             })
 

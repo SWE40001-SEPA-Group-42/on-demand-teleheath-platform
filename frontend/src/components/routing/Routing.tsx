@@ -8,8 +8,8 @@ import ClinicAddProfile from '../Clinic/ClinicAddProfile';
 import ClinicUpdateProfile from '../Clinic/ClinicUpdateProfile';
 
 // Doctor
-import DoctorAddProfile from '../Doctor/DoctorAddProfile';
-import DoctorUpdateProfile from '../Doctor/DoctorUpdateProfile';
+import DoctorAddProfile from '../../containers/Doctor/DoctorAddProfile'
+import DoctorUpdateProfile from '../../containers/Doctor/DoctorDetails'
 
 // Patient
 import PatientSignUp from '../Patient/PatientSignUp';
@@ -25,7 +25,7 @@ const Routing = () => {
 		<Routes>
 			{/* temporary navbar - will need to refactor later */}
 			<Route element={<LayoutsWithNavbar />} >
-				<Route index element={<Dashboard />} />
+				<Route path="/dashboard"element={<Dashboard />} />
 				<Route path="patient/profile" element={<PatientProfile ptName={''} ptImgSrc={''} />} />
 				<Route path="signup/patient" element={<PatientSignUp />} />
 				<Route path="patient/profile/add" element={<PatientAddProfile />} />
@@ -34,7 +34,7 @@ const Routing = () => {
 				<Route path="doctor/profile/update" element={<DoctorUpdateProfile />} />
 				<Route path="clinic/profile/add" element={<ClinicAddProfile />} />
 				<Route path="clinic/profile/update" element={<ClinicUpdateProfile />} />
-				<Route path="login" element={<Login />} />
+				<Route index element={<Login />} />
 				<Route path="signup" element={<Signup />} />
 				<Route path="reset" element={<Reset />} />
 				<Route path="logout" element={<Logout />} />

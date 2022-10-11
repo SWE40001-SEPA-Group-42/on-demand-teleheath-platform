@@ -107,7 +107,7 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 				),
 		}),
 		drCode: Yup.string().required("Doctor's code cannot be blank"),
-		drPrescribeCode: Yup.string().required(
+		drPrescriberNo: Yup.string().required(
 			'Prescriber Code cannot be blank'
 		),
 		drClinicName: Yup.string()
@@ -126,9 +126,12 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 			initialValues={initialValues}
 			validationSchema={validationSchema}
 			onSubmit={(values, actions) => {
-				console.log(JSON.stringify(values));
-				// dispatch(modifyDoctorById(values))
-				// console.log(doctors)
+				actions.setSubmitting(false);
+				dispatch(modifyDoctorById(values))
+				if (doctors.error == '') {
+					alert("Update doctor profile successfully!");
+					window.location.reload()
+				}
 			}}
 		>
 			{(formik) => (
@@ -206,10 +209,10 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 								}}
 								readOnly={!editable}
 							/>
-							<BirthSexField 
-								name="drBirthSex" 
-								label="Birth sex" 
-								value={doctor.drBirthSex} 
+							<BirthSexField
+								name="drBirthSex"
+								label="Birth sex"
+								value={doctor.drBirthSex}
 								disabled={!editable}
 								onChange={(e) => {
 									setEdited(true)
@@ -371,7 +374,12 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 								}}
 							/>
 						</SimpleGrid>
-						<LanguagesSpokenField name="drLanguages" label="Languages spoken">
+						<LanguagesSpokenField 
+							name="drLanguagesSpoken" 
+							label="Languages spoken" 
+							onChange={formik.handleChange}
+							value={doctor.drLanguagesSpoken}
+						>
 							<LanguagesSpokenSelectField />
 						</LanguagesSpokenField>
 						<Button

@@ -9,7 +9,7 @@ import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { Doctor } from '../../types/Doctor'
+import { addDoctor } from '../../redux/Doctor/doctorsSlice';
 
 interface IDoctorAddProfile {
 }
@@ -52,15 +52,15 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 		drClinicName: ""
 	};
 
-	const validationSchema = Yup.object({
+	const validationSchema = Yup.object().shape({
 		drGivenName: Yup.string()
 			.required('Given name(s) cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drSurname: Yup.string()
 			.required('Surname cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drPreferredName: Yup.string().matches(
-			/^[A-Za-z]+$/,
+			/^[A-Za-z ]+$/,
 			'Only alphabets are allowed for this field'
 		),
 		drDOB: Yup.string()
@@ -110,15 +110,15 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 				),
 		}),
 		drCode: Yup.string().required("Doctor's code cannot be blank"),
-		drPrescribeCode: Yup.string().required(
+		drPrescriberNo: Yup.string().required(
 			'Prescriber Code cannot be blank'
 		),
 		drClinicName: Yup.string()
 			.required('Clinic cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drQualifications: Yup.string()
 			.required('Qualifications cannot be blank')
-			.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
+			.matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
 		drLanguagesSpoken: Yup.string()
 			.required('Please select languages spoken')
 			.oneOf(languagesSpokenOptions),
@@ -128,15 +128,21 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values) => {
-				console.log(JSON.stringify(values));
+			onSubmit={(values, actions) => {
+				actions.setSubmitting(false);
+				console.log(values)	
+				dispatch(addDoctor(values))
+				if (doctors.error == '') {
+					alert("Add doctor profile successfully!");
+					// window.location.reload()
+				}
 			}}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 20, 40]} h="100vh">
 					<Box py={4}>
 						<Heading as="h1" size="lg" py={4}>
-							Practioner's details
+							Doctor's details
 						</Heading>
 						<hr />
 					</Box>
@@ -147,12 +153,14 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
+								onChange={formik.handleChange}
 							/>
 							<InputField
 								name="drSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
 						<InputField
@@ -160,14 +168,16 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 							type="text"
 							label="Preferred name"
 							placeholder="Preferred name (optional)"
+							onChange={formik.handleChange}
 						/>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
 							<InputField
 								name="drDOB"
 								type="date"
 								label="Date of birth (dd/mm/yyyy)"
+								onChange={formik.handleChange}
 							/>
-							<BirthSexField name="drBirthSex" label="Birth sex">
+							<BirthSexField name="drBirthSex" label="Birth sex" onChange={formik.handleChange}>
 								<BirthSexSelectField />
 							</BirthSexField>
 						</SimpleGrid>
@@ -183,12 +193,14 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="email"
 								label="Email adress"
 								placeholder="Email address"
+								onChange={formik.handleChange}
 							/>
 							<InputField
 								name="drPhone"
 								type="text"
 								label="Phone number"
 								placeholder="Phone number"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={1} spacing={0}>
@@ -196,6 +208,7 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								name="drAddress.line1"
 								type="text"
 								label="Address Line 1"
+								onChange={formik.handleChange}
 								placeholder="Street address, P.O. box, company name, c/o"
 							/>
 						</SimpleGrid>
@@ -204,6 +217,7 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								name="drAddress.line2"
 								type="text"
 								label="Address Line 2"
+								onChange={formik.handleChange}
 								placeholder="Apt, Suite, Unit, Building, Floor"
 							/>
 						</SimpleGrid>
@@ -213,12 +227,14 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="City"
 								placeholder="City"
+								onChange={formik.handleChange}
 							/>
 							<InputField
 								name="drAddress.state"
 								type="text"
 								label="State"
 								placeholder="State"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -227,12 +243,14 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Postcode"
 								placeholder="Postcode"
+								onChange={formik.handleChange}
 							/>
 							<InputField
 								name="drAddress.country"
 								type="text"
 								label="Country"
 								placeholder="Country"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -241,12 +259,14 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Practioner's code"
 								placeholder="Practioner's code"
+								onChange={formik.handleChange}
 							/>
 							<InputField
-								name="drPrescriberCode"
+								name="drPrescriberNo"
 								type="text"
 								label="Prescriber Code"
 								placeholder="Prescriber code"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
 						<SimpleGrid columns={[1, 2]} spacing={[0, 5]}>
@@ -255,15 +275,21 @@ const DoctorAddProfileForm: React.FC<IDoctorAddProfile> = () => {
 								type="text"
 								label="Clinic name"
 								placeholder="Clinic name"
+								onChange={formik.handleChange}
 							/>
 							<InputField
 								name="drQualifications"
 								type="text"
 								label="Qualifications"
 								placeholder="Qualifications"
+								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
-						<LanguagesSpokenField name="drLanguages" label="Languages spoken">
+						<LanguagesSpokenField 
+							name="drLanguagesSpoken" 
+							label="Languages spoken" 
+							onChange={formik.handleChange}
+						>
 							<LanguagesSpokenSelectField />
 						</LanguagesSpokenField>
 						<Button
