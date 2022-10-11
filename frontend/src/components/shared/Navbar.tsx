@@ -61,7 +61,7 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Update patient profile',
 				subLabel: '',
-				href: '/patient/profile/update',
+				href: '/patient/profile/',
 			},
 		],
 	},

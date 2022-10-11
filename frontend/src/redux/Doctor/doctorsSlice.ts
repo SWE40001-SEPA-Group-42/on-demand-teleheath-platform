@@ -33,6 +33,7 @@ export const modifyDoctorById = createAsyncThunk(
     'doctors/modifyDoctorById',
     async (data: Doctor) => {
         try {
+            console.log(data)
             const response = await axios.put(`${baseURL}/${data._id}`, {
                 ...data
             })

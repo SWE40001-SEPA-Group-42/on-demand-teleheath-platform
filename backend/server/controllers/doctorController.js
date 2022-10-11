@@ -19,6 +19,7 @@ const getDoctor = asyncHandler(async(req, res) => {
       `Invalid Doctor Details: Missing inputs found in the request!`
     );
   } else {
+    console.log(doctor)
     res.status(200).json(doctor);
   }
 });

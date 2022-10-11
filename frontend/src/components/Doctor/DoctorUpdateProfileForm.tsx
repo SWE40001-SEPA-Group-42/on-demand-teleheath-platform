@@ -125,10 +125,10 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values) => {
+			onSubmit={(values, actions) => {
 				console.log(JSON.stringify(values));
-				dispatch(modifyDoctorById(values))
-				console.log(doctors)
+				// dispatch(modifyDoctorById(values))
+				// console.log(doctors)
 			}}
 		>
 			{(formik) => (

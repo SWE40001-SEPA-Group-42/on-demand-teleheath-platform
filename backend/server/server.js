@@ -31,29 +31,29 @@ const io = require("socket.io")(server, {
     }
 })
 
-io.on('connection', (socket) => {
-    socket.emit('Current User', socket.id);
+// io.on('connection', (socket) => {
+//     socket.emit('Current User', socket.id);
 
-    socket.on('disconnect', () => {
-        socket.broadcast.emit("callended")
-    })
+//     socket.on('disconnect', () => {
+//         socket.broadcast.emit("callended")
+//     })
 
-    socket.on('calluser', ({ userToCall, signalData, from, name }) => {
-        io.to(userToCall).emit("calluser", { signal: signalData, from, name })
-    })
+//     socket.on('calluser', ({ userToCall, signalData, from, name }) => {
+//         io.to(userToCall).emit("calluser", { signal: signalData, from, name })
+//     })
 
-    socket.on('answercall', ({ data }) => {
-        io.to(data.to).emit("callaccepted", data.signal)
-    })
-})
+//     socket.on('answercall', ({ data }) => {
+//         io.to(data.to).emit("callaccepted", data.signal)
+//     })
+// })
 
-// For Testing --> Will use Firebase so that it is serverless
-const io = require("socket.io")(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-})
+// // For Testing --> Will use Firebase so that it is serverless
+// const io = require("socket.io")(server, {
+//     cors: {
+//         origin: "*",
+//         methods: ["GET", "POST"]
+//     }
+// })
 
 io.on('connection', (socket) => {
     socket.emit('Current User', socket.id);

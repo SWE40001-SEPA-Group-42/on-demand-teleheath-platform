@@ -43,9 +43,6 @@ const DoctorDetails = () => {
 		}
 	}, [doctors])
 
-
-	console.log(doctor)
-
 	// const id = useParams()
 
 	return (
