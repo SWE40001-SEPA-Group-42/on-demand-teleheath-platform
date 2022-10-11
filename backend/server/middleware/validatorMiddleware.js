@@ -15,19 +15,18 @@ const clinicValidator = (validationType) => {
         .notEmpty()
         .withMessage("must provide a valid clinic name"),
       body("clAddress")
-        .isString()
         .notEmpty()
-        .withMessage("must provide a valid clinic address"),
-      body("line1")
+        .withMessage("must provide a clinic address"),
+      body("clAddress.line1")
         .isString()
         .notEmpty()
         .withMessage("must provide a line 1 address that is valid"),
-      body("line2")
+      body("clAddress.line2")
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("city").isString().notEmpty().withMessage("must provide a city"),
-      body("state")
+      body("clAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("clAddress.state")
         .custom((value) => {
           if (value.length === 3) {
             return true;
@@ -39,7 +38,7 @@ const clinicValidator = (validationType) => {
         .withMessage("invalid state length")
         .notEmpty()
         .withMessage("must provide a state"),
-      body("postcode")
+      body("clAddress.postcode")
         .custom((value) => {
           if (value.match(/\d/g).length === 4) {
             return true;
@@ -50,7 +49,7 @@ const clinicValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a postcode"),
-      body("country")
+      body("clAddress.country")
         .isString()
         .notEmpty()
         .withMessage("must provide a country"),
@@ -123,20 +122,17 @@ const doctorValidator = (validationType) => {
         .withMessage("must provide a valid contact number")
         .notEmpty()
         .withMessage("must provide a contact number"),
-      body("drAddress")
-        .isString()
-        .notEmpty()
-        .withMessage("must provide a valid address"),
-      body("line1")
+      body("drAddress").notEmpty().withMessage("must provide an address"),
+      body("drAddress.line1")
         .isString()
         .notEmpty()
         .withMessage("must provide a line 1 address that is valid"),
-      body("line2")
+      body("drAddress.line2")
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("city").isString().notEmpty().withMessage("must provide a city"),
-      body("state")
+      body("drAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("drAddress.state")
         .custom((value) => {
           if (value.length === 3) {
             return true;
@@ -148,7 +144,7 @@ const doctorValidator = (validationType) => {
         .withMessage("invalid state length")
         .notEmpty()
         .withMessage("must provide a state"),
-      body("postcode")
+      body("drAddress.postcode")
         .custom((value) => {
           if (value.match(/\d/g).length === 4) {
             return true;
@@ -159,7 +155,7 @@ const doctorValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a postcode"),
-      body("country")
+      body("drAddress.country")
         .isString()
         .notEmpty()
         .withMessage("must provide a country"),
@@ -258,20 +254,17 @@ const patientValidator = (validationType) => {
           }
         })
         .withMessage("must provide a valid work number"),
-      body("ptAddress")
-        .isString()
-        .notEmpty()
-        .withMessage("must provide a valid address"),
-      body("line1")
+      body("ptAddress").notEmpty().withMessage("must provide an address"),
+      body("ptAddress.line1")
         .isString()
         .notEmpty()
         .withMessage("must provide a line 1 address that is valid"),
-      body("line2")
+      body("ptAddress.line2")
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("city").isString().notEmpty().withMessage("must provide a city"),
-      body("state")
+      body("ptAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("ptAddress.state")
         .custom((value) => {
           if (value.length === 3) {
             return true;
@@ -283,7 +276,7 @@ const patientValidator = (validationType) => {
         .withMessage("invalid state length")
         .notEmpty()
         .withMessage("must provide a state"),
-      body("postcode")
+      body("ptAddress.postcode")
         .custom((value) => {
           if (value.match(/\d/g).length === 4) {
             return true;
@@ -294,7 +287,7 @@ const patientValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a postcode"),
-      body("country")
+      body("ptAddress.country")
         .isString()
         .notEmpty()
         .withMessage("must provide a country"),

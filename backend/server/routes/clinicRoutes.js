@@ -10,7 +10,7 @@ const clinicRouter = express.Router()
 
 // CRUD Operations -> Clinic
 clinicRouter.route('/')
-    .get(clinicValidator(validationType = 'clinicName'), validate, getClinic)
+    .get(getClinic)
     .post(clinicValidator(validationType = 'clinicBody'), validate, addClinic)
     .put(clinicValidator(validationType = 'clinicBody'), validate, updateClinicByName)
     .delete(clinicValidator(validationType = 'clinicName'), validate, deleteClinicByName)
