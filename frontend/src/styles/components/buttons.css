@@ -1,0 +1,11 @@
+@tailwind components;
+
+@layer components {
+	.button-container {
+		@apply flex justify-center items-center w-full text-base;
+	}
+
+	.edit-profile-button {
+		@apply w-full xxs:m-8 xs:m-8 sm:m-8 md:m-10 lg:m-10 xl:m-10 2xl:m-10;
+	}
+}
