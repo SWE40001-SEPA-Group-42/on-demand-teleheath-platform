@@ -76,7 +76,7 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Update doctor profile',
 				subLabel: '',
-				href: '/doctor/profile/update',
+				href: '/doctor/profile/add',
 			},
 		],
 	},
@@ -91,7 +91,7 @@ const NAV_ITEMS: Array<NavItem> = [
 			{
 				label: 'Update clinic profile',
 				subLabel: '',
-				href: '/clinic/profile/update',
+				href: '/clinic/profile/add',
 			},
 		],
 	},
