@@ -1,5 +1,5 @@
 export type Clinic = {
-    _id: string,
+    _id?: string,
     clName: string,
     clAddress: {
         line1: string,

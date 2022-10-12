@@ -65,7 +65,7 @@ const clinicSchema = mongoose.Schema(
 );
 
 // Unique Validator
-clinicSchema.plugin(uniqueValidator);
+// clinicSchema.plugin(uniqueValidator);
 
 const Clinic = mongoose.model("clinics", clinicSchema);
 

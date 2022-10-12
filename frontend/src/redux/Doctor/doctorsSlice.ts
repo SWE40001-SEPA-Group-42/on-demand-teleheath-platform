@@ -12,7 +12,7 @@ export const fetchDoctors = createAsyncThunk(
             const response = await axios.get(`${baseURL}`, {
                 params: {
                     drGivenName: "Johnathan",
-                    drSurname: "Fury"
+                    drSurname: "Furry"
                 }
             })
 
@@ -33,12 +33,12 @@ export const modifyDoctorById = createAsyncThunk(
     'doctors/modifyDoctorById',
     async (data: Doctor) => {
         try {
-            console.log(data)
+            // console.log(data)
             const response = await axios.put(`${baseURL}/${data._id}`, {
                 ...data
             })
     
-            console.log(response)
+            // console.log(response)
 
             return response.data
         } catch(err) {

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DoctorUpdateProfileForm from '../../components/Doctor/DoctorUpdateProfileForm';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchDoctors } from '../../redux/Doctor/doctorsSlice';
-import { useParams } from 'react-router-dom';
 import { Doctor } from '../../types/Doctor';
 
 const DoctorDetails = () => {
-	const currentDate = new Date();
 	const dispatch = useAppDispatch()
 	const doctors = useAppSelector(state => state.doctors)
 	const [doctor, setDoctor] = useState<Doctor>({
@@ -43,7 +41,7 @@ const DoctorDetails = () => {
 		}
 	}, [doctors])
 
-	// const id = useParams()
+	console.log(doctor)
 
 	return (
 		doctor.drGivenName !== ""
