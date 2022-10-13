@@ -10,6 +10,7 @@ import ClinicUpdateProfile from '../../containers/Clinic/ClinicUpdateProfile'
 // Doctor
 import DoctorAddProfile from '../../containers/Doctor/DoctorAddProfile'
 import DoctorUpdateProfile from '../../containers/Doctor/DoctorDetails'
+import DoctorVideoCall from '../../containers/Doctor/VideoCall'
 
 // Patient
 import PatientSignUp from '../Patient/PatientSignUp';
@@ -34,6 +35,7 @@ const Routing = () => {
 
 				<Route path="doctor/profile/add" element={<DoctorAddProfile />} />
 				<Route path="doctor/profile/update" element={<DoctorUpdateProfile />} />
+				<Route path="doctor/video" element={<DoctorVideoCall/>}/>
 
 				<Route path="clinic/profile/add" element={<ClinicAddProfile />} />
 				<Route path="clinic/profile/update" element={<ClinicUpdateProfile />} />
