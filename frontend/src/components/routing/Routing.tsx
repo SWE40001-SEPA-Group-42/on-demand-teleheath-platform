@@ -13,7 +13,7 @@ import DoctorUpdateProfile from '../../containers/Doctor/DoctorDetails'
 
 // Patient
 import PatientSignUp from '../Patient/PatientSignUp';
-import PatientAddProfile from '../Patient/PatientAddProfile';
+import PatientAddProfile from '../../containers/Patient/AddPatientDetails'
 import PatientUpdateProfile from '../../containers/Patient/PatientUpdateProfile';
 
 // Dashboard

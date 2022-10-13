@@ -21,7 +21,6 @@ interface IDoctorUpdateProfile {
 
 const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 	const doctor = props.doctor
-	const currentDate = new Date().toISOString();
 	const dispatch = useAppDispatch()
 	const doctors = useAppSelector(state => state.doctors)
 	const birthSexOptions = ['Male', 'Female', 'Other'];
@@ -150,13 +149,14 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 									alignItems: 'center'
 								}}>
 									<Button
+										type='button'
 										onClick={toggleEdit}
 										style={{
 											marginRight: '1rem',
 											display: `${editable === true ? 'block' : 'none'}`
 										}}
 									>Cancel</Button>
-									<button onClick={toggleEdit}><EditIcon /></button>
+									<button type='button' onClick={toggleEdit}><EditIcon /></button>
 								</div>
 							</div>
 						</Heading>
@@ -374,9 +374,9 @@ const DoctorUpdateProfileForm: React.FC<IDoctorUpdateProfile> = props => {
 								}}
 							/>
 						</SimpleGrid>
-						<LanguagesSpokenField 
-							name="drLanguagesSpoken" 
-							label="Languages spoken" 
+						<LanguagesSpokenField
+							name="drLanguagesSpoken"
+							label="Languages spoken"
 							onChange={formik.handleChange}
 							value={doctor.drLanguagesSpoken}
 						>

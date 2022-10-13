@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import doctorReducers from './Doctor/doctorsSlice';
 import clinicReducers from './Clinic/clinicsSlice'
+import patientsSlice from './Patient/patientsSlice';
 
 const store = configureStore({
     reducer: {
         doctors: doctorReducers,
-        clinics: clinicReducers
+        clinics: clinicReducers,
+        patients: patientsSlice
     }
 })
 

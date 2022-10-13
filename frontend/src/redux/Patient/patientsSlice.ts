@@ -3,7 +3,7 @@ import axios from 'axios'
 import { modifyDoctorById } from '../Doctor/doctorsSlice'
 import { Patient } from '../../types/Patient'
 
-const baseURL = 'http://localhost:8001/api/doctors'
+const baseURL = 'http://localhost:8001/api/patients'
 
 export const getPatient = createAsyncThunk(
     //action name
@@ -12,8 +12,8 @@ export const getPatient = createAsyncThunk(
         try {
             const response = await axios.get(`${baseURL}`, {
                 params: {
-                    drGivenName: "",
-                    drSurname: ""
+                    ptGivenName: "Anthony",
+                    ptSurname: "Edwards"
                 }
             })
 
@@ -43,7 +43,7 @@ export const modifyPatientById = createAsyncThunk(
     'patients/modifyPatientById',
     async (data: Patient) => {
         try {
-            const response = await axios.put(`${baseURL}`, {
+            const response = await axios.put(`${baseURL}/${data._id}`, {
                 ...data
             })
 
@@ -114,3 +114,5 @@ const patientSlice = createSlice({
         })
     }
 })
+
+export default patientSlice.reducer
