@@ -21,6 +21,10 @@ import PatientUpdateProfile from '../../containers/Patient/PatientUpdateProfile'
 import Dashboard from '../Dashboard/Dashboard';
 import PatientProfile from '../Dashboard/PatientProfile';
 
+//Video Call
+import CreateRoom from '../../containers/VideoCall/CreateRoom';
+import Room from '../../containers/VideoCall/Room';
+
 const Routing = () => {
 	return (
 		<Routes>
@@ -35,7 +39,9 @@ const Routing = () => {
 
 				<Route path="doctor/profile/add" element={<DoctorAddProfile />} />
 				<Route path="doctor/profile/update" element={<DoctorUpdateProfile />} />
-				<Route path="doctor/video" element={<DoctorVideoCall/>}/>
+				
+				<Route path="video" element={<CreateRoom/>}/>
+				<Route path="room/:roomId" element={<Room/>}/>
 
 				<Route path="clinic/profile/add" element={<ClinicAddProfile />} />
 				<Route path="clinic/profile/update" element={<ClinicUpdateProfile />} />

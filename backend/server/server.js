@@ -7,7 +7,8 @@ const userController = require('./controllers/userController')
 const doctorRoutes = require('./routes/doctorRoutes')
 const patientRoutes = require('./routes/patientRoutes')
 const clinicRoutes = require('./routes/clinicRoutes')
-const { errorHandler } = require('./middleware/errorMiddleware')
+const { errorHandler } = require('./middleware/errorMiddleware');
+const { resolveSoa } = require('dns/promises');
 
 const port = process.env.PORT || 8001 // Default port
 
@@ -17,7 +18,7 @@ const server = http.createServer(app)
 // For Logging
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
 
 // Error Handler --> Overwrites Default
 app.use(errorHandler)
@@ -31,45 +32,53 @@ const io = require("socket.io")(server, {
     }
 })
 
-// io.on('connection', (socket) => {
-//     socket.emit('Current User', socket.id);
+// app.get('/video', (req, res) => {
+//     res.redirect(`video/${uuidV4()}`)
+// }) 
 
-//     socket.on('disconnect', () => {
-//         socket.broadcast.emit("callended")
-//     })
-
-//     socket.on('calluser', ({ userToCall, signalData, from, name }) => {
-//         io.to(userToCall).emit("calluser", { signal: signalData, from, name })
-//     })
-
-//     socket.on('answercall', ({ data }) => {
-//         io.to(data.to).emit("callaccepted", data.signal)
-//     })
+// app.get('/video/:room', (req, res) => {
+//     res.json({ roomId: req.params.room })
 // })
+const users = {};
 
-// // For Testing --> Will use Firebase so that it is serverless
-// const io = require("socket.io")(server, {
-//     cors: {
-//         origin: "*",
-//         methods: ["GET", "POST"]
-//     }
-// })
+const socketToRoom = {};
 
 io.on('connection', (socket) => {
-    socket.emit('Current User', socket.id);
+    socket.on("join room", roomID => {
+        if (users[roomID]) {
+            const length = users[roomID].length;
+            if (length === 3) {
+                socket.emit("room full");
+                return;
+            }
+            users[roomID].push(socket.id);
+        } else {
+            users[roomID] = [socket.id];
+        }
+        socketToRoom[socket.id] = roomID;
+        const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+        socket.emit("all users", usersInThisRoom);
+    });
+
+    socket.on("sending signal", payload => {
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+    });
+
+    socket.on("returning signal", payload => {
+        io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+    });
 
     socket.on('disconnect', () => {
-        socket.broadcast.emit("callended")
-    })
-
-    socket.on('calluser', ({ userToCall, signalData, from, name }) => {
-        io.to(userToCall).emit("calluser", { signal: signalData, from, name })
-    })
-
-    socket.on('answercall', ({ data }) => {
-        io.to(data.to).emit("callaccepted", data.signal)
-    })
+        console.log("hello")
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        if (room) {
+            room = room.filter(id => id !== socket.id);
+            users[roomID] = room;
+        }
+    });
 })
+
 
 // Routes
 app.use('/api/clinics', clinicRoutes)
