@@ -200,20 +200,6 @@ describe("Doctor Routes", () => {
     drAvail: true,
   });
 
-  const mockInvalidClinic = new Clinic({
-    clName: "testClinic",
-    clAddress: {
-      line1: "",
-      line2: "345 Test Ln",
-      city: "",
-      state: "",
-      postcode: 1234,
-      country: "",
-    },
-    clPhone: "",
-    clEmailAddress: "",
-  });
-
   const mockInvalidDoctor = new Doctor({
     drGivenName: "Timothy",
     drSurname: "Limmen",
@@ -274,6 +260,29 @@ describe("Doctor Routes", () => {
     });
   });
 
+  describe("While in the Dashboard", () => {
+    test("I can search for all available doctors", async () => {
+      const responseGET = await request(app)
+        .get("/api/doctors/status/")
+        .send({});
+      expect(responseGET.statusCode).toBe(200);
+      expect(responseGET.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+
+    test("I can update a doctor's status", async () => {
+      const responsePUT = await request(app).put("/api/doctors/status/").send({
+        drEmail: mockDoctor.drEmail,
+        drAvail: false,
+      });
+      expect(responsePUT.statusCode).toBe(200);
+      expect(responsePUT.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+  });
+
   describe("Given a doctor's incorrect details", () => {
     test("a doctor record should not be created with a 422 status code", async () => {
       const response = await request(app)
@@ -320,7 +329,7 @@ describe("Doctor Routes", () => {
 
     //PUT doctor REQUEST
     test("my searched doctor will be updated with a return with a 200 status code", async () => {
-      const responseGET = await request(app)
+      const responsePUT = await request(app)
         .put("/api/doctors/")
         .send({
           drGivenName: "Timothy",
@@ -345,20 +354,20 @@ describe("Doctor Routes", () => {
           drClinicName: "testClinic",
           drAvail: false,
         });
-      expect(responseGET.statusCode).toBe(200);
-      expect(responseGET.headers["content-type"]).toEqual(
+      expect(responsePUT.statusCode).toBe(200);
+      expect(responsePUT.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
     });
 
     //DELETE doctor REQUEST
     test("my searched doctor will be deleted with a return with a 200 status code", async () => {
-      const responseGET = await request(app).delete("/api/doctors/").send({
+      const responseDELETE = await request(app).delete("/api/doctors/").send({
         drGivenName: mockDoctor.drGivenName,
         drSurname: mockDoctor.drSurname,
       });
-      expect(responseGET.statusCode).toBe(200);
-      expect(responseGET.headers["content-type"]).toEqual(
+      expect(responseDELETE.statusCode).toBe(200);
+      expect(responseDELETE.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
     });
@@ -446,11 +455,11 @@ describe("Patient Routes", () => {
     ptNextOfKinMobilePhone: "",
     ptNextOfKinHomePhone: "",
     ptNextofKinWorkPhone: "",
-    ptDVAFileNo:  1234556,
+    ptDVAFileNo: 1234556,
     ptDVAExpiryDate: "2023-05-10",
-    ptHealthcareCardNo:  1234556,
+    ptHealthcareCardNo: 1234556,
     ptHealthcareCardExpiryDate: "2023-05-10",
-    ptPensionCardNo:  1234556,
+    ptPensionCardNo: 1234556,
     ptPensionCardExpiryDate: "2023-05-10",
   });
 

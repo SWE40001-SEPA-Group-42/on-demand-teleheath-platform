@@ -14,9 +14,7 @@ const clinicValidator = (validationType) => {
         .isString()
         .notEmpty()
         .withMessage("must provide a valid clinic name"),
-      body("clAddress")
-        .notEmpty()
-        .withMessage("must provide a clinic address"),
+      body("clAddress").notEmpty().withMessage("must provide a clinic address"),
       body("clAddress.line1")
         .isString()
         .notEmpty()
@@ -25,7 +23,10 @@ const clinicValidator = (validationType) => {
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("clAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("clAddress.city")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a city"),
       body("clAddress.state")
         .custom((value) => {
           if (value.length === 3) {
@@ -55,7 +56,11 @@ const clinicValidator = (validationType) => {
         .withMessage("must provide a country"),
       body("clPhone")
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -113,7 +118,11 @@ const doctorValidator = (validationType) => {
         .withMessage("must provide a doctor's email address"),
       body("drPhone")
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -131,7 +140,10 @@ const doctorValidator = (validationType) => {
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("drAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("drAddress.city")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a city"),
       body("drAddress.state")
         .custom((value) => {
           if (value.length === 3) {
@@ -225,7 +237,11 @@ const patientValidator = (validationType) => {
         .withMessage("must provide a doctor's email address"),
       body("ptMobilePhone")
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -237,7 +253,11 @@ const patientValidator = (validationType) => {
       body("ptHomePhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -247,7 +267,10 @@ const patientValidator = (validationType) => {
       body("ptWorkPhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            value.match(/\d/g).length >= 10 ||
+            value.match(/\d/g).length <= 12
+          ) {
             return true;
           } else {
             return false;
@@ -263,7 +286,10 @@ const patientValidator = (validationType) => {
         .optional({ checkFalsy: true })
         .isString()
         .withMessage("must provide valid line 2 address"),
-      body("ptAddress.city").isString().notEmpty().withMessage("must provide a city"),
+      body("ptAddress.city")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a city"),
       body("ptAddress.state")
         .custom((value) => {
           if (value.length === 3) {
@@ -326,7 +352,11 @@ const patientValidator = (validationType) => {
       body("ptEmgContactMobilePhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -336,7 +366,11 @@ const patientValidator = (validationType) => {
       body("ptEmgContactHomePhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -346,7 +380,11 @@ const patientValidator = (validationType) => {
       body("ptEmgContactWorkPhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -368,7 +406,11 @@ const patientValidator = (validationType) => {
       body("ptNextOfKinMobilePhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -378,7 +420,11 @@ const patientValidator = (validationType) => {
       body("ptNextOfKinHomePhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            (value.match(/^\+(?:[0-9] ?){6,14}[0-9]$/g) &&
+              value.length === 12) ||
+            value.match(/\d/g).length === 10
+          ) {
             return true;
           } else {
             return false;
@@ -388,7 +434,10 @@ const patientValidator = (validationType) => {
       body("ptNextofKinWorkPhone")
         .optional({ checkFalsy: true })
         .custom((value) => {
-          if (value.match(/\d/g).length === 10) {
+          if (
+            value.match(/\d/g).length >= 10 ||
+            value.match(/\d/g).length <= 12
+          ) {
             return true;
           } else {
             return false;

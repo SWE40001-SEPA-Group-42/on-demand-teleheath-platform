@@ -29,7 +29,7 @@ const addressSchema = mongoose.Schema(
     },
   },
   {
-    _id: false
+    _id: false,
   }
 );
 

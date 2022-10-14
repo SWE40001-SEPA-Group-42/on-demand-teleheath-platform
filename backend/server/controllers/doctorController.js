@@ -40,15 +40,36 @@ const getAvailDoctor = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllDoctors = asyncHandler(async (req, res) => {
+const updateDoctorStatus = asyncHandler(async (req, res) => {
+  const drEmail = req.body.drEmail;
+  const drAvail = req.body.drAvail;
 
+  const updatedStatus = await Doctor.findOneAndUpdate(
+    {
+      drEmail: drEmail,
+    },
+    {
+      drAvail: drAvail,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedStatus) {
+    res.status(400);
+    throw new Error(`Unable to update doctor status`);
+  } else {
+    res.status(200).json(updatedStatus);
+  }
+});
+
+const getAllDoctors = asyncHandler(async (req, res) => {
   const doctor = await Doctor.find({});
 
   if (!doctor) {
     res.status(400);
-    throw new Error(
-      `Unable to find Doctor's table`
-    );
+    throw new Error(`Unable to find Doctor's table`);
   } else {
     res.status(200).json(doctor);
   }
@@ -167,6 +188,7 @@ const deleteDoctorByName = asyncHandler(async (req, res) => {
 module.exports = {
   getDoctor,
   getAvailDoctor,
+  updateDoctorStatus,
   getAllDoctors,
   addDoctor,
   modifyDoctorByID,

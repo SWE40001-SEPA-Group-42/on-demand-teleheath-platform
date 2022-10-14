@@ -28,7 +28,7 @@ const addressSchema = mongoose.Schema(
     },
   },
   {
-    _id: false
+    _id: false,
   }
 );
 
@@ -45,7 +45,6 @@ const doctorSchema = mongoose.Schema(
     },
     drPreferredName: {
       type: String,
-      required: [true, "Please add a doctor's preffered name"],
     },
     drDOB: {
       type: Date,
