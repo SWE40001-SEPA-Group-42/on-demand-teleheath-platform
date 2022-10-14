@@ -472,6 +472,31 @@ const patientValidator = (validationType) => {
   }
 };
 
+const dashboardValidator = (validationType) => {
+  if (validationType == "appointment") {
+    return [
+      body("dateOfAppointment")
+        .isDate()
+        .notEmpty()
+        .withMessage("must provide an appointment date"),
+      body("aptLink")
+        .isString()
+        .notEmpty()
+        .withMessage("must provide a session link"),
+      body("ptEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a patient\'s email address"),
+      body("drEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a doctor\'s email address"),
+    ];
+  }
+};
+
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -489,5 +514,6 @@ module.exports = {
   clinicValidator,
   doctorValidator,
   patientValidator,
+  dashboardValidator,
   validate,
 };

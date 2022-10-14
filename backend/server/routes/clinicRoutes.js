@@ -11,7 +11,6 @@ const {
   clinicValidator,
   validate,
 } = require("../middleware/validatorMiddleware");
-const { app } = require("../server");
 const clinicRouter = express.Router();
 
 // CRUD Operations -> Clinic

@@ -7,6 +7,7 @@ const userController = require('./controllers/userController')
 const doctorRoutes = require('./routes/doctorRoutes')
 const patientRoutes = require('./routes/patientRoutes')
 const clinicRoutes = require('./routes/clinicRoutes')
+const dashboardRoutes = require('./routes/dashboardRoutes')
 const { errorHandler } = require('./middleware/errorMiddleware');
 const { resolveSoa } = require('dns/promises');
 
@@ -28,6 +29,7 @@ app.use('/api/clinics', clinicRoutes)
 app.use('/api/doctors', doctorRoutes)
 app.use('/api/patients', patientRoutes)
 app.use('/api/users', userController)
+app.use('/api/dashboard', dashboardRoutes)
 
 //Establish connection - TODO Move this and app.listen from the server.js to separate file (get's called multiple times in the test)
 connectDB()
