@@ -188,6 +188,29 @@ describe("Doctor Routes", () => {
     });
   });
 
+  describe("While in the Dashboard", () => {
+    test("I can search for all available doctors", async () => {
+      const responseGET = await request(app)
+        .get("/api/doctors/status/")
+        .send({});
+      expect(responseGET.statusCode).toBe(200);
+      expect(responseGET.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+
+    test("I can update a doctor's status", async () => {
+      const responsePUT = await request(app).put("/api/doctors/status/").send({
+        drEmail: mockDoctor.drEmail,
+        drAvail: false,
+      });
+      expect(responsePUT.statusCode).toBe(200);
+      expect(responsePUT.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+  });
+
   describe("Given a doctor's incorrect details", () => {
     test("a doctor record should not be created with a 422 status code", async () => {
       const response = await request(app)
