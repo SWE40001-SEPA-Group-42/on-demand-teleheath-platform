@@ -188,24 +188,23 @@ describe("Doctor Routes", () => {
     });
   });
 
+  //DASHBOARD REQUESTS
   describe("While in the Dashboard", () => {
     test("I can search for all available doctors", async () => {
-      const responseGET = await request(app)
-        .get("/api/doctors/status/")
-        .send({});
-      expect(responseGET.statusCode).toBe(200);
-      expect(responseGET.headers["content-type"]).toEqual(
+      const response = await request(app).get("/api/doctors/status/").send({});
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
     });
 
     test("I can update a doctor's status", async () => {
-      const responsePUT = await request(app).put("/api/doctors/status/").send({
+      const response = await request(app).put("/api/doctors/status/").send({
         drEmail: mockDoctor.drEmail,
         drAvail: false,
       });
-      expect(responsePUT.statusCode).toBe(200);
-      expect(responsePUT.headers["content-type"]).toEqual(
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
     });
