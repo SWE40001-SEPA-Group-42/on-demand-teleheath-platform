@@ -34,3 +34,10 @@
 [![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge)](#)
 [![Express.js](https://img.shields.io/badge/-Express.js-000000?logo=express&logoColor=white&style=for-the-badge)](#)
 [![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)](#)
+
+
+<h5>Packages installed for redux</h5>
+
+- redux
+- react-redux
+- @reduxjs/toolkit
