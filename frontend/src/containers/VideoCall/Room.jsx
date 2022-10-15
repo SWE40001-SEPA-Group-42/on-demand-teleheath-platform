@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { Button } from "@chakra-ui/react";
 
 const Container = styled.div`
     padding: 20px;
@@ -59,7 +60,10 @@ const Room = (props) => {
                         peerID: userID,
                         peer,
                     })
-                    peers.push(peer);
+                    peers.push({
+                        peerID: userID,
+                        peer
+                    });
                 })
                 setPeers(peers);
             })
@@ -71,13 +75,29 @@ const Room = (props) => {
                     peer,
                 })
 
-                setPeers(users => [...users, peer]);
+                const peerObj = {
+                    peer,
+                    peerID: payload.callerID
+                }
+
+                setPeers(users => [...users, peerObj]);
             });
 
             socketRef.current.on("receiving returned signal", payload => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
+
+            socketRef.current.on('user left', id => {
+                const peerObj = peersRef.current.find(p => p.peerID === id)
+                if (peerObj) {
+                    peerObj.peer.destroy()
+                }
+
+                const peers = peersRef.current.filter(p => p.peerID !== id)
+                peersRef.current = peers
+                setPeers(peers)
+            })
         })
     }, []);
 
@@ -111,14 +131,21 @@ const Room = (props) => {
         return peer;
     }
 
+    const leaveCall = () => {
+        window.open("about:blank", "_self");
+        window.close();
+    }
+
     return (
         <Container>
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
+            {peers.map((peer) => {
                 return (
-                    <Video key={index} peer={peer} />
+                    <Video key={peer.peerID} peer={peer.peer} />
                 );
             })}
+
+            <Button onClick={leaveCall}>Leave Call</Button>
         </Container>
     );
 };
