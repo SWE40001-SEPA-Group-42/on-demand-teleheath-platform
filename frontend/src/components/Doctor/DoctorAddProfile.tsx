@@ -1,4 +1,3 @@
-import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
@@ -8,9 +7,7 @@ import BirthSexSelectField from '../CustomFormFields/BirthSexSelectField';
 import LanguagesSpokenField from '../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../CustomFormFields/LanguagesSpokenSelectField';
 
-interface IDoctorAddProfile {}
-
-const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
+const DoctorAddProfile = () => {
 	const currentDate = new Date().toISOString();
 	const birthSexOptions = ['male', 'female', 'other'];
 	const languagesSpokenOptions = [
@@ -70,7 +67,12 @@ const DoctorAddProfile: React.FC<IDoctorAddProfile> = () => {
 		drEmail: Yup.string()
 			.required('Email cannot be blank')
 			.email('Please enter valid email address'),
-		drPhone: Yup.string().required('Phone number cannot be blank'),
+		drPhone: Yup.string()
+			.required('Phone number cannot be blank')
+			.matches(
+				/^\+(?:[0-9] ?){6,14}[0-9]$/,
+				'Please enter a valid phone number (including country code)'
+			),
 		drAddress: Yup.object({
 			line1: Yup.string()
 				.required('Address Line 1 cannot be blank')
