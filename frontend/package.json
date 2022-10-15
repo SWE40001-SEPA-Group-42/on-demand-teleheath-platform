@@ -20,6 +20,7 @@
     "@types/yup": "^0.29.14",
     "@userfront/react": "^0.3.1",
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "formik": "^2.2.9",
     "framer-motion": "^6.5.1",
     "lodash": "^4.17.21",
