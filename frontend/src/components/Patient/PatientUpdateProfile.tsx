@@ -1,4 +1,3 @@
-import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,15 +10,13 @@ import {
 	TabList,
 	TabPanels,
 	Tab,
-	TabPanel
+	TabPanel,
 } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../../components/CustomFormFields/BirthSexSelectField';
 
-interface IPatientBasicDetails {}
-
-const PatientBasicDetails: React.FC<IPatientBasicDetails> = () => {
+const PatientBasicDetails = () => {
 	const currentDate = new Date().toISOString();
 	const birthSexOptions = ['male', 'female', 'other'];
 
@@ -277,11 +274,7 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = () => {
 	);
 };
 
-interface IPatientAdditionalDetailsProps {}
-
-const PatientAdditionalDetails: React.FC<
-	IPatientAdditionalDetailsProps
-> = () => {
+const PatientAdditionalDetails = () => {
 	const initialValues = {
 		ptMedicareCardNo: '',
 		ptMedicareCardIRN: '',
