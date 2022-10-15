@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-
-import { Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
 const Container = styled.div`
@@ -14,14 +12,6 @@ const Container = styled.div`
     margin: auto;
     flex-wrap: wrap;
 `;
-
-const containerStyle = {
-    border: '1px solid black',
-    width: '80%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    display: 'relative',
-}
 
 const StyledVideo = styled.video`
     height: 40%;
@@ -35,7 +25,7 @@ const Video = (props) => {
         props.peer.on("stream", stream => {
             ref.current.srcObject = stream;
         })
-    }, [props.peer]);
+    }, []);
 
     return (
         <StyledVideo playsInline autoPlay ref={ref} />
@@ -48,7 +38,7 @@ const videoConstraints = {
     width: window.innerWidth / 2
 };
 
-const Room = () => {
+const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
     const userVideo = useRef();
@@ -56,7 +46,8 @@ const Room = () => {
     const roomID = useParams()
 
     useEffect(() => {
-        socketRef.current = io.connect("/");
+        socketRef.current = io.connect("localhost:8000");
+        console.log(socketRef)
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -120,22 +111,15 @@ const Room = () => {
         return peer;
     }
 
-    function leaveCall() {
-        socketRef.current.close()
-        console.log("Hello")
-    }
-
     return (
-        <div style={containerStyle}>
+        <Container>
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer} />
                 );
             })}
-
-            <Button onClick={leaveCall}>Leave Call</Button>
-        </div>
+        </Container>
     );
 };
 

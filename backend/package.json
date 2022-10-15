@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll",
     "start": "node server/server.js",
-    "server": "nodemon server/server.js"
+    "server": "nodemon server/server.js",
+    "socketServer": "nodemon server/socketServer.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
