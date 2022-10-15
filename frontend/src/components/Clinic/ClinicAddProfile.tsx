@@ -4,9 +4,7 @@ import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../CustomFormFields/InputField';
 
-interface IClinicAddProfile {}
-
-const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
+const ClinicAddProfile = () => {
 	const currentDate = new Date().toISOString();
 
 	return (
@@ -33,10 +31,10 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 					.required('Email address cannot be blank')
 					.email('Please enter valid email address'),
 				clPhone: Yup.string()
-					.required('Phone number is required')
+					.required('Phone number cannot be blank')
 					.matches(
 						/^\+(?:[0-9] ?){6,14}[0-9]$/,
-						'Please enter a valid phone number'
+						'Please enter a valid phone number (including country code)'
 					),
 				clAddress: Yup.object({
 					line1: Yup.string()
@@ -117,18 +115,18 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 							label="Website"
 							placeholder="Website"
 						/>
-							<InputField
-								name="clAddress.line1"
-								type="text"
-								label="Address Line 1"
-								placeholder="Street address, P.O. box, company name, c/o"
-							/>
-							<InputField
-								name="clAddress.line2"
-								type="text"
-								label="Address Line 2"
-								placeholder="Apt, Suite, Unit, Building, Floor"
-							/>
+						<InputField
+							name="clAddress.line1"
+							type="text"
+							label="Address Line 1"
+							placeholder="Street address, P.O. box, company name, c/o"
+						/>
+						<InputField
+							name="clAddress.line2"
+							type="text"
+							label="Address Line 2"
+							placeholder="Apt, Suite, Unit, Building, Floor"
+						/>
 						<SimpleGrid
 							columns={[1, 1, 1, 1, 1, 2]}
 							spacing={[1, 1, 1, 1, 1, 4]}
