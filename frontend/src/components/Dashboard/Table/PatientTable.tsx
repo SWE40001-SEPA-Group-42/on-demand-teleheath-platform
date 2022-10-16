@@ -1,90 +1,286 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Button
-} from '@chakra-ui/react'
-
+	Box,
+	Button,
+	Flex,
+	Table,
+	Thead,
+	Tbody,
+	Tr,
+	Th,
+	Td,
+} from '@chakra-ui/react';
 import {
-  useReactTable,
-  flexRender,
-  getCoreRowModel,
-  ColumnDef,
-  SortingState,
-  getSortedRowModel
-} from "@tanstack/react-table";
+	Column,
+	Table as ReactTable,
+	useReactTable,
+	ColumnFiltersState,
+	getCoreRowModel,
+	getFilteredRowModel,
+	getFacetedRowModel,
+	getFacetedUniqueValues,
+	sortingFns,
+	getSortedRowModel,
+	SortingState,
+	FilterFn,
+	SortingFn,
+	ColumnDef,
+	flexRender,
+	FilterFns,
+} from '@tanstack/react-table';
+import {
+	RankingInfo,
+	rankItem,
+	compareItems,
+} from '@tanstack/match-sorter-utils';
+import SearchFilter from '../SearchFilters/SearchFilter';
 
-export type DataTableProps<Data extends object> = {
-  data: Data[];
-  columns: ColumnDef<Data, any>[];
+declare module '@tanstack/table-core' {
+	interface FilterFns {
+		fuzzy: FilterFn<unknown>;
+	}
+	interface FilterMeta {
+		itemRank: RankingInfo;
+	}
+}
+
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+	// Rank the item
+	const itemRank = rankItem(row.getValue(columnId), value);
+
+	// Store the itemRank info
+	addMeta({
+		itemRank,
+	});
+
+	// Return if the item should be filtered in/out
+	return itemRank.passed;
 };
 
-export function PatientTable<Data extends object>({
-  data,
-  columns
-}: DataTableProps<Data>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const table = useReactTable({
-    columns,
-    data,
-    getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    state: {
-      sorting
-    }
-  });
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+	let dir = 0;
 
-  return (
-    <div className='w-10/12 mx-auto'>
-    <Table>
-      <Thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <Tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              const meta: any = header.column.columnDef.meta;
-              return (
-                <Th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  isNumeric={meta?.isNumeric}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+	// Only sort by rank if the column has ranking information
+	if (rowA.columnFiltersMeta[columnId]) {
+		dir = compareItems(
+			rowA.columnFiltersMeta[columnId]?.itemRank!,
+			rowB.columnFiltersMeta[columnId]?.itemRank!
+		);
+	}
 
-                </Th>
-              );
-            })}
-            <Td></Td>
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody>
-        {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id}>
-            {row.getVisibleCells().map((cell) => {
-              const meta: any = cell.column.columnDef.meta;
-              return (
-                <>
-                  <Td key={cell.id} isNumeric={meta?.isNumeric}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Td>
-                </>
-              );
-            })}
-            <Td><Button colorScheme="green">Request</Button></Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-    </div>
-  );
+	// Provide an alphanumeric fallback for when the item ranks are equal
+	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
+
+export type DataTableProps<Data extends object> = {
+	data: Data[];
+	columns: ColumnDef<Data, any>[];
+};
+
+export const PatientTable = <Data extends object>({
+	columns,
+	data,
+}: DataTableProps<Data>) => {
+	const rerender = React.useReducer(() => ({}), {})[1];
+
+	const [sorting, setSorting] = React.useState<SortingState>([]);
+
+	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+		[]
+	);
+
+	const [globalFilter, setGlobalFilter] = React.useState('');
+
+	const table = useReactTable({
+		columns,
+		data,
+		filterFns: {
+			fuzzy: fuzzyFilter,
+		},
+		state: {
+			sorting,
+			columnFilters,
+			globalFilter,
+		},
+		onSortingChange: setSorting,
+		onColumnFiltersChange: setColumnFilters,
+		onGlobalFilterChange: setGlobalFilter,
+		globalFilterFn: fuzzyFilter,
+		getCoreRowModel: getCoreRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		getFacetedRowModel: getFacetedRowModel(),
+		getFacetedUniqueValues: getFacetedUniqueValues(),
+	});
+
+	React.useEffect(() => {
+		if (table.getState().columnFilters[0]?.id === 'fullName') {
+			if (table.getState().sorting[0]?.id !== 'fullName') {
+				table.setSorting([{ id: 'fullName', desc: false }]);
+			}
+		}
+	}, [table.getState().columnFilters[0]?.id]);
+
+	return (
+		<Box className="w-10/12 mx-auto">
+			<Flex className="w-full">
+				<DebouncedInput
+					value={globalFilter ?? ''}
+					onChange={(value) => setGlobalFilter(String(value))}
+					className="w-3/4 p-4 font-lg shadow border rounded-md"
+					placeholder="Search doctor"
+				/>
+				<SearchFilter />
+			</Flex>
+			<Table>
+				<Thead>
+					{table.getHeaderGroups().map((headerGroup) => (
+						<Tr key={headerGroup.id}>
+							{headerGroup.headers.map((header) => {
+								const meta: any = header.column.columnDef.meta;
+								return (
+									<Th
+										key={header.id}
+										// onClick={header.column.getToggleSortingHandler()}
+										isNumeric={meta?.isNumeric}
+										className="w-auto"
+									>
+										<>
+											<div
+												{...{
+													className: header.column.getCanSort()
+														? 'cursor-pointer select-none flex justify-center items-center h-12 text-sm text-center'
+														: '',
+													onClick: header.column.getToggleSortingHandler(),
+												}}
+											>
+												{flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+												)}
+												{{
+													asc: ' 🔼',
+													desc: ' 🔽',
+												}[header.column.getIsSorted() as string] ?? null}
+											</div>
+											{header.column.getCanFilter() ? (
+												<Box className="flex justify-center items-center h-12 text-sm text-center">
+													<Filter column={header.column} table={table} />
+												</Box>
+											) : null}
+										</>
+									</Th>
+								);
+							})}
+							<Td></Td>
+						</Tr>
+					))}
+				</Thead>
+				<Tbody>
+					{table.getRowModel().rows.map((row) => (
+						<Tr key={row.id}>
+							{row.getVisibleCells().map((cell) => {
+								const meta: any = cell.column.columnDef.meta;
+								return (
+									<>
+										<Td
+											className="text-sm text-center"
+											key={cell.id}
+											isNumeric={meta?.isNumeric}
+										>
+											{flexRender(
+												cell.column.columnDef.cell,
+												cell.getContext()
+											)}
+										</Td>
+									</>
+								);
+							})}
+							<Td>
+								<Button colorScheme="green">Request</Button>
+							</Td>
+						</Tr>
+					))}
+				</Tbody>
+			</Table>
+		</Box>
+	);
+};
+
+function Filter({
+	column,
+	table,
+}: {
+	column: Column<any, unknown>;
+	table: ReactTable<any>;
+}) {
+	const firstValue = table
+		.getPreFilteredRowModel()
+		.flatRows[0]?.getValue(column.id);
+
+	const columnFilterValue = column.getFilterValue();
+
+	const sortedUniqueValues = React.useMemo(
+		() => Array.from(column.getFacetedUniqueValues().keys()).sort(),
+		[column.getFacetedUniqueValues()]
+	);
+
+	return (
+		<>
+			<datalist id={column.id + 'list'}>
+				{sortedUniqueValues.slice(0, 5000).map((value: any) => (
+					<option value={value} key={value} />
+				))}
+			</datalist>
+			<DebouncedInput
+				type="text"
+				value={(columnFilterValue ?? '') as string}
+				onChange={(value) => column.setFilterValue(value)}
+				placeholder={`Search by ${
+					column.columnDef.header == 'Languages Spoken'
+						? 'Languages'
+						: column.columnDef.header
+				}`}
+				className="text-center h-12 border shadow rounded"
+				list={column.id + 'list'}
+			/>
+			<div className="h-1" />
+		</>
+	);
+}
+
+// A debounced input react component
+function DebouncedInput({
+	value: initialValue,
+	onChange,
+	debounce = 500,
+	...props
+}: {
+	value: string | number;
+	onChange: (value: string | number) => void;
+	debounce?: number;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+	const [value, setValue] = React.useState(initialValue);
+
+	React.useEffect(() => {
+		setValue(initialValue);
+	}, [initialValue]);
+
+	React.useEffect(() => {
+		const timeout = setTimeout(() => {
+			onChange(value);
+		}, debounce);
+
+		return () => clearTimeout(timeout);
+	}, [value]);
+
+	return (
+		<input
+			{...props}
+			value={value}
+			onChange={(e) => setValue(e.target.value)}
+		/>
+	);
 }
 
 export default PatientTable;

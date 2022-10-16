@@ -1,0 +1,19 @@
+@tailwind components;
+
+@layer components {
+  .global-filter {
+    @apply w-full p-4 text-lg shadow border rounded-md;
+  }
+
+  .sub-filter-container {
+    @apply flex justify-center items-center;
+  }
+
+  .filter-label {
+    @apply text-base font-semibold text-gray-500 py-2;
+  }
+
+  .filter-text-input {
+    @apply text-sm text-center h-12 border shadow border rounded-md;
+  }
+}

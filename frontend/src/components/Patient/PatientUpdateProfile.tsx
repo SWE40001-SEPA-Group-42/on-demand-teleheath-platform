@@ -17,31 +17,29 @@ import InputField from '../../components/CustomFormFields/InputField';
 import BirthSexField from '../../components/CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../../components/CustomFormFields/BirthSexSelectField';
 import { EditIcon } from '@chakra-ui/icons';
-
-import { Patient } from '../../types/Patient'
-
+import { Patient } from '../../types/Patient';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { modifyPatientById } from '../../redux/Patient/patientsSlice';
 
 interface IPatientBasicDetails {
-	patient: Patient
+	patient: Patient;
 }
 
-const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
-	const patient = props.patient
-	const dispatch = useAppDispatch()
-	const patients = useAppSelector(state => state.patients)
+const PatientBasicDetails: React.FC<IPatientBasicDetails> = (props) => {
+	const patient = props.patient;
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
 	const birthSexOptions = ['Male', 'Female', 'Other'];
-	const [edited, setEdited] = useState<boolean>(false)
-	const [editable, setEditable] = useState<boolean>(false)
+	const [edited, setEdited] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
 
 	const toggleEdit = () => {
-		setEditable(prev => !prev)
-	}
+		setEditable((prev) => !prev);
+	};
 
 	const initialValues = {
 		...patient,
-		ptDOB: patient.ptDOB.substring(0, 10)
+		ptDOB: patient.ptDOB.substring(0, 10),
 	};
 
 	const validationSchema = Yup.object({
@@ -122,7 +120,7 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
-				dispatch(modifyPatientById(values))
+				dispatch(modifyPatientById(values));
 			}}
 		>
 			{(formik) => (
@@ -130,26 +128,34 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
-								<div style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									alignItems: 'center'
-								}}>
-									<h2>About me</h2>
-									<div style={{
+								<div
+									style={{
 										display: 'flex',
 										justifyContent: 'space-between',
-										alignItems: 'center'
-									}}>
+										alignItems: 'center',
+									}}
+								>
+									<h2>About me</h2>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
+									>
 										<Button
-											type='button'
+											type="button"
 											onClick={toggleEdit}
 											style={{
 												marginRight: '1rem',
-												display: `${editable === true ? 'block' : 'none'}`
+												display: `${editable === true ? 'block' : 'none'}`,
 											}}
-										>Cancel</Button>
-										<button type='button' onClick={toggleEdit}><EditIcon /></button>
+										>
+											Cancel
+										</Button>
+										<button type="button" onClick={toggleEdit}>
+											<EditIcon />
+										</button>
 									</div>
 								</div>
 							</Heading>
@@ -166,8 +172,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Given name(s)"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -177,8 +183,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Surname"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -189,8 +195,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 							placeholder="Preferred name (optional)"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<SimpleGrid
@@ -203,17 +209,18 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								label="Date of birth"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
-								}} />
+									setEdited(true);
+									formik.handleChange(e);
+								}}
+							/>
 							<BirthSexField
 								name="ptBirthSex"
 								label="Birth sex"
 								value={patient.ptDOB}
 								disabled={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							>
 								<BirthSexSelectField />
@@ -236,8 +243,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Email address"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -247,8 +254,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Mobile phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -263,8 +270,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Home phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -274,8 +281,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Work phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -290,8 +297,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Street address, P.O. box, company name, c/o"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -306,8 +313,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Apt, Suite, Unit, Building, Floor"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -322,8 +329,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="City"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -333,8 +340,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="State"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -349,8 +356,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Postcode"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -360,8 +367,8 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 								placeholder="Country"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -373,7 +380,7 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 							my={5}
 							disabled={!edited}
 							style={{
-								display: `${editable === true ? 'block' : 'none'}`
+								display: `${editable === true ? 'block' : 'none'}`,
 							}}
 						>
 							Save changes
@@ -386,24 +393,25 @@ const PatientBasicDetails: React.FC<IPatientBasicDetails> = props => {
 };
 
 interface IPatientAdditionalDetailsProps {
-	patient: Patient
+	patient: Patient;
 }
 
-const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props => {
-	const patient = props.patient
-	const [edited, setEdited] = useState<boolean>(false)
-	const [editable, setEditable] = useState<boolean>(false)
-	const dispatch = useAppDispatch()
-	const patients = useAppSelector(state => state.patients)
+const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = (
+	props
+) => {
+	const patient = props.patient;
+	const [edited, setEdited] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
 
 	const toggleEdit = () => {
-		setEditable(prev => !prev)
-	}
+		setEditable((prev) => !prev);
+	};
 	const initialValues = {
 		...patient,
-		ptDOB: patient.ptDOB.substring(0, 10)
+		ptDOB: patient.ptDOB.substring(0, 10),
 	};
-
 
 	const validationSchema = Yup.object({
 		ptMedicareCardNo: Yup.string()
@@ -504,7 +512,7 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
-				dispatch(modifyPatientById(values))
+				dispatch(modifyPatientById(values));
 			}}
 		>
 			{(formik) => (
@@ -512,26 +520,34 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
-								<div style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									alignItems: 'center'
-								}}>
-									<h2>Medicare and Private Health Insurance</h2>
-									<div style={{
+								<div
+									style={{
 										display: 'flex',
 										justifyContent: 'space-between',
-										alignItems: 'center'
-									}}>
+										alignItems: 'center',
+									}}
+								>
+									<h2>Medicare and Private Health Insurance</h2>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
+									>
 										<Button
-											type='button'
+											type="button"
 											onClick={toggleEdit}
 											style={{
 												marginRight: '1rem',
-												display: `${editable === true ? 'block' : 'none'}`
+												display: `${editable === true ? 'block' : 'none'}`,
 											}}
-										>Cancel</Button>
-										<button type='button' onClick={toggleEdit}><EditIcon /></button>
+										>
+											Cancel
+										</Button>
+										<button type="button" onClick={toggleEdit}>
+											<EditIcon />
+										</button>
 									</div>
 								</div>
 							</Heading>
@@ -544,8 +560,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 							placeholder="Medicare number"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<SimpleGrid
@@ -559,8 +575,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="IRN"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -570,8 +586,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Valid until"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -582,8 +598,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 							placeholder="Private health fund"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<InputField
@@ -593,8 +609,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 							placeholder="Private health fund number"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<Box py={4} className="text-center">
@@ -614,8 +630,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Given name(s)"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -625,8 +641,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Surname"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -641,8 +657,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Relationship to you"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -652,8 +668,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Mobile phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -668,8 +684,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Home phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -679,8 +695,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Work phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -701,8 +717,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Given name(s)"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -712,8 +728,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Surname"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -728,8 +744,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Relationship to you"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -739,8 +755,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Mobile phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -755,8 +771,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Home phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -766,8 +782,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Work phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -788,8 +804,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="DVA file number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -798,8 +814,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								label="DVA valid until"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -814,8 +830,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Healthcare card number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -824,8 +840,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								label="Healthcare card valid until"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -840,8 +856,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								placeholder="Pension card number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -850,8 +866,8 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 								label="Pension card valid until"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -863,7 +879,7 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 							my={5}
 							disabled={!edited}
 							style={{
-								display: `${editable === true ? 'block' : 'none'}`
+								display: `${editable === true ? 'block' : 'none'}`,
 							}}
 						>
 							Save changes
@@ -876,11 +892,11 @@ const PatientAdditionalDetails: React.FC<IPatientAdditionalDetailsProps> = props
 };
 
 interface IPatientUpdateProfileProps {
-	patient: Patient
+	patient: Patient;
 }
 
-const PatientUpdateProfile: React.FC<IPatientUpdateProfileProps> = props => {
-	const patient = props.patient
+const PatientUpdateProfile: React.FC<IPatientUpdateProfileProps> = (props) => {
+	const patient = props.patient;
 
 	return (
 		<Box>

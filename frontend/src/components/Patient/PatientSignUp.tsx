@@ -1,13 +1,10 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../../components/CustomFormFields/InputField';
 
-interface IPatientSignUpProps {}
-
-const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
+const PatientSignUp = () => {
 	const currentDate = new Date();
 	const navigate = useNavigate();
 
@@ -39,7 +36,6 @@ const PatientSignUp: React.FC<IPatientSignUpProps> = () => {
 					.oneOf([Yup.ref('ptPassword')], 'Passwords do not match'),
 			})}
 			onSubmit={(values) => {
-				// alert(JSON.stringify(values))
 				console.log(JSON.stringify(values));
 
 				// redirect to patient/profile/add

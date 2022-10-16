@@ -6,24 +6,22 @@ import InputField from '../CustomFormFields/InputField';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { addClinic } from '../../redux/Clinic/clinicsSlice';
 
-interface IClinicAddProfile {}
-
-const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
-	const dispatch = useAppDispatch()
-	const clinics = useAppSelector(state => state.clinics)
+const ClinicAddProfile = () => {
+	const dispatch = useAppDispatch();
+	const clinics = useAppSelector((state) => state.clinics);
 	const initialValue = {
-		clName: "",
+		clName: '',
 		clAddress: {
-			line1: "",
-			line2: "",
-			city: "",
-			state: "",
-			postcode: "",
-			country: ""
+			line1: '',
+			line2: '',
+			city: '',
+			state: '',
+			postcode: '',
+			country: '',
 		},
-		clPhone: "",
-		clEmailAddress: ""
-	}
+		clPhone: '',
+		clUrl: '',
+	};
 
 	const validationSchema = Yup.object({
 		clName: Yup.string()
@@ -32,7 +30,12 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 		clEmailAddress: Yup.string()
 			.required('Email address cannot be blank')
 			.email('Please enter valid email address'),
-		clPhone: Yup.string().required('Phone number cannot be blank'),
+		clPhone: Yup.string()
+			.required('Phone number cannot be blank')
+			.matches(
+				/^\+(?:[0-9] ?){6,14}[0-9]$/,
+				'Please enter a valid phone number (including country code)'
+			),
 		clAddress: Yup.object({
 			line1: Yup.string()
 				.required('Address Line 1 cannot be blank')
@@ -65,8 +68,11 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 					/^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$/,
 					'Please enter a valid country'
 				),
-		})
-	})
+		}),
+		clUrl: Yup.string().matches(
+			/^(http(s)?:\/\/)?(www.)?([a-zA-Z0-9])+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/*)?$/gm
+		),
+	});
 
 	return (
 		<Formik
@@ -74,7 +80,7 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
-				dispatch(addClinic(values))
+				dispatch(addClinic(values));
 			}}
 		>
 			{(formik) => (
@@ -112,20 +118,20 @@ const ClinicAddProfile: React.FC<IClinicAddProfile> = () => {
 								onChange={formik.handleChange}
 							/>
 						</SimpleGrid>
-							<InputField
-								name="clAddress.line1"
-								type="text"
-								label="Address Line 1"
-								placeholder="Street address, P.O. box, company name, c/o"
-								onChange={formik.handleChange}
-							/>
-							<InputField
-								name="clAddress.line2"
-								type="text"
-								label="Address Line 2"
-								placeholder="Apt, Suite, Unit, Building, Floor"
-								onChange={formik.handleChange}
-							/>
+						<InputField
+							name="clAddress.line1"
+							type="text"
+							label="Address Line 1"
+							placeholder="Street address, P.O. box, company name, c/o"
+							onChange={formik.handleChange}
+						/>
+						<InputField
+							name="clAddress.line2"
+							type="text"
+							label="Address Line 2"
+							placeholder="Apt, Suite, Unit, Building, Floor"
+							onChange={formik.handleChange}
+						/>
 						<SimpleGrid
 							columns={[1, 1, 1, 1, 1, 2]}
 							spacing={[1, 1, 1, 1, 1, 4]}

@@ -1,34 +1,32 @@
-// import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../CustomFormFields/InputField';
 import { EditIcon } from '@chakra-ui/icons';
-
-import { Clinic } from '../../types/Clinic'
+import { Clinic } from '../../types/Clinic';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { useState } from 'react';
 import { updateClinicById } from '../../redux/Clinic/clinicsSlice';
 
 interface IClinicUpdateProfile {
-	clinic: Clinic
+	clinic: Clinic;
 }
 
-const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
+const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = (props) => {
 	const currentDate = new Date().toISOString();
-	const clinic = props.clinic
-	const dispatch = useAppDispatch()
-	const doctors = useAppSelector(state => state.doctors)
+	const clinic = props.clinic;
+	const dispatch = useAppDispatch();
+	const doctors = useAppSelector((state) => state.doctors);
 	const initialValues = {
-		...clinic
-	}
+		...clinic,
+	};
 
-	const [edited, setEdited] = useState<boolean>(false)
-	const [editable, setEditable] = useState<boolean>(false)
+	const [edited, setEdited] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
 
 	const toggleEdit = () => {
-		setEditable(prev => !prev)
-	}
+		setEditable((prev) => !prev);
+	};
 
 	const validationSchema = Yup.object({
 		clName: Yup.string()
@@ -70,8 +68,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 					/^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$/,
 					'Please enter a valid country'
 				),
-		})
-	})
+		}),
+	});
 
 	return (
 		<Formik
@@ -79,7 +77,7 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
-				dispatch(updateClinicById(values))
+				dispatch(updateClinicById(values));
 			}}
 		>
 			{(formik) => (
@@ -87,26 +85,34 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
-								<div style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									alignItems: 'center'
-								}}>
-									<h2>Clinic's Details</h2>
-									<div style={{
+								<div
+									style={{
 										display: 'flex',
 										justifyContent: 'space-between',
-										alignItems: 'center'
-									}}>
+										alignItems: 'center',
+									}}
+								>
+									<h2>Clinic's Details</h2>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
+									>
 										<Button
-											type='button'
+											type="button"
 											onClick={toggleEdit}
 											style={{
 												marginRight: '1rem',
-												display: `${editable === true ? 'block' : 'none'}`
+												display: `${editable === true ? 'block' : 'none'}`,
 											}}
-										>Cancel</Button>
-										<button type="button" onClick={toggleEdit}><EditIcon /></button>
+										>
+											Cancel
+										</Button>
+										<button type="button" onClick={toggleEdit}>
+											<EditIcon />
+										</button>
 									</div>
 								</div>
 							</Heading>
@@ -119,8 +125,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 							placeholder="Clinic name"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<SimpleGrid
@@ -134,8 +140,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="Email address"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -145,11 +151,22 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="Phone number"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
+						<InputField
+							name="clUrl"
+							type="text"
+							label="Website"
+							placeholder="Website"
+							readOnly={!editable}
+							onChange={(e) => {
+								setEdited(true);
+								formik.handleChange(e);
+							}}
+						/>
 						<InputField
 							name="clAddress.line1"
 							type="text"
@@ -157,8 +174,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 							placeholder="Street address, P.O. box, company name, c/o"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<InputField
@@ -168,8 +185,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 							placeholder="Apt, Suite, Unit, Building, Floor"
 							readOnly={!editable}
 							onChange={(e) => {
-								setEdited(true)
-								formik.handleChange(e)
+								setEdited(true);
+								formik.handleChange(e);
 							}}
 						/>
 						<SimpleGrid
@@ -183,8 +200,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="City"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -194,8 +211,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="State"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -210,8 +227,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="Postcode"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 							<InputField
@@ -221,8 +238,8 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 								placeholder="Country"
 								readOnly={!editable}
 								onChange={(e) => {
-									setEdited(true)
-									formik.handleChange(e)
+									setEdited(true);
+									formik.handleChange(e);
 								}}
 							/>
 						</SimpleGrid>
@@ -234,7 +251,7 @@ const ClinicUpdateProfile: React.FC<IClinicUpdateProfile> = props => {
 							my={5}
 							disabled={!edited}
 							style={{
-								display: `${editable === true ? 'block' : 'none'}`
+								display: `${editable === true ? 'block' : 'none'}`,
 							}}
 						>
 							Update Clinic profile
