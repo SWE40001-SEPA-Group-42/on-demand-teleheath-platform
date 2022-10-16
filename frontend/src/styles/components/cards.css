@@ -1,0 +1,39 @@
+@tailwind components;
+
+@layer components {
+	.card-container {
+		@apply bg-gray-50 text-gray-900 rounded-md shadow shadow-gray-200;
+	}
+
+	.card-content {
+		@apply text-base xxs:p-2 xs:p-2 sm:p-2 md:p-4 lg:p-4 xl:p-4 2xl:p-4;
+	}
+
+	.card-label {
+		@apply font-semibold text-gray-700;
+	}
+
+	.card-description {
+		@apply font-normal text-gray-800;
+	}
+
+	.patient-profile-container {
+		@apply w-10/12 mx-auto mb-10;
+	}
+
+	.patient-profile-details-card {
+		@apply xxs:p-10 xs:p-10 sm:p-12 md:p-12 lg:p-12 xl:p-12 2xl:p-12;
+	}
+
+	.patient-profile-details {
+		@apply xxs:my-2 xs:my-2 sm:my-4 md:my-4 lg:my-4 xl:my-4 2xl:my-4;
+	}
+
+	.patient-profile-basic-details-1 {
+		@apply text-center;
+	}
+
+	.patient-profile-basic-details-2 {
+		@apply text-left xxs:py-4 xs:py-4 sm:py-4 md:py-8 lg:py-8 xl:py-8 2xl:py-8;
+	}
+}
