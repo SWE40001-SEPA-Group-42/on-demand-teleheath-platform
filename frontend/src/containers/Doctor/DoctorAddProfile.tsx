@@ -1,23 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import DoctorAddProfileForm from '../../components/Doctor/DoctorAddProfileForm'
+import { Box } from '@chakra-ui/react';
+import DoctorAddProfileForm from '../../components/Forms/Doctor/DoctorAddProfileForm';
 
 const DoctorAddProfile = () => {
 	const currentDate = new Date();
 
-	const dispatch = useAppDispatch()
-	const doctors = useAppSelector(state => state.doctors)
+	const dispatch = useAppDispatch();
+	const doctors = useAppSelector((state) => state.doctors);
 
 	const [user, setUser] = useState({
-		id: 'id'
-	})
+		id: 'id',
+	});
 
-	return (
-		user.id !== ''
-		? <div>
-			<DoctorAddProfileForm/>
-		</div>
-		: <div></div>
+	return user.id !== '' ? (
+		<Box>
+			<DoctorAddProfileForm />
+		</Box>
+	) : (
+		<Box></Box>
 	);
 };
 

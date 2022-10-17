@@ -1,17 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 const CallPatient = () => {
-  return (
-    <div className='call-patient'>
-        <div className="video-call">
+	return (
+		<Box className="call-patient">
+			<Box className="video-call"></Box>
 
-        </div>
+			<Box className="chat-board"></Box>
+		</Box>
+	);
+};
 
-        <div className="chat-board">
-            
-        </div>
-    </div>
-  )
-}
-
-export default CallPatient
+export default CallPatient;

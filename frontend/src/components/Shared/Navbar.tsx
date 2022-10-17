@@ -95,6 +95,16 @@ const NAV_ITEMS: Array<NavItem> = [
 			},
 		],
 	},
+	{
+		label: 'Consultation',
+		children: [
+			{
+				label: 'Start a video call',
+				subLabel: '',
+				href: '/video-call',
+			},
+		],
+	},
 ];
 
 const Navbar = () => {
@@ -174,7 +184,7 @@ const Navbar = () => {
 			</Collapse>
 		</Box>
 	);
-}
+};
 
 const DesktopNav = () => {
 	const linkColor = useColorModeValue('gray.600', 'gray.200');
