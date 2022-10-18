@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -12,33 +13,33 @@ import {
 	Tab,
 	TabPanel
 } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
-import BirthSexField from '../../components/CustomFormFields/BirthSexField';
-import BirthSexSelectField from '../../components/CustomFormFields/BirthSexSelectField';
+import InputField from '../../CustomFormFields/InputField';
+import BirthSexField from '../../CustomFormFields/BirthSexField';
+import BirthSexSelectField from '../../CustomFormFields/BirthSexSelectField';
+import { EditIcon } from '@chakra-ui/icons';
+import { Patient } from '../../../types/Patient';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { modifyPatientById } from '../../../redux/Patient/patientsSlice';
 
-const PatientBasicDetails = () => {
-	const currentDate = new Date().toISOString();
-	const birthSexOptions = ['male', 'female', 'other'];
+interface IPatientBasicDetails {
+	ptPatient: Patient;
+}
+
+const PatientBasicDetails = ({ ptPatient }: IPatientBasicDetails) => {
+	const patient = ptPatient;
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
+	const birthSexOptions = ['Male', 'Female', 'Other'];
+	const [edited, setEdited] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
+
+	const toggleEdit = () => {
+		setEditable((prev) => !prev);
+	};
 
 	const initialValues = {
-		ptCreatedAt: currentDate,
-		ptGivenName: '',
-		ptSurname: '',
-		ptPreferredName: '',
-		ptDOB: '',
-		ptBirthSex: '',
-		ptEmailAddress: '',
-		ptMobilePhone: '',
-		ptHomePhone: '',
-		ptWorkPhone: '',
-		ptAddress: {
-			line1: '',
-			line2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-		},
+		...patient,
+		ptDOB: patient.ptDOB.substring(0, 10),
 	};
 
 	const validationSchema = Yup.object({
@@ -119,6 +120,7 @@ const PatientBasicDetails = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
+				dispatch(modifyPatientById(values));
 			}}
 		>
 			{(formik) => (
@@ -126,7 +128,36 @@ const PatientBasicDetails = () => {
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
-								About me
+								<Box
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<h2>About me</h2>
+									<Box
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
+									>
+										<Button
+											type="button"
+											onClick={toggleEdit}
+											style={{
+												marginRight: '1rem',
+												display: `${editable === true ? 'block' : 'none'}`,
+											}}
+										>
+											Cancel
+										</Button>
+										<button type="button" onClick={toggleEdit}>
+											<EditIcon />
+										</button>
+									</Box>
+								</Box>
 							</Heading>
 							<Divider orientation="horizontal" />
 						</Box>
@@ -139,12 +170,22 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<InputField
@@ -152,13 +193,36 @@ const PatientBasicDetails = () => {
 							type="text"
 							label="Preferred name"
 							placeholder="Preferred name (optional)"
+							readOnly={!editable}
+							onChange={(e) => {
+								setEdited(true);
+								formik.handleChange(e);
+							}}
 						/>
 						<SimpleGrid
 							columns={[1, 1, 1, 1, 1, 2]}
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
-							<InputField name="ptDOB" type="date" label="Date of birth" />
-							<BirthSexField name="ptBirthSex" label="Birth sex">
+							<InputField
+								name="ptDOB"
+								type="date"
+								label="Date of birth"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
+							/>
+							<BirthSexField
+								name="ptBirthSex"
+								label="Birth sex"
+								value={patient.ptDOB}
+								disabled={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
+							>
 								<BirthSexSelectField />
 							</BirthSexField>
 						</SimpleGrid>
@@ -177,12 +241,22 @@ const PatientBasicDetails = () => {
 								type="email"
 								label="Email address"
 								placeholder="Email address"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptMobilePhone"
 								type="text"
 								label="Mobile phone number"
 								placeholder="Mobile phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -194,12 +268,22 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="Home phone number"
 								placeholder="Home phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptWorkPhone"
 								type="text"
 								label="Work phone number"
 								placeholder="Work phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -211,6 +295,11 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="Address Line 1"
 								placeholder="Street address, P.O. box, company name, c/o"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -222,6 +311,11 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="Address Line 2"
 								placeholder="Apt, Suite, Unit, Building, Floor"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -233,12 +327,22 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="City"
 								placeholder="City"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptAddress.state"
 								type="text"
 								label="State"
 								placeholder="State"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -250,12 +354,22 @@ const PatientBasicDetails = () => {
 								type="text"
 								label="Postcode"
 								placeholder="Postcode"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptAddress.country"
 								type="text"
 								label="Country"
 								placeholder="Country"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<Button
@@ -264,6 +378,10 @@ const PatientBasicDetails = () => {
 							variant="solid"
 							w="100%"
 							my={5}
+							disabled={!edited}
+							style={{
+								display: `${editable === true ? 'block' : 'none'}`,
+							}}
 						>
 							Save changes
 						</Button>
@@ -274,31 +392,23 @@ const PatientBasicDetails = () => {
 	);
 };
 
-const PatientAdditionalDetails = () => {
+interface IPatientAdditionalDetails {
+	ptPatient: Patient;
+}
+
+const PatientAdditionalDetails = ({ ptPatient }: IPatientAdditionalDetails) => {
+	const patient = ptPatient;
+	const [edited, setEdited] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
+
+	const toggleEdit = () => {
+		setEditable((prev) => !prev);
+	};
 	const initialValues = {
-		ptMedicareCardNo: '',
-		ptMedicareCardIRN: '',
-		ptMedicareCardExpiryDate: '',
-		ptPrivateHealthFund: '',
-		ptPrivateHealthFundNo: '',
-		ptEmgContactGivenName: '',
-		ptEmgContactSurname: '',
-		ptEmgContactRelationship: '',
-		ptEmgContactMobilePhone: '',
-		ptEmgContactHomePhone: '',
-		ptEmgContactWorkPhone: '',
-		ptNextOfKinGivenName: '',
-		ptNextOfKinSurname: '',
-		ptNextOfKinRelationship: '',
-		ptNextOfKinMobilePhone: '',
-		ptNextOfKinHomePhone: '',
-		ptNextOfKinWorkPhone: '',
-		ptDVAFileNo: '',
-		ptDVAExpiryDate: '',
-		ptHealthcareCardNo: '',
-		ptHealthcareCardExpiryDate: '',
-		ptPensionCardNo: '',
-		ptPensionCardExpiryDate: '',
+		...patient,
+		ptDOB: patient.ptDOB.substring(0, 10),
 	};
 
 	const validationSchema = Yup.object({
@@ -309,7 +419,7 @@ const PatientAdditionalDetails = () => {
 			.max(1, 'Medicare card IRN must be exactly 10 digits long')
 			.matches(/^[0-9]$/, 'Only numbers are allowed for this field'),
 		ptMedicareCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
+			/^(0[1-9]|1[0-2])-\d{4}$|\s+/,
 			'Please enter a valid date in the format: MM-YYYY'
 		),
 		ptPrivateHealthFund: Yup.string().matches(
@@ -369,27 +479,27 @@ const PatientAdditionalDetails = () => {
 			'Please enter a valid phone number'
 		),
 		ptDVAFileNo: Yup.string().matches(
-			/^\d{10}$/,
-			'Only numbers are allowed for this field'
+			/^\d{8}$/,
+			'Only numbers are allowed for this field. DVA File Number must include 8 numbers.'
 		),
 		ptDVAExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
+			/^(0[1-9]|1[0-2])-\d{4}$|\s/,
 			'Please enter a valid date in the format: MM-YYYY'
 		),
 		ptHealthcareCardNo: Yup.string().matches(
-			/^\d{10}$/,
+			/^\d{8}$/,
 			'Only numbers are allowed for this field'
 		),
 		ptHealthcareCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
+			/^(0[1-9]|1[0-2])-\d{4}$|\s/,
 			'Please enter a valid date in the format: MM-YYYY'
 		),
 		ptPensionCardNo: Yup.string().matches(
-			/^\d{10}$/,
+			/^\d{8}$/,
 			'Only numbers are allowed for this field'
 		),
 		ptPensionCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
+			/^(0[1-9]|1[0-2])-\d{4}$|\s/,
 			'Please enter a valid date in the format: MM-YYYY'
 		),
 	});
@@ -400,6 +510,7 @@ const PatientAdditionalDetails = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
+				dispatch(modifyPatientById(values));
 			}}
 		>
 			{(formik) => (
@@ -407,7 +518,36 @@ const PatientAdditionalDetails = () => {
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
-								Medicare and private health insurance
+								<Box
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<h2>Medicare and Private Health Insurance</h2>
+									<Box
+										style={{
+											display: 'flex',
+											justifyContent: 'space-between',
+											alignItems: 'center',
+										}}
+									>
+										<Button
+											type="button"
+											onClick={toggleEdit}
+											style={{
+												marginRight: '1rem',
+												display: `${editable === true ? 'block' : 'none'}`,
+											}}
+										>
+											Cancel
+										</Button>
+										<button type="button" onClick={toggleEdit}>
+											<EditIcon />
+										</button>
+									</Box>
+								</Box>
 							</Heading>
 							<Divider orientation="horizontal" />
 						</Box>
@@ -416,6 +556,11 @@ const PatientAdditionalDetails = () => {
 							type="text"
 							label="Medicare number"
 							placeholder="Medicare number"
+							readOnly={!editable}
+							onChange={(e) => {
+								setEdited(true);
+								formik.handleChange(e);
+							}}
 						/>
 						<SimpleGrid
 							columns={[1, 1, 1, 1, 2, 2]}
@@ -426,12 +571,22 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="IRN"
 								placeholder="IRN"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptMedicareCardExpiryDate"
 								type="date"
 								label="Valid until"
 								placeholder="Valid until"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<InputField
@@ -439,12 +594,22 @@ const PatientAdditionalDetails = () => {
 							type="text"
 							label="Private health fund"
 							placeholder="Private health fund"
+							readOnly={!editable}
+							onChange={(e) => {
+								setEdited(true);
+								formik.handleChange(e);
+							}}
 						/>
 						<InputField
 							name="ptPrivateHealthFundNo"
 							type="text"
 							label="Private health fund number"
 							placeholder="Private health fund number"
+							readOnly={!editable}
+							onChange={(e) => {
+								setEdited(true);
+								formik.handleChange(e);
+							}}
 						/>
 						<Box py={4} className="text-center">
 							<Heading as="h1" size="md" py={4}>
@@ -457,16 +622,26 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgGivenName"
+								name="ptEmgContactGivenName"
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
-								name="ptEmgSurname"
+								name="ptEmgContactSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -474,16 +649,26 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgRelationship"
+								name="ptEmgContactRelationship"
 								type="text"
 								label="Relationship"
 								placeholder="Relationship to you"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
-								name="ptEmgMobilePhone"
+								name="ptEmgContactMobilePhone"
 								type="text"
 								label="Mobile phone number"
 								placeholder="Mobile phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -491,16 +676,26 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgHomePhone"
+								name="ptEmgContactHomePhone"
 								type="text"
 								label="Home phone number"
 								placeholder="Home phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
-								name="ptEmgWorkPhone"
+								name="ptEmgContactWorkPhone"
 								type="text"
 								label="Work phone number"
 								placeholder="Work phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<Box py={4} className="text-center">
@@ -518,12 +713,22 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptNextOfKinSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -535,12 +740,22 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="Relationship"
 								placeholder="Relationship to you"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptNextOfKinMobilePhone"
 								type="text"
 								label="Mobile phone number"
 								placeholder="Mobile phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -552,12 +767,22 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="Home phone number"
 								placeholder="Home phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptNextofKinWorkPhone"
 								type="text"
 								label="Work phone number"
 								placeholder="Work phone number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<Box py={4} className="text-center">
@@ -575,11 +800,21 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="DVA file number"
 								placeholder="DVA file number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptDVAExpiryDate"
 								type="date"
 								label="DVA valid until"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -591,11 +826,21 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="Healthcare card number"
 								placeholder="Healthcare card number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptHealthcareCardExpiryDate"
 								type="date"
 								label="Healthcare card valid until"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<SimpleGrid
@@ -607,11 +852,21 @@ const PatientAdditionalDetails = () => {
 								type="text"
 								label="Pension card number"
 								placeholder="Pension card number"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 							<InputField
 								name="ptPensionCardExpiryDate"
 								type="date"
 								label="Pension card valid until"
+								readOnly={!editable}
+								onChange={(e) => {
+									setEdited(true);
+									formik.handleChange(e);
+								}}
 							/>
 						</SimpleGrid>
 						<Button
@@ -620,6 +875,10 @@ const PatientAdditionalDetails = () => {
 							variant="solid"
 							w="100%"
 							my={5}
+							disabled={!edited}
+							style={{
+								display: `${editable === true ? 'block' : 'none'}`,
+							}}
 						>
 							Save changes
 						</Button>
@@ -630,7 +889,13 @@ const PatientAdditionalDetails = () => {
 	);
 };
 
-const PatientAddProfile = () => {
+interface IPatientUpdateProfileProps {
+	ptPatient: Patient;
+}
+
+const PatientUpdateProfile = ({ptPatient}: IPatientUpdateProfileProps) => {
+	const patient = ptPatient;
+
 	return (
 		<Box>
 			<Tabs>
@@ -640,10 +905,10 @@ const PatientAddProfile = () => {
 				</TabList>
 				<TabPanels>
 					<TabPanel>
-						<PatientBasicDetails />
+						<PatientBasicDetails ptPatient={patient} />
 					</TabPanel>
 					<TabPanel>
-						<PatientAdditionalDetails />
+						<PatientAdditionalDetails ptPatient={patient} />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>
@@ -651,4 +916,4 @@ const PatientAddProfile = () => {
 	);
 };
 
-export default PatientAddProfile;
+export default PatientUpdateProfile;

@@ -226,26 +226,26 @@ function Filter({
 	);
 
 	return (
-	<>
-		<datalist id={column.id + 'list'}>
-			{sortedUniqueValues.slice(0, 5000).map((value: any) => (
-				<option value={value} key={value} />
-			))}
-		</datalist>
-		<DebouncedInput
-			type="text"
-			value={(columnFilterValue ?? '') as string}
-			onChange={(value) => column.setFilterValue(value)}
-			placeholder={`Search by ${
-				column.columnDef.header == 'Languages Spoken'
-					? 'Languages'
-					: column.columnDef.header
-			}`}
-			className="text-center h-12 border shadow rounded"
-			list={column.id + 'list'}
-		/>
-		<div className="h-1" />
-	</>
+		<>
+			<datalist id={column.id + 'list'}>
+				{sortedUniqueValues.slice(0, 5000).map((value: any) => (
+					<option value={value} key={value} />
+				))}
+			</datalist>
+			<DebouncedInput
+				type="text"
+				value={(columnFilterValue ?? '') as string}
+				onChange={(value) => column.setFilterValue(value)}
+				placeholder={`Search by ${
+					column.columnDef.header == 'Languages Spoken'
+						? 'Languages'
+						: column.columnDef.header
+				}`}
+				className="text-center h-12 border shadow rounded"
+				list={column.id + 'list'}
+			/>
+			<div className="h-1" />
+		</>
 	);
 }
 

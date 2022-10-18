@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, query } = require("express-validator");
 
 const clinicValidator = (validationType) => {
   if (validationType == "clinicName") {
@@ -77,12 +77,10 @@ const doctorValidator = (validationType) => {
   // Work in Progress
   if (validationType == "doctorName") {
     return [
-      body("drGivenName")
-        .notEmpty()
+      query("drGivenName")
         .isString()
         .withMessage("must provide a given name"),
-      body("drSurname")
-        .notEmpty()
+      query("drSurname")
         .isString()
         .withMessage("must provide a surname"),
     ];

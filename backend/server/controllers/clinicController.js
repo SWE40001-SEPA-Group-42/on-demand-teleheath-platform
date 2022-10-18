@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (request, response) => {
-  const clName = request.body.clName;
+  const clName = request.query.clName;
   const clinics = await Clinic.find({ clName: clName });
 
   if (!clinics) {

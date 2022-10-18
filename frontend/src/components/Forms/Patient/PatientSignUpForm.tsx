@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
+import InputField from '../../CustomFormFields/InputField';
 
 const PatientSignUp = () => {
 	const currentDate = new Date();

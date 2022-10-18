@@ -12,35 +12,59 @@ import {
 	Tab,
 	TabPanel,
 } from '@chakra-ui/react';
-import InputField from '../../components/CustomFormFields/InputField';
-import BirthSexField from '../../components/CustomFormFields/BirthSexField';
-import BirthSexSelectField from '../../components/CustomFormFields/BirthSexSelectField';
+import InputField from '../../CustomFormFields/InputField';
+import BirthSexField from '../../CustomFormFields/BirthSexField';
+import BirthSexSelectField from '../../CustomFormFields/BirthSexSelectField';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { addPatient } from '../../../redux/Patient/patientsSlice';
+
+const initialValues = {
+	ptGivenName: '',
+	ptSurname: '',
+	ptPreferredName: '',
+	ptDOB: '',
+	ptBirthSex: '',
+	ptEmailAddress: '',
+	ptMobilePhone: '',
+	ptHomePhone: '',
+	ptWorkPhone: '',
+	ptAddress: {
+		line1: '',
+		line2: '',
+		city: '',
+		state: '',
+		postcode: '',
+		country: '',
+	},
+	ptMedicareCardNo: '',
+	ptMedicareCardIRN: '',
+	ptMedicareCardExpiryDate: '',
+	ptPrivateHealthFund: '',
+	ptPrivateHealthFundNo: '',
+	ptEmgContactGivenName: '',
+	ptEmgContactSurname: '',
+	ptEmgContactRelationship: '',
+	ptEmgContactMobilePhone: '',
+	ptEmgContactHomePhone: '',
+	ptEmgContactWorkPhone: '',
+	ptNextOfKinGivenName: '',
+	ptNextOfKinSurname: '',
+	ptNextOfKinRelationship: '',
+	ptNextOfKinMobilePhone: '',
+	ptNextOfKinHomePhone: '',
+	ptNextOfKinWorkPhone: '',
+	ptDVAFileNo: '',
+	ptDVAExpiryDate: '',
+	ptHealthcareCardNo: '',
+	ptHealthcareCardExpiryDate: '',
+	ptPensionCardNo: '',
+	ptPensionCardExpiryDate: '',
+};
 
 const PatientBasicDetails = () => {
-	const currentDate = new Date().toISOString();
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
 	const birthSexOptions = ['male', 'female', 'other'];
-
-	const initialValues = {
-		ptCreatedAt: currentDate,
-		ptGivenName: '',
-		ptSurname: '',
-		ptPreferredName: '',
-		ptDOB: '',
-		ptBirthSex: '',
-		ptEmailAddress: '',
-		ptMobilePhone: '',
-		ptHomePhone: '',
-		ptWorkPhone: '',
-		ptAddress: {
-			line1: '',
-			line2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-		},
-	};
-
 	const validationSchema = Yup.object({
 		ptGivenName: Yup.string()
 			.required('Given name(s) cannot be blank')
@@ -65,11 +89,10 @@ const PatientBasicDetails = () => {
 			.required('Email address cannot be blank')
 			.email('Please enter valid email address'),
 		ptMobilePhone: Yup.string()
-			.required('Mobile phone number cannot be blank')
-			.matches(
-				/^\+(?:[0-9] ?){6,14}[0-9]$/,
-				'Please enter a valid phone number (including country code)'
-			),
+		.matches(
+			/^\+(?:[0-9] ?){6,14}[0-9]$/,
+			'Please enter a valid phone number (including country code)'
+		),
 		ptHomePhone: Yup.string().matches(
 			/^\+(?:[0-9] ?){6,14}[0-9]$/,
 			'Please enter a valid phone number (including country code)'
@@ -119,13 +142,14 @@ const PatientBasicDetails = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
+				dispatch(addPatient(values));
 			}}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								About me
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -163,7 +187,7 @@ const PatientBasicDetails = () => {
 							</BirthSexField>
 						</SimpleGrid>
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								Contact details
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -275,32 +299,8 @@ const PatientBasicDetails = () => {
 };
 
 const PatientAdditionalDetails = () => {
-	const initialValues = {
-		ptMedicareCardNo: '',
-		ptMedicareCardIRN: '',
-		ptMedicareCardExpiryDate: '',
-		ptPrivateHealthFund: '',
-		ptPrivateHealthFundNo: '',
-		ptEmgContactGivenName: '',
-		ptEmgContactSurname: '',
-		ptEmgContactRelationship: '',
-		ptEmgContactMobilePhone: '',
-		ptEmgContactHomePhone: '',
-		ptEmgContactWorkPhone: '',
-		ptNextOfKinGivenName: '',
-		ptNextOfKinSurname: '',
-		ptNextOfKinRelationship: '',
-		ptNextOfKinMobilePhone: '',
-		ptNextOfKinHomePhone: '',
-		ptNextOfKinWorkPhone: '',
-		ptDVAFileNo: '',
-		ptDVAExpiryDate: '',
-		ptHealthcareCardNo: '',
-		ptHealthcareCardExpiryDate: '',
-		ptPensionCardNo: '',
-		ptPensionCardExpiryDate: '',
-	};
-
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
 	const validationSchema = Yup.object({
 		ptMedicareCardNo: Yup.string()
 			.min(10, 'Medicare card number must be exactly 10 digits long')
@@ -400,17 +400,14 @@ const PatientAdditionalDetails = () => {
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
+				dispatch(addPatient(values));
 			}}
-			// onSubmit={async(values) => {
-			// 	await new Promise((r) => setTimeout(r, 500));
-			// 	alert(JSON.stringify(values, null, 2));
-			// }}
 		>
 			{(formik) => (
 				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								Medicare and private health insurance
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -451,7 +448,7 @@ const PatientAdditionalDetails = () => {
 							placeholder="Private health fund number"
 						/>
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								Emergency contact
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -508,7 +505,7 @@ const PatientAdditionalDetails = () => {
 							/>
 						</SimpleGrid>
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								Next of kin
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -565,7 +562,7 @@ const PatientAdditionalDetails = () => {
 							/>
 						</SimpleGrid>
 						<Box py={4} className="text-center">
-							<Heading as="h1" size="md" py={4}>
+							<Heading as="h2" size="md" py={4}>
 								DVA, healthcare and pension cards
 							</Heading>
 							<Divider orientation="horizontal" />
@@ -634,7 +631,7 @@ const PatientAdditionalDetails = () => {
 	);
 };
 
-const PatientUpdateProfile = () => {
+const PatientAddProfile = () => {
 	return (
 		<Box>
 			<Tabs>
@@ -655,4 +652,4 @@ const PatientUpdateProfile = () => {
 	);
 };
 
-export default PatientUpdateProfile;
+export default PatientAddProfile;

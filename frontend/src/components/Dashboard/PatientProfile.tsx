@@ -12,7 +12,7 @@ import {
 	Link,
 	SimpleGrid,
 	Spacer,
-	Text,
+	Text
 } from '@chakra-ui/react';
 import CardContent from './CardContent';
 import { Link as ReachLink } from 'react-router-dom';

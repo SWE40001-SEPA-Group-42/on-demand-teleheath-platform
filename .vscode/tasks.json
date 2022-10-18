@@ -1,25 +1,75 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-        "label": "Start React client",
-        "command": "cd ./frontend;npm start;cd ..;",
-        "args": [],
-        "type": "shell",
-        "problemMatcher": [],
-        "group": {
-            "kind": "build"
-        }
-    },
-    {
-        "label": "Install React Node packages",
-        "command": "cd ./frontend;npm install;cd ..;",
-        "args": [],
-        "type": "shell",
-        "problemMatcher": [],
-        "group": {
-            "kind": "build"
-        }
-    }
-]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start React.js client",
+			"command": "cd ./frontend;npm start;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Start React.js production build",
+			"command": "cd ./frontend;npm run build;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Start React.js production static server",
+			"command": "cd ./frontend;serve -s build;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Install React.js node packages",
+			"command": "cd ./frontend;npm install;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Start Node.js server",
+			"command": "cd ./backend;npm run server;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Start WebRTC server",
+			"command": "cd ./backend/server;npm run socketServer;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		},
+		{
+			"label": "Install Server node packages",
+			"command": "cd ./backend;npm install;cd ..;",
+			"args": [],
+			"type": "shell",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build"
+			}
+		}
+	]
 }

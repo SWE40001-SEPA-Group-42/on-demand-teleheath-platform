@@ -137,7 +137,7 @@ describe("Clinic Routes", () => {
   });
 
   /*
-    //PUT /api/clinics/:id"
+  describe("PUT /api/clinics/:id", () => {
     describe("Given a clinic's ID", () => {
       test("their details will be updated with a 200 status code", async () => {
         const response = await request(app).put(`/api/clinics/1`).send({
@@ -157,8 +157,9 @@ describe("Clinic Routes", () => {
           expect(response.statusCode).toBe(200)
       })
     })
+  })
 
-    //DELETE /api/clinics/:id
+  describe("DELETE /api/clinics/:id", () => {
     describe("Given a clinic's details", () => {
       test("a clinic record should be deleted with a 200 status code", async () => {
 
