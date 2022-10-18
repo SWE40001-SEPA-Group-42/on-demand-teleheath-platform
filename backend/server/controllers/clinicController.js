@@ -2,49 +2,49 @@
 const asyncHandler = require("express-async-handler");
 const Clinic = require("../models/clinic");
 
-const getClinic = asyncHandler(async (request, response) => {
-  const clName = request.query.clName;
+const getClinic = asyncHandler(async (req, res) => {
+  const clName = req.query.clName;
   const clinics = await Clinic.find({ clName: clName });
 
   if (!clinics) {
-    response.status(400);
+    res.status(400);
     throw new Error(
       `Invalid Clinic Details: Missing inputs found in the request!`
     );
   } else {
-    response.status(200).json(clinics);
+    res.status(200).json(clinics);
   }
 });
 
-const addClinic = asyncHandler(async (request, response, next) => {
+const addClinic = asyncHandler(async (req, res, next) => {
   const clinic = await Clinic.create({
-    clName: request.body.clName,
+    clName: req.body.clName,
     clAddress: {
-      line1: request.body.clAddress.line1,
-      line2: request.body.clAddress.line2,
-      city: request.body.clAddress.city,
-      state: request.body.clAddress.state,
-      postcode: request.body.clAddress.postcode,
-      country: request.body.clAddress.country,
+      line1: req.body.clAddress.line1,
+      line2: req.body.clAddress.line2,
+      city: req.body.clAddress.city,
+      state: req.body.clAddress.state,
+      postcode: req.body.clAddress.postcode,
+      country: req.body.clAddress.country,
     },
-    clPhone: request.body.clPhone,
-    clEmailAddress: request.body.clEmailAddress,
+    clPhone: req.body.clPhone,
+    clEmailAddress: req.body.clEmailAddress,
   });
 
   if (!clinic) {
-    response.status(400);
+    res.status(400);
     throw new Error(
       `Invalid Clinic Details: Missing inputs found in the request!`
     );
   } else {
-    response.status(200).json(clinic);
+    res.status(200).json(clinic);
   }
 });
 
-const updateClinicByID = asyncHandler(async (request, response) => {
+const updateClinicByID = asyncHandler(async (req, res) => {
   const updatedClinic = await Clinic.findByIdAndUpdate(
-    request.params.id,
-    request.body,
+    req.params.id,
+    req.body,
     {
       new: true,
       runValidators: true,
@@ -53,10 +53,10 @@ const updateClinicByID = asyncHandler(async (request, response) => {
   );
 
   if (!updatedClinic) {
-    response.status(400);
+    res.status(400);
     throw new Error(`Invalid Clinic Search for update!`);
   } else {
-    response.status(200).json(updatedClinic);
+    res.status(200).json(updatedClinic);
   }
 });
 
@@ -95,7 +95,7 @@ const deleteClinicByID = asyncHandler(async (req, res) => {
 
 // DELETE - Clinic using name
 const deleteClinicByName = asyncHandler(async (req, res) => {
-  const clName = req.body.clName;
+  const clName = req.query.clName;
   const clinic = await Clinic.findOneAndRemove({ clName: clName });
 
   if (!clinic) {

@@ -3,10 +3,9 @@ const asyncHandler = require("express-async-handler");
 const Doctor = require("../models/doctor");
 
 // GET - Doctor
-const getDoctor = asyncHandler(async(req, res) => {
-
-    const drGivenName = req.query.drGivenName
-    const drSurname = req.query.drSurname
+const getDoctor = asyncHandler(async (req, res) => {
+  const drGivenName = req.query.drGivenName;
+  const drSurname = req.query.drSurname;
 
   const doctor = await Doctor.find({
     drGivenName: drGivenName,
@@ -35,6 +34,41 @@ const getAvailDoctor = asyncHandler(async (req, res) => {
     throw new Error(
       `Invalid Doctor Details: Missing inputs found in the request!`
     );
+  } else {
+    res.status(200).json(doctor);
+  }
+});
+
+const updateDoctorStatus = asyncHandler(async (req, res) => {
+  const drEmail = req.body.drEmail;
+  const drAvail = req.body.drAvail;
+
+  const updatedStatus = await Doctor.findOneAndUpdate(
+    {
+      drEmail: drEmail,
+    },
+    {
+      drAvail: drAvail,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedStatus) {
+    res.status(400);
+    throw new Error(`Unable to update doctor status`);
+  } else {
+    res.status(200).json(updatedStatus);
+  }
+});
+
+const getAllDoctors = asyncHandler(async (req, res) => {
+  const doctor = await Doctor.find({});
+
+  if (!doctor) {
+    res.status(400);
+    throw new Error(`Unable to find Doctor's table`);
   } else {
     res.status(200).json(doctor);
   }
@@ -135,8 +169,8 @@ const deleteDoctorByID = asyncHandler(async (req, res) => {
 
 // DELETE - Doctor using Name
 const deleteDoctorByName = asyncHandler(async (req, res) => {
-  const drGivenName = req.body.drGivenName;
-  const drSurname = req.body.drSurname;
+  const drGivenName = req.query.drGivenName;
+  const drSurname = req.query.drSurname;
   const doctor = await Doctor.findOneAndRemove({
     drGivenName: drGivenName,
     drSurname: drSurname,
@@ -153,6 +187,8 @@ const deleteDoctorByName = asyncHandler(async (req, res) => {
 module.exports = {
   getDoctor,
   getAvailDoctor,
+  updateDoctorStatus,
+  getAllDoctors,
   addDoctor,
   modifyDoctorByID,
   modifyDoctorByName,
