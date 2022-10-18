@@ -1,5 +1,4 @@
 // Handles the Patient Object API calls to the Back End
-const e = require("express");
 const asyncHandler = require("express-async-handler");
 const Patient = require("../models/patient");
 // GET - Patient
@@ -136,8 +135,8 @@ const deletePatientByID = asyncHandler(async (req, res) => {
 
 // DELETE - Patient using Name
 const deletePatientByName = asyncHandler(async (req, res) => {
-  const ptGivenName = req.body.ptGivenName;
-  const ptSurname = req.body.ptSurname;
+  const ptGivenName = req.query.ptGivenName;
+  const ptSurname = req.query.ptSurname;
 
   const patient = await Patient.findOneAndRemove({
     ptGivenName: ptGivenName,

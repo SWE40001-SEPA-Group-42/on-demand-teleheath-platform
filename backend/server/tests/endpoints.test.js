@@ -70,7 +70,7 @@ describe("Clinic Routes", () => {
   describe("Given a clinic's name", () => {
     //GET REQUEST providing Clinic Name
     test("my searched clinic will return with a 200 status code", async () => {
-      const response = await request(app).get("/api/clinics/").send({
+      const response = await request(app).get("/api/clinics/").query({
         clName: mockClinic.clName,
       });
       expect(response.statusCode).toBe(200);
@@ -169,7 +169,7 @@ describe("Doctor Routes", () => {
   //DASHBOARD REQUESTS
   describe("While in the Dashboard", () => {
     test("I can search for all available doctors", async () => {
-      const response = await request(app).get("/api/doctors/status/").send({});
+      const response = await request(app).get("/api/doctors/status/").query({});
       expect(response.statusCode).toBe(200);
       expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
@@ -191,7 +191,7 @@ describe("Doctor Routes", () => {
   //DASHBOARD REQUESTS
   describe("While in the Dashboard", () => {
     test("I can search for all available doctors", async () => {
-      const response = await request(app).get("/api/doctors/status/").send({});
+      const response = await request(app).get("/api/doctors/status/").query({});
       expect(response.statusCode).toBe(200);
       expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
@@ -244,7 +244,7 @@ describe("Doctor Routes", () => {
   describe("Given a doctor's first name and last name", () => {
     //GET REQUEST providing First name
     test("my searched doctor will return with a 200 status code", async () => {
-      const response = await request(app).get("/api/doctors/").send({
+      const response = await request(app).get("/api/doctors/").query({
         drGivenName: mockDoctor.drGivenName,
         drSurname: mockDoctor.drSurname,
       });
@@ -451,7 +451,7 @@ describe("Patient Routes", () => {
 
     //GET REQUEST provided First name
     test("my searched patient will return with a 200 status code", async () => {
-      const response = await request(app).get("/api/patients/").send({
+      const response = await request(app).get("/api/patients/").query({
         ptGivenName: mockPatient.ptGivenName,
         ptSurname: mockPatient.ptSurname,
       });
@@ -498,7 +498,7 @@ describe("Handling Appointments", () => {
   test("Able to search for an appointment", async () => {
     const response = await request(app)
       .get("/api/dashboard/appointment/")
-      .send({
+      .query({
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
       });
@@ -523,7 +523,7 @@ describe("Handling Appointments", () => {
       expect.stringContaining("json")
     );
   });
- 
+
   /* TODO Mock ID somehow
   test("Able to modify an appointment doctor or patient", async () => {
     const response = await request(app)
@@ -545,7 +545,7 @@ describe("Handling Appointments", () => {
   test("Able to delete an appointment", async () => {
     const response = await request(app)
       .delete("/api/dashboard/appointment/")
-      .send({
+      .query({
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
       });
@@ -559,7 +559,7 @@ describe("Handling Appointments", () => {
 describe("Clearing Data", () => {
   // DELETE REQUEST(S)
   test("my searched clinic will be deleted with a return with a 200 status code", async () => {
-    const response = await request(app).delete("/api/clinics/").send({
+    const response = await request(app).delete("/api/clinics/").query({
       clName: mockClinic.clName,
     });
     expect(response.statusCode).toBe(200);
@@ -581,7 +581,7 @@ describe("Clearing Data", () => {
   */
 
   test("my searched patient will be deleted with a return with a 200 status code", async () => {
-    const response = await request(app).delete("/api/patients/").send({
+    const response = await request(app).delete("/api/patients/").query({
       ptGivenName: mockPatient.ptGivenName,
       ptSurname: mockPatient.ptSurname,
     });
@@ -592,7 +592,7 @@ describe("Clearing Data", () => {
   });
 
   test("my searched doctor will be deleted with a return with a 200 status code", async () => {
-    const response = await request(app).delete("/api/doctors/").send({
+    const response = await request(app).delete("/api/doctors/").query({
       drGivenName: mockDoctor.drGivenName,
       drSurname: mockDoctor.drSurname,
     });

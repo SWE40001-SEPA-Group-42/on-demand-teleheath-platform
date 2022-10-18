@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const Clinic = require("../models/clinic");
 
 const getClinic = asyncHandler(async (req, res) => {
-  const clName = req.body.clName;
+  const clName = req.query.clName;
   const clinics = await Clinic.find({ clName: clName });
 
   if (!clinics) {
@@ -95,7 +95,7 @@ const deleteClinicByID = asyncHandler(async (req, res) => {
 
 // DELETE - Clinic using name
 const deleteClinicByName = asyncHandler(async (req, res) => {
-  const clName = req.body.clName;
+  const clName = req.query.clName;
   const clinic = await Clinic.findOneAndRemove({ clName: clName });
 
   if (!clinic) {

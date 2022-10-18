@@ -16,7 +16,7 @@ const patientRouter = express.Router();
 // CRUD Operations -> Patient
 patientRouter
   .route("/")
-  .get(getPatient)
+  .get(patientValidator((validationType = "patientName")), validate, getPatient)
   .post(
     patientValidator((validationType = "patientBody")),
     validate,

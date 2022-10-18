@@ -3,7 +3,7 @@ const { body, validationResult, query } = require("express-validator");
 const clinicValidator = (validationType) => {
   if (validationType == "clinicName") {
     return [
-      body("clName")
+      query("clName")
         .notEmpty()
         .isString()
         .withMessage("must provide a valid clinic name"),
@@ -82,12 +82,8 @@ const doctorValidator = (validationType) => {
   // Work in Progress
   if (validationType == "doctorName") {
     return [
-      query("drGivenName")
-        .isString()
-        .withMessage("must provide a given name"),
-      query("drSurname")
-        .isString()
-        .withMessage("must provide a surname"),
+      query("drGivenName").isString().withMessage("must provide a given name"),
+      query("drSurname").isString().withMessage("must provide a surname"),
     ];
   } else if (validationType == "doctorBody") {
     return [
@@ -199,11 +195,11 @@ const patientValidator = (validationType) => {
   // Work in Progress
   if (validationType == "patientName") {
     return [
-      body("ptGivenName")
+      query("ptGivenName")
         .notEmpty()
         .isString()
         .withMessage("must provide a given name"),
-      body("ptSurname")
+      query("ptSurname")
         .notEmpty()
         .isString()
         .withMessage("must provide a surname"),
@@ -473,7 +469,20 @@ const patientValidator = (validationType) => {
 };
 
 const dashboardValidator = (validationType) => {
-  if (validationType == "appointment") {
+  if (validationType == "appointmentParticipants") {
+    return [
+      query("ptEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a patient's email address"),
+      query("drEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a doctor's email address"),
+    ];
+  } else if (validationType == "appointment") {
     return [
       body("dateOfAppointment")
         .isDate()
@@ -487,12 +496,12 @@ const dashboardValidator = (validationType) => {
         .isEmail()
         .withMessage("must provide a valid email address")
         .notEmpty()
-        .withMessage("must provide a patient\'s email address"),
+        .withMessage("must provide a patient's email address"),
       body("drEmail")
         .isEmail()
         .withMessage("must provide a valid email address")
         .notEmpty()
-        .withMessage("must provide a doctor\'s email address"),
+        .withMessage("must provide a doctor's email address"),
     ];
   }
 };

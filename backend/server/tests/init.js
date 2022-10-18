@@ -170,18 +170,18 @@ const mockInvalidDoctor = new Doctor({
 
 // Mock Appointment Data
 const mockAppointment = new Appointment({
-    dateOfAppointment: "2022-01-20",
-    drEmail: mockDoctor.drEmail,
-    ptEmail: mockPatient.ptEmailAddress,
-    aptLink: "1kjNjsiu@doapl/!"
-})
+  dateOfAppointment: "2022-01-20",
+  drEmail: mockDoctor.drEmail,
+  ptEmail: mockPatient.ptEmailAddress,
+  aptLink: "1kjNjsiu@doapl/!",
+});
 
 const mockInvalidAppointment = new Appointment({
-    dateOfAppointment: "2022-01-20",
-    drEmail: mockInvalidDoctor.drEmail,
-    ptEmail: mockInvalidPatient.ptEmailAddress,
-    aptLink: ""
-})
+  dateOfAppointment: "2022-01-20",
+  drEmail: mockInvalidDoctor.drEmail,
+  ptEmail: mockInvalidPatient.ptEmailAddress,
+  aptLink: "",
+});
 
 module.exports = {
   mockClinic,
@@ -191,5 +191,5 @@ module.exports = {
   mockDoctor,
   mockInvalidDoctor,
   mockAppointment,
-  mockInvalidAppointment
+  mockInvalidAppointment,
 };

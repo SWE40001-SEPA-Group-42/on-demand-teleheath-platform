@@ -169,8 +169,8 @@ const deleteDoctorByID = asyncHandler(async (req, res) => {
 
 // DELETE - Doctor using Name
 const deleteDoctorByName = asyncHandler(async (req, res) => {
-  const drGivenName = req.body.drGivenName;
-  const drSurname = req.body.drSurname;
+  const drGivenName = req.query.drGivenName;
+  const drSurname = req.query.drSurname;
   const doctor = await Doctor.findOneAndRemove({
     drGivenName: drGivenName,
     drSurname: drSurname,

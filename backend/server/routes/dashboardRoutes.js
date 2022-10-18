@@ -16,7 +16,11 @@ const dashboardRouter = express.Router();
 // CRUD Operations -> Clinic
 dashboardRouter
   .route("/appointment/")
-  .get(searchForAppointment)
+  .get(
+    dashboardValidator((validationType = "appointmentParticipants")),
+    validate,
+    searchForAppointment
+  )
   .post(
     dashboardValidator((validationType = "appointment")),
     validate,
@@ -27,7 +31,11 @@ dashboardRouter
     validate,
     updateAppointment
   )
-  .delete(deleteAppointment);
+  .delete(
+    dashboardValidator((validationType = "appointmentParticipants")),
+    validate,
+    deleteAppointment
+  );
 dashboardRouter
   .route("/appointment/:id")
   .put(

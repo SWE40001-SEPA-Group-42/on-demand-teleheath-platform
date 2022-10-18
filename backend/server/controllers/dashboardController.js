@@ -4,8 +4,8 @@ const Appointment = require("../models/appointment");
 
 // GET
 const searchForAppointment = asyncHandler(async (req, res) => {
-  const ptEmail = req.body.ptEmail;
-  const drEmail = req.body.drEmail;
+  const ptEmail = req.query.ptEmail;
+  const drEmail = req.query.drEmail;
 
   const appointment = await Appointment.find({
     ptEmail: ptEmail,
@@ -67,8 +67,8 @@ const updateAppointment = asyncHandler(async (req, res) => {
 
 // DELETE
 const deleteAppointment = asyncHandler(async (req, res) => {
-  const ptEmail = req.body.ptEmail;
-  const drEmail = req.body.drEmail;
+  const ptEmail = req.query.ptEmail;
+  const drEmail = req.query.drEmail;
   const appointment = await Appointment.findOneAndRemove({
     ptEmail: ptEmail,
     drEmail: drEmail,
