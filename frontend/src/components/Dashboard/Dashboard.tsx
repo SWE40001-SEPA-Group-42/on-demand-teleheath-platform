@@ -3,6 +3,13 @@ import DashboardNavbar from '../Dashboard/DashboardNavbar';
 import PatientTable from '../Dashboard/Table/PatientTable';
 import { createColumnHelper } from '@tanstack/react-table';
 import axios from 'axios';
+import {useEffect} from 'react'
+import {useAppDispatch, useAppSelector} from '../../redux/hooks'
+import {fetchDoctors} from '../../redux/Doctor/doctorsSlice'
+import Userfront from '@userfront/react';
+import { Navigate} from 'react-router-dom';
+
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 type Doctor = {
 	drName: String;
@@ -53,6 +60,7 @@ const columns = [
 	}),
 ];
 
+
 const patient = {
 	imgSrc:
 		'https://images.unsplash.com/photo-1542740348-39501cd6e2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80',
@@ -60,37 +68,50 @@ const patient = {
 	surname: 'Cooper',
 };
 
+
 const Dashboard = () => {
+	//NJ - Edited
 	// const dispatch = useAppDispatch();
-	// const doctor = useAppSelector(state => state.doctors);
+
+    // useEffect(() => {
+    //     dispatch(fetchDoctors())
+    // }, [])
+
+    // const res = useAppSelector(state => state.doctors.data);
+
+    // const data : Doctor[] = []
+    // res.forEach(element => {
+    //     const temp : Doctor = {
+    //         drName: element.drGivenName + " " +element.drSurname, 
+    //         drGender: element.drBirthSex, 
+    //         drLanguagesSpoken: element.drLanguagesSpoken, 
+    //         drSpecialisations: element.drQualifications
+    //     }
+    //     data.push(temp)
+    // })
+    // console.log(data)
+
+
+	//its working now
+	if(Object.keys(Userfront.user.data).length === 0) {
+		return <Navigate to='/patient/profile/add' replace /> 
+	}
+	console.log(Userfront.user.data.isRegisted)
 
 	const patientName = [patient.givenName, patient.surname].join(' ');
 	return (
 		<>
 			<DashboardNavbar userName={patientName} userImgSrc={patient.imgSrc} />
-			<Text
-				fontSize="2xl"
-				textAlign="left"
-				pl="30px"
-				my="30px"
-				style={{ fontWeight: 'bold' }}
-			>
+
+			{/* the Welcome, Patient Name */}
+			<Text fontSize="2xl" textAlign="left" pl="30px" my="30px" style={{ fontWeight: 'bold' }}>
 				Welcome, {patientName}
 			</Text>
-			<Text
-				fontSize="2xl"
-				textAlign="left"
-				pl="30px"
-				my="30px"
-				style={{ fontWeight: 'bold' }}
-			>
+
+			<Text fontSize="2xl" textAlign="left" pl="30px" my="30px" style={{ fontWeight: 'bold' }}>
 				DASHBOARD
 			</Text>
-			{/* {doctor == "" ? <LoadingIcon> : <PatientTable columns={columns} data={data}/>} */}
 			<PatientTable columns={columns} data={data} />
-
-			{/* This icon below is used for when the doctor data is not ready */}
-			{/* <LoadingIcon />  */}
 		</>
 	);
 };

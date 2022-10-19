@@ -124,12 +124,14 @@ export const PatientTable = <Data extends object>({
 	return (
 		<Box className="w-10/12 mx-auto">
 			<Flex className="w-full">
-				<DebouncedInput
+				{/* <DebouncedInput
 					value={globalFilter ?? ''}
 					onChange={(value) => setGlobalFilter(String(value))}
 					className="w-3/4 p-4 font-lg shadow border rounded-md"
 					placeholder="Search doctor"
-				/>
+				/> */}
+
+				{/* This is the Refine Search Container */}
 				<SearchFilter />
 			</Flex>
 			<Table>
@@ -164,7 +166,7 @@ export const PatientTable = <Data extends object>({
 												}[header.column.getIsSorted() as string] ?? null}
 											</div>
 											{header.column.getCanFilter() ? (
-												<Box className="flex justify-center items-center h-12 text-sm text-center">
+												<Box className="flex justify-center items-center h-10 text-sm text-center">
 													<Filter column={header.column} table={table} />
 												</Box>
 											) : null}
@@ -241,7 +243,7 @@ function Filter({
 						? 'Languages'
 						: column.columnDef.header
 				}`}
-				className="text-center h-12 border shadow rounded"
+				className="pl-3 h-10 border shadow rounded"
 				list={column.id + 'list'}
 			/>
 			<div className="h-1" />
