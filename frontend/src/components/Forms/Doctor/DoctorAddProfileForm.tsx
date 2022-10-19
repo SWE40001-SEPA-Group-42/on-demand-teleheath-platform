@@ -1,15 +1,20 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
-import { Box, Button, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, SimpleGrid , useToast} from '@chakra-ui/react';
 import InputField from '../../CustomFormFields/InputField';
 import BirthSexField from '../../CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../../CustomFormFields/BirthSexSelectField';
 import LanguagesSpokenField from '../../CustomFormFields/LanguagesSpokenField';
 import LanguagesSpokenSelectField from '../../CustomFormFields/LanguagesSpokenSelectField';
-
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addDoctor } from '../../../redux/Doctor/doctorsSlice';
+import Userfront from '@userfront/react';
+import {Doctor} from '../../../types/Doctor'
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
+
+
 
 const DoctorAddProfileForm = () => {
 	const dispatch = useAppDispatch();
@@ -123,18 +128,76 @@ const DoctorAddProfileForm = () => {
 			.oneOf(languagesSpokenOptions),
 	});
 
+
+	//using Toast
+	const toast = useToast()
+    const navigate = useNavigate()
+
+
+
+	const DoctorHandler = (values : Doctor, actions : Doctor) => {
+		
+	}
+
+
 	return (
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values, actions) => {
+			onSubmit={async (values, actions) => {
 				actions.setSubmitting(false);
-				console.log(values);
-				dispatch(addDoctor(values));
-				if (doctors.error == '') {
-					alert('Add doctor profile successfully!');
-					// window.location.reload()
+				// console.log(values);
+
+				
+				//USERFRONT
+				//method
+				//email
+				//name
+				
+				let drFullName = values.drGivenName + values.drSurname
+				console.log(drFullName.toLowerCase())
+				//userName
+				console.log(values.drPreferredName)
+				//data (CustomData)
+				//password
+				try {
+					const res = await Userfront.signup({
+						method: "password", 
+						email: values.drEmail, 
+						name: values.drGivenName + " " + values.drSurname, 
+						username: drFullName.toLowerCase(),
+						data: {
+							isRegistered: true
+						}, 
+						password: drFullName.toLowerCase() + 1234, 
+						redirect: false
+					})
+
+					console.log(res)
+					if(res) {
+						toast({
+							title: 'Account created.',
+							description: "We've created your account for you.",
+							status: 'success',
+							duration: 6000,
+							isClosable: true,
+						})
+						setTimeout(() => {
+							return navigate("/dashboard");
+						}, 500)
+					}
+				} catch(error) {
+					console.log(error)
 				}
+
+				//BACKEND
+
+				
+				// dispatch(addDoctor(values));
+				// if (doctors.error == '') {
+				// 	alert('Add doctor profile successfully!');
+				// 	// window.location.reload()
+				// }
 			}}
 		>
 			{(formik) => (
