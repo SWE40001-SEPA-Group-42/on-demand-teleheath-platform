@@ -18,7 +18,11 @@ const appointmentSchema = mongoose.Schema(
     },
     aptLink: {
       type: String,
-      required: [true, "Please provide an appointment link"],
+    },
+    aptStatus: {
+      type: Boolean,
+      default: false,
+      required: [true, "No status found for appointment"],
     },
   },
   {

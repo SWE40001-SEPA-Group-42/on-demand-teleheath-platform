@@ -1,6 +1,8 @@
 const express = require("express");
 const {
   searchForAppointment,
+  checkForAppointmentStatus,
+  updateAppointmentStatus,
   createAppointment,
   updateAppointment,
   updateAppointmentByID,
@@ -35,6 +37,14 @@ dashboardRouter
     dashboardValidator((validationType = "appointmentParticipants")),
     validate,
     deleteAppointment
+  );
+dashboardRouter
+  .route("/appointment/status/")
+  .get(checkForAppointmentStatus)
+  .put(
+    dashboardValidator((validationType = "appointmentUpdate")),
+    validate,
+    updateAppointmentStatus
   );
 dashboardRouter
   .route("/appointment/:id")
