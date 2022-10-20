@@ -12,7 +12,7 @@ import LayoutsWithNavbar from '../shared/LayoutsWithNavbar';
 import { Login, Logout, Signup, Reset } from '../Authentication';
 
 // Landing Page
-// import Home from '../../components/LandingPage/Home';
+import LandingPage from '../../components/LandingPage/LandingPage';
 
 // Clinic
 // import ClinicAddProfile from '../../containers/Clinic/ClinicAddProfile';
@@ -21,7 +21,6 @@ import ClinicUpdateProfile from '../../containers/Clinic/ClinicUpdateProfile';
 // Doctor
 // import DoctorAddProfile from '../../containers/Doctor/DoctorAddProfile';
 import DoctorUpdateProfile from '../../containers/Doctor/DoctorUpdateProfile';
-// import DoctorVideoCall from '../../containers/Doctor/VideoCall';
 
 // Patient
 // import PatientAddProfile from '../../containers/Patient/PatientAddProfile';
@@ -31,9 +30,9 @@ import PatientUpdateProfile from '../../containers/Patient/PatientUpdateProfile'
 import Dashboard from '../Dashboard/Dashboard';
 import PatientProfile from '../Dashboard/Profiles/PatientProfile';
 
-//Video Call
-import CreateRoom from '../../containers/VideoCall/CreateRoom';
-import Room from '../../containers/VideoCall/Room';
+// Video Call
+import JoinCall from '../../containers/VideoCall/JoinCall';
+import ConsultationRoom from '../../containers/VideoCall/ConsultationRoom';
 import NotFoundPage from '../NotFoundPage';
 
 Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
@@ -57,7 +56,7 @@ const Routing = () => {
         path="video-call"
         element={
           <RequireAuth>
-            <CreateRoom />
+            <JoinCall />
           </RequireAuth>
         }
       />
@@ -65,7 +64,7 @@ const Routing = () => {
         path="room/:roomId"
         element={
           <RequireAuth>
-            <Room />
+            <ConsultationRoom />
           </RequireAuth>
         }
       />

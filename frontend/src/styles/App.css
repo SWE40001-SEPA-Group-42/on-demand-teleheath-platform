@@ -1,5 +1,9 @@
 @import './components/index';
 
+* {
+	@apply m-0 p-0;
+}
+
 .app {
-  @apply box-border bg-white;
+  @apply box-border bg-page;
 }
