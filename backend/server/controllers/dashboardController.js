@@ -114,8 +114,58 @@ const deleteAppointmentByID = asyncHandler(async (req, res) => {
   }
 });
 
+// Appointment Status calls
+const checkForAppointmentStatus = asyncHandler(async (req, res) => {
+  const aptStatus = req.query.aptStatus;
+
+  const appointment = await Appointment.find({
+    aptStatus: aptStatus,
+  });
+
+  if (!appointment) {
+    res.status(400);
+    throw new Error(`Unable to find appointment status`);
+  } else {
+    res.status(200).json(appointment);
+  }
+});
+
+// Check if this is required [Minh]
+const updateAppointmentStatus = asyncHandler(async (req, res) => {
+  const ptEmail = req.body.ptEmail;
+  const drEmail = req.body.drEmail;
+  const aptLink = req.body.aptLink;
+  const aptStatus = req.body.aptStatus;
+
+  const updatedAppointment = await Appointment.findOneAndUpdate(
+    {
+      ptEmail: ptEmail,
+      drEmail: drEmail,
+    },
+    {
+      $set: {
+        aptLink: aptLink,
+        aptStatus: aptStatus,
+      },
+    },
+    {
+      new: true,
+      context: "query",
+    }
+  );
+
+  if (!updatedAppointment) {
+    res.status(400);
+    throw new Error(`Invalid Appointment search for update!`);
+  } else {
+    res.status(200).json(updatedAppointment);
+  }
+});
+
 module.exports = {
   searchForAppointment,
+  checkForAppointmentStatus,
+  updateAppointmentStatus,
   createAppointment,
   updateAppointment,
   updateAppointmentByID,

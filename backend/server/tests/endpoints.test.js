@@ -474,7 +474,8 @@ describe("Handling Appointments", () => {
         dateOfAppointment: "2022-01-18",
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
-        aptLink: mockAppointment.aptLink,
+        aptLink: '',
+        aptStatus: mockAppointment.aptStatus,
       });
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toEqual(
@@ -490,6 +491,7 @@ describe("Handling Appointments", () => {
         drEmail: mockInvalidAppointment.drEmail,
         ptEmail: mockInvalidAppointment.ptEmail,
         aptLink: mockInvalidAppointment.aptLink,
+        aptStatus: mockInvalidAppointment.aptStatus,
       });
     expect(response.statusCode).toBe(422);
   });
@@ -508,6 +510,18 @@ describe("Handling Appointments", () => {
     );
   });
 
+  test("Able to search for appointment status", async () => {
+    const response = await request(app)
+      .get("/api/dashboard/appointment/status/")
+      .query({
+        aptStatus: mockAppointment.aptStatus
+      });
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toEqual(
+      expect.stringContaining("json")
+    );
+  });
+
   // PUT REQUEST
   test("Able to modify an appointment date", async () => {
     const response = await request(app)
@@ -516,7 +530,24 @@ describe("Handling Appointments", () => {
         dateOfAppointment: "2022-01-20",
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
+        aptLink: '',
+        aptStatus: mockAppointment.aptStatus,
+      });
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toEqual(
+      expect.stringContaining("json")
+    );
+  });
+
+  test("Able to modify an appointment status", async () => {
+    const response = await request(app)
+      .put("/api/dashboard/appointment/status/")
+      .send({
+        dateOfAppointment: mockAppointment.dateOfAppointment,
+        drEmail: mockAppointment.drEmail,
+        ptEmail: mockAppointment.ptEmail,
         aptLink: mockAppointment.aptLink,
+        aptStatus: true,
       });
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toEqual(

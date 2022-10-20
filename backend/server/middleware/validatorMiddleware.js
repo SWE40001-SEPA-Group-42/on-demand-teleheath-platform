@@ -488,10 +488,25 @@ const dashboardValidator = (validationType) => {
         .isDate()
         .notEmpty()
         .withMessage("must provide an appointment date"),
+      body("aptStatus").isBoolean().notEmpty(),
+      body("ptEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a patient's email address"),
+      body("drEmail")
+        .isEmail()
+        .withMessage("must provide a valid email address")
+        .notEmpty()
+        .withMessage("must provide a doctor's email address"),
+    ];
+  } else if (validationType == "appointmentUpdate") {
+    return [
       body("aptLink")
         .isString()
         .notEmpty()
         .withMessage("must provide a session link"),
+      body("aptStatus").isBoolean().notEmpty(),
       body("ptEmail")
         .isEmail()
         .withMessage("must provide a valid email address")

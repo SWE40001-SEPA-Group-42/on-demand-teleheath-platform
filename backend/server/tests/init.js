@@ -174,6 +174,7 @@ const mockAppointment = new Appointment({
   drEmail: mockDoctor.drEmail,
   ptEmail: mockPatient.ptEmailAddress,
   aptLink: "1kjNjsiu@doapl/!",
+  aptStatus: false,
 });
 
 const mockInvalidAppointment = new Appointment({
@@ -181,6 +182,7 @@ const mockInvalidAppointment = new Appointment({
   drEmail: mockInvalidDoctor.drEmail,
   ptEmail: mockInvalidPatient.ptEmailAddress,
   aptLink: "",
+  aptStatus: "",
 });
 
 module.exports = {
