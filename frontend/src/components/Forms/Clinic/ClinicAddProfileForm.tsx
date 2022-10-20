@@ -4,6 +4,7 @@ import { Box, Button, Heading, SimpleGrid } from '@chakra-ui/react';
 import InputField from '../../CustomFormFields/InputField';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addClinic } from '../../../redux/Clinic/clinicsSlice';
+import { Clinic } from '../../../types/Clinic';
 
 const ClinicAddProfile = () => {
 	const dispatch = useAppDispatch();
@@ -74,11 +75,14 @@ const ClinicAddProfile = () => {
 		// ),
 	});
 
+
 	return (
 		<Formik
 			initialValues={initialValue}
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
+				
+				//BACKEND
 				console.log(JSON.stringify(values));
 				dispatch(addClinic(values));
 			}}

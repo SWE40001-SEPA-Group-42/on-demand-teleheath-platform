@@ -1,5 +1,7 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import Userfront from '@userfront/react';
 import {
 	Box,
 	Button,
@@ -11,12 +13,18 @@ import {
 	TabPanels,
 	Tab,
 	TabPanel,
+	useToast
 } from '@chakra-ui/react';
 import InputField from '../../CustomFormFields/InputField';
 import BirthSexField from '../../CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../../CustomFormFields/BirthSexSelectField';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addPatient } from '../../../redux/Patient/patientsSlice';
+import { Doctor } from '../../../types/Doctor';
+import { Patient } from '../../../types/Patient';
+
+
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 const initialValues = {
 	ptGivenName: '',
@@ -62,6 +70,10 @@ const initialValues = {
 };
 
 const PatientBasicDetails = () => {
+	const toast = useToast()
+	const navigate = useNavigate()
+
+
 	const dispatch = useAppDispatch();
 	const patients = useAppSelector((state) => state.patients);
 	const birthSexOptions = ['male', 'female', 'other'];
@@ -136,13 +148,57 @@ const PatientBasicDetails = () => {
 		}),
 	});
 
+
+
+	async function ptUserFrontHandler(values : Patient){
+		//USERFRONT
+		let ptFullName = values.ptGivenName + values.ptSurname
+		console.log(ptFullName.toLowerCase())
+		console.log(values.ptPreferredName)
+		try {
+			const res = await Userfront.signup({
+				method: "password", 
+				email: values.ptEmailAddress, 
+				name: values.ptGivenName + " " + values.ptSurname, 
+				username: ptFullName.toLowerCase(),
+				data: {
+					isRegistered: true
+				}, 
+				password: ptFullName.toLowerCase() + 1234, 
+				redirect: false
+			})
+
+			console.log(res)
+			if(res) {
+				toast({
+					title: 'Account created.',
+					description: "We've created your account for you.",
+					status: 'success',
+					duration: 6000,
+					isClosable: true,
+				})
+			}
+		} catch(error) {
+			console.log(error)
+		}
+
+
+	}
+
+
+
 	return (
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
-				console.log(JSON.stringify(values));
-				dispatch(addPatient(values));
+				//USERFRONT
+				ptUserFrontHandler(values);
+
+
+				//BACKEND
+				// console.log(JSON.stringify(values));
+				// dispatch(addPatient(values));
 			}}
 		>
 			{(formik) => (
@@ -301,103 +357,106 @@ const PatientBasicDetails = () => {
 const PatientAdditionalDetails = () => {
 	const dispatch = useAppDispatch();
 	const patients = useAppSelector((state) => state.patients);
-	const validationSchema = Yup.object({
-		ptMedicareCardNo: Yup.string()
-			.min(10, 'Medicare card number must be exactly 10 digits long')
-			.matches(/^\d{10}$/, 'Only numbers are allowed for this field'),
-		ptMedicareCardIRN: Yup.string()
-			.max(1, 'Medicare card IRN must be exactly 10 digits long')
-			.matches(/^[0-9]$/, 'Only numbers are allowed for this field'),
-		ptMedicareCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
-			'Please enter a valid date in the format: MM-YYYY'
-		),
-		ptPrivateHealthFund: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptPrivateHealthFundNo: Yup.string().matches(
-			/^[0-9]$/,
-			'Only numbers are allowed for this field'
-		),
-		ptEmgContactGivenName: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptEmgContactSurname: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptEmgContactRelationship: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptEmgContactMobilePhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptEmgContactHomePhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptEmgContactWorkPhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptNextOfKinGivenName: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptNextOfKinSurname: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptNextOfKinRelationship: Yup.string().matches(
-			/^[A-Za-z]+$/,
-			'Only alphabets are allowed for this field'
-		),
-		ptNextOfKinMobilePhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptNextOfKinHomePhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptNextOfKinWorkPhone: Yup.string().matches(
-			/^\+(?:[0-9] ?){6,14}[0-9]$/,
-			'Please enter a valid phone number'
-		),
-		ptDVAFileNo: Yup.string().matches(
-			/^\d{10}$/,
-			'Only numbers are allowed for this field'
-		),
-		ptDVAExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
-			'Please enter a valid date in the format: MM-YYYY'
-		),
-		ptHealthcareCardNo: Yup.string().matches(
-			/^\d{10}$/,
-			'Only numbers are allowed for this field'
-		),
-		ptHealthcareCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
-			'Please enter a valid date in the format: MM-YYYY'
-		),
-		ptPensionCardNo: Yup.string().matches(
-			/^\d{10}$/,
-			'Only numbers are allowed for this field'
-		),
-		ptPensionCardExpiryDate: Yup.string().matches(
-			/^(0[1-9]|1[0-2])-\d{4}$/,
-			'Please enter a valid date in the format: MM-YYYY'
-		),
-	});
+	// const validationSchema = Yup.object({
+	// 	ptMedicareCardNo: Yup.string()
+	// 		.min(10, 'Medicare card number must be exactly 10 digits long')
+	// 		.matches(/^\d{10}$/, 'Only numbers are allowed for this field'),
+	// 	ptMedicareCardIRN: Yup.string()
+	// 		.max(1, 'Medicare card IRN must be exactly 10 digits long')
+	// 		.matches(/^[0-9]$/, 'Only numbers are allowed for this field'),
+	// 	ptMedicareCardExpiryDate: Yup.string().matches(
+	// 		/^(0[1-9]|1[0-2])-\d{4}$/,
+	// 		'Please enter a valid date in the format: MM-YYYY'
+	// 	),
+	// 	ptPrivateHealthFund: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptPrivateHealthFundNo: Yup.string().matches(
+	// 		/^[0-9]$/,
+	// 		'Only numbers are allowed for this field'
+	// 	),
+	// 	ptEmgContactGivenName: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptEmgContactSurname: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptEmgContactRelationship: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptEmgContactMobilePhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptEmgContactHomePhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptEmgContactWorkPhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptNextOfKinGivenName: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptNextOfKinSurname: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptNextOfKinRelationship: Yup.string().matches(
+	// 		/^[A-Za-z]+$/,
+	// 		'Only alphabets are allowed for this field'
+	// 	),
+	// 	ptNextOfKinMobilePhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptNextOfKinHomePhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptNextOfKinWorkPhone: Yup.string().matches(
+	// 		/^\+(?:[0-9] ?){6,14}[0-9]$/,
+	// 		'Please enter a valid phone number'
+	// 	),
+	// 	ptDVAFileNo: Yup.string().matches(
+	// 		/^\d{10}$/,
+	// 		'Only numbers are allowed for this field'
+	// 	),
+	// 	ptDVAExpiryDate: Yup.string().matches(
+	// 		// ^(0[1-9]|1[0-2])-\d{4}$
+	// 		/^(0[1-9]|1[0-2])-\d{4}$/,
+	// 		'Please enter a valid date in the format: MM-YYYY'
+	// 	),
+	// 	ptHealthcareCardNo: Yup.string().matches(
+	// 		/^\d{10}$/,
+	// 		'Only numbers are allowed for this field'
+	// 	),
+	// 	ptHealthcareCardExpiryDate: Yup.string().matches(
+	// 		/^(0[1-9]|1[0-2])-\d{4}$/,
+	// 		'Please enter a valid date in the format: MM-YYYY'
+	// 	),
+	// 	ptPensionCardNo: Yup.string().matches(
+	// 		/^\d{10}$/,
+	// 		'Only numbers are allowed for this field'
+	// 	),
+	// 	ptPensionCardExpiryDate: Yup.string().matches(
+	// 		// /^(0[1-9]|1[0-2])-\d{4}$/,
+	// 		// 'Please enter a valid date in the format: MM-YYYY'
+	// 		/^\d{10}$/,
+	// 		'Only numbers are allowed for this field'
+	// 	),
+	// });
 
 	return (
 		<Formik
 			initialValues={initialValues}
-			validationSchema={validationSchema}
+			// validationSchema={validationSchema}
 			onSubmit={(values) => {
 				console.log(JSON.stringify(values));
 				dispatch(addPatient(values));

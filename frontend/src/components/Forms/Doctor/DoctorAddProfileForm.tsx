@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
 import { Box, Button, Divider, Heading, SimpleGrid , useToast} from '@chakra-ui/react';
@@ -135,31 +135,11 @@ const DoctorAddProfileForm = () => {
 
 
 
-	const DoctorHandler = (values : Doctor, actions : Doctor) => {
-		
-	}
-
-
-	return (
-		<Formik
-			initialValues={initialValues}
-			validationSchema={validationSchema}
-			onSubmit={async (values, actions) => {
-				actions.setSubmitting(false);
-				// console.log(values);
-
-				
-				//USERFRONT
-				//method
-				//email
-				//name
-				
-				let drFullName = values.drGivenName + values.drSurname
+	async function drUserFrontHandler(values : Doctor) {
+		let drFullName = values.drGivenName + values.drSurname
 				console.log(drFullName.toLowerCase())
-				//userName
 				console.log(values.drPreferredName)
-				//data (CustomData)
-				//password
+
 				try {
 					const res = await Userfront.signup({
 						method: "password", 
@@ -189,10 +169,20 @@ const DoctorAddProfileForm = () => {
 				} catch(error) {
 					console.log(error)
 				}
+	}
+
+	return (
+		<Formik
+			initialValues={initialValues}
+			validationSchema={validationSchema}
+			onSubmit={async (values, actions) => {
+				actions.setSubmitting(false);
+
+				//USERFRONT HANDLER
+				drUserFrontHandler(values)
+
 
 				//BACKEND
-
-				
 				// dispatch(addDoctor(values));
 				// if (doctors.error == '') {
 				// 	alert('Add doctor profile successfully!');
