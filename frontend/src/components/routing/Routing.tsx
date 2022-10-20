@@ -54,6 +54,9 @@ const Routing = () => {
 								<p onClick={() => navigate("/")}>Click here to go back</p>
 							</div>
 							} />
+
+
+							
 				{/* PROTECTED ROUTES */}
 				<Route path="video-call" element={<RequireAuth><CreateRoom /></RequireAuth>} />
 				<Route path="room/:roomId" element={<RequireAuth><Room /></RequireAuth>} />
