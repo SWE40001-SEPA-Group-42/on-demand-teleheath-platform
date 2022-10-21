@@ -64,6 +64,7 @@ const addPatient = asyncHandler(async (req, res) => {
     ptHealthcareCardExpiryDate: req.body.ptHealthcareCardExpiryDate,
     ptPensionCardNo: req.body.ptPensionCardNo,
     ptPensionCardExpiryDate: req.body.ptPensionCardExpiryDate,
+    ptId: req.body.ptId
   });
 
   if (!patient) {

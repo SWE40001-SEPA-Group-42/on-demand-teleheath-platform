@@ -25,6 +25,10 @@ import { Patient } from '../../../types/Patient';
 
 
 import {validationSchema} from './PatientHelper'
+import { useState } from 'react';
+import { number } from 'yup/lib/locale';
+import { sample } from 'lodash';
+import e from 'cors';
 
 Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
@@ -35,6 +39,7 @@ Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 // console.log(Userfront.tokens)
 
 const initialValues = {
+	ptId: '',
 	ptGivenName: '',
 	ptSurname: '',
 	ptPreferredName: '',
@@ -79,16 +84,21 @@ const initialValues = {
 
 
 
+
+
+
+
 const PatientBasicDetails = () => {
 	const toast = useToast()
 
+
 	const dispatch = useAppDispatch();
-	const patients = useAppSelector((state) => state.patients);
 
 
-	async function ptUserFrontHandler(values : Patient){
-		//USERFRONT API
-		try {
+	
+async function ptUserFrontHandler(values : Patient){
+	//USERFRONT API
+	try {
 		const payload = {
 			email: values.ptEmailAddress,
 			username: values.ptGivenName.trim() + values.ptSurname.trim(),
@@ -99,19 +109,35 @@ const PatientBasicDetails = () => {
 				ptSurname: values.ptSurname
 			}
 			};
-			
-			const response = await fetch("https://api.userfront.com/v0/users", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
-			}, 
-			body: JSON.stringify(payload)
-			});
-			
-			console.log(response.json());
 
-		if(response) {
+
+		let patientId;
+		await fetch("https://api.userfront.com/v0/users", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
+		}, 
+		body: JSON.stringify(payload)
+		})
+		//get json()
+		.then(res => res.json())
+		//get actual data
+		.then(data => patientId = data.userId)
+
+
+		//UserFront successfully created -> Pass in the userID
+		let validate = false
+		if(patientId) {
+			console.log(patientId)
+			values.ptId = patientId
+			const res = dispatch(addPatient(values));
+			if(((await res).meta.requestStatus === "fulfilled")) {
+				validate = true
+			}
+		}
+		
+		if(validate == true) {
 			toast({
 				title: 'Account created.',
 				description: "We've created your account for you.",
@@ -119,14 +145,20 @@ const PatientBasicDetails = () => {
 				duration: 6000,
 				isClosable: true,
 			})
+		} else {
+			toast({
+					title: 'Account created denied.',
+					description: "We cannot create a new account",
+					status: 'error',
+					duration: 6000,
+					isClosable: true,
+				})
 		}
+
 		} catch(error) {
 			console.log(error)
 		}
-
-
-	}
-
+}
 
 
 	return (
@@ -134,15 +166,12 @@ const PatientBasicDetails = () => {
 			initialValues={initialValues}
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
-				//USERFRONT
-				ptUserFrontHandler(values); 
-				//BACKEND
-				// console.log(JSON.stringify(values));
-				// dispatch(addPatient(values));
+				ptUserFrontHandler(values);
+				
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
+				<Box px={[4, 4, 4, 4, 8, 8, 10]} className="form-margin-y">
 					<form onSubmit={formik.handleSubmit} className="form-container">
 						<Box py={4} className="text-center">
 							<Heading as="h2" size="md" py={4}>
@@ -209,12 +238,12 @@ const PatientBasicDetails = () => {
 								label="Mobile phone number"
 								placeholder="Mobile phone number"
 							/>
-							{/* <InputField
+							<InputField
 								name="ptHomePhone"
 								type="text"
 								label="Home phone number"
 								placeholder="Home phone number"
-							/> */}
+							/>
 							<InputField
 								name="ptWorkPhone"
 								type="text"
@@ -278,44 +307,6 @@ const PatientBasicDetails = () => {
 								placeholder="Country"
 							/>
 						</SimpleGrid>
-						<Button
-							type="submit"
-							colorScheme="blue"
-							variant="solid"
-							w="100%"
-							my={5}
-						>
-							Save changes
-						</Button>
-					</form>
-				</Box>
-			)}
-		</Formik>
-	);
-};
-
-const PatientAdditionalDetails = () => {
-	const dispatch = useAppDispatch();
-	const patients = useAppSelector((state) => state.patients);
-
-	return (
-		<Formik
-			initialValues={initialValues}
-			// validationSchema={validationSchema}
-			onSubmit={(values) => {
-				console.log(JSON.stringify(values));
-				dispatch(addPatient(values));
-			}}
-		>
-			{(formik) => (
-				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
-					<form onSubmit={formik.handleSubmit} className="form-container">
-						<Box py={4} className="text-center">
-							<Heading as="h2" size="md" py={4}>
-								Medicare and private health insurance
-							</Heading>
-							<Divider orientation="horizontal" />
-						</Box>
 						<InputField
 							name="ptMedicareCardNo"
 							type="text"
@@ -334,7 +325,7 @@ const PatientAdditionalDetails = () => {
 							/>
 							<InputField
 								name="ptMedicareCardExpiryDate"
-								type="date"
+								type="text"
 								label="Valid until"
 								placeholder="Valid until"
 							/>
@@ -362,13 +353,13 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgGivenName"
+								name="ptEmgContactGivenName"
 								type="text"
 								label="Given name(s)"
 								placeholder="Given name(s)"
 							/>
 							<InputField
-								name="ptEmgSurname"
+								name="ptEmgContactSurname"
 								type="text"
 								label="Surname"
 								placeholder="Surname"
@@ -379,13 +370,13 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgRelationship"
+								name="ptEmgContactRelationship"
 								type="text"
 								label="Relationship"
 								placeholder="Relationship to you"
 							/>
 							<InputField
-								name="ptEmgMobilePhone"
+								name="ptEmgContactMobilePhone"
 								type="text"
 								label="Mobile phone number"
 								placeholder="Mobile phone number"
@@ -396,13 +387,13 @@ const PatientAdditionalDetails = () => {
 							spacing={[1, 1, 1, 1, 1, 4]}
 						>
 							<InputField
-								name="ptEmgHomePhone"
+								name="ptEmgContactHomePhone"
 								type="text"
 								label="Home phone number"
 								placeholder="Home phone number"
 							/>
 							<InputField
-								name="ptEmgWorkPhone"
+								name="ptEmgContactWorkPhone"
 								type="text"
 								label="Work phone number"
 								placeholder="Work phone number"
@@ -483,7 +474,7 @@ const PatientAdditionalDetails = () => {
 							/>
 							<InputField
 								name="ptDVAExpiryDate"
-								type="date"
+								type="text"
 								label="DVA valid until"
 							/>
 						</SimpleGrid>
@@ -499,7 +490,7 @@ const PatientAdditionalDetails = () => {
 							/>
 							<InputField
 								name="ptHealthcareCardExpiryDate"
-								type="date"
+								type="text"
 								label="Healthcare card valid until"
 							/>
 						</SimpleGrid>
@@ -515,7 +506,7 @@ const PatientAdditionalDetails = () => {
 							/>
 							<InputField
 								name="ptPensionCardExpiryDate"
-								type="date"
+								type="text"
 								label="Pension card valid until"
 							/>
 						</SimpleGrid>
@@ -535,25 +526,20 @@ const PatientAdditionalDetails = () => {
 	);
 };
 
+
+
+
 const PatientAddProfile = () => {
+
 	return (
 		<Box>
-			<Tabs>
-				<TabList>
-					<Tab>Basic details</Tab>
-					<Tab>Additional details</Tab>
-				</TabList>
-				<TabPanels>
-					<TabPanel>
-						<PatientBasicDetails />
-					</TabPanel>
-					<TabPanel>
-						<PatientAdditionalDetails />
-					</TabPanel>
-				</TabPanels>
-			</Tabs>
+			<PatientBasicDetails />
 		</Box>
 	);
 };
 
+
+
 export default PatientAddProfile;
+
+

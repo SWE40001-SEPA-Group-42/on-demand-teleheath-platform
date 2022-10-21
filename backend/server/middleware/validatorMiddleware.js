@@ -450,7 +450,7 @@ const patientValidator = (validationType) => {
         .withMessage("must provide an DVA File Number"),
       body("ptHealthcareCardNo")
         .optional({ checkFalsy: true })
-        .isString()
+        .isNumeric()
         .withMessage("must provide an Healthcare Card Number"),
       body("ptHealthcareCardExpiryDate")
         .optional({ checkFalsy: true })

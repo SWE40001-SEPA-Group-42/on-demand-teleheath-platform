@@ -166,6 +166,10 @@ const patientSchema = mongoose.Schema(
       type: Date,
       required: false,
     },
+    ptId: {
+      type: Number, 
+      required: true,
+    }
   },
   {
     collection: "patients",
