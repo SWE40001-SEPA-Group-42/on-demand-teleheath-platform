@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Userfront from '@userfront/react';
 
@@ -18,7 +18,6 @@ import DoctorUpdateProfile from '../../containers/Doctor/DoctorUpdateProfile';
 import DoctorVideoCall from '../../containers/Doctor/VideoCall';
 
 // Patient
-import PatientSignUp from '../Forms/Patient/PatientSignUpForm';
 import PatientAddProfile from '../../containers/Patient/PatientAddProfile';
 import PatientUpdateProfile from '../../containers/Patient/PatientUpdateProfile';
 
@@ -30,37 +29,42 @@ import PatientProfile from '../Dashboard/PatientProfile';
 import CreateRoom from '../../containers/VideoCall/CreateRoom';
 import Room from '../../containers/VideoCall/Room';
 
-Userfront.init('xbrr9qdb');
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
+
+
+
 
 const Routing = () => {
+
+	const navigate = useNavigate()
+
 	return (
 		<Routes>
+			
 			{/* temporary navbar - will need to refactor later */}
-			<Route element={<LayoutsWithNavbar />}>
-				{/* <Route path="/" element={<Home />} /> */}
-				<Route index element={<Dashboard />} />
-				<Route
-					path="patient/profile"
-					element={<PatientProfile ptName={''} ptImgSrc={''} />}
-				/>
-				<Route path="signup/patient" element={<PatientSignUp />} />
+			{/* <Route element={<LayoutsWithNavbar />}> */}
+				{/* PUBLIC ROUTES */}
+				<Route index element={<Login />} />
+				<Route path="signup" element={<Signup />} />
 
-				<Route path="patient/profile/add" element={<PatientAddProfile />} />
-				<Route
-					path="patient/profile/update"
-					element={<PatientUpdateProfile />}
-				/>
+				{/* Need UI improvement */}
+				<Route path="*" element={
+							<div>
+								<p>There is nothing here</p>
+								<p onClick={() => navigate("/")}>Click here to go back</p>
+							</div>
+							} />
 
-				<Route path="doctor/profile/add" element={<DoctorAddProfile />} />
-				<Route path="doctor/profile/update" element={<DoctorUpdateProfile />} />
 
-				<Route path="video-call" element={<CreateRoom />} />
-				<Route path="room/:roomId" element={<Room />} />
-				<Route path="/leave-call" element={<Navigate to="/" />} />
+							
+				{/* PROTECTED ROUTES */}
+				<Route path="video-call" element={<RequireAuth><CreateRoom /></RequireAuth>} />
+				<Route path="room/:roomId" element={<RequireAuth><Room /></RequireAuth>} />
+				<Route path="/leave-call" element={<RequireAuth><Navigate to="/" /> </RequireAuth>} />
 
-				<Route path="clinic/profile/add" element={<ClinicAddProfile />} />
-				<Route path="clinic/profile/update" element={<ClinicUpdateProfile />} />
-				{/* <Route path="dashboard" 
+				<Route path="clinic/profile/add" element={<RequireAuth><ClinicAddProfile /></RequireAuth>} />
+				<Route path="clinic/profile/update" element={<RequireAuth><ClinicUpdateProfile /></RequireAuth>} />
+				<Route path="dashboard" 
 					element=
 						{<RequireAuth>
 							<Dashboard/>
@@ -71,12 +75,6 @@ const Routing = () => {
 							<PatientProfile ptName={''} ptImgSrc={''} />
 						</RequireAuth>
 				}/>
-				<Route path="signup/patient" 
-					element=
-						{<RequireAuth>
-							<PatientSignUp />
-						</RequireAuth>
-						} />
 				<Route path="patient/profile/add" 
 					element=
 						{<RequireAuth>
@@ -113,11 +111,17 @@ const Routing = () => {
 							<ClinicUpdateProfile />
 						</RequireAuth>
 						} />
-				<Route index element={<Login />} />
-				<Route path="signup" element={<Signup />} />
-				<Route path="reset" element={<Reset />} />
-				<Route path="logout" element={<Logout />} /> */}
-			</Route>
+				<Route path="reset" 
+					element=
+						{<RequireAuth>
+							<Reset />
+						</RequireAuth>} />
+				<Route path="logout" 
+						element=
+						{<RequireAuth>
+							<Logout />
+						</RequireAuth>}/>
+			{/* </Route> */}
 		</Routes>
 	);
 };

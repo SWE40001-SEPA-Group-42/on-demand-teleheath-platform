@@ -18,6 +18,21 @@ import CardContent from './CardContent';
 import { Link as ReachLink } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
 
+
+import {useEffect} from 'react'
+import {useAppDispatch, useAppSelector} from '../../redux/hooks'
+import Userfront from '@userfront/react';
+import {getPatient} from '../../redux/Patient/patientsSlice'
+import {Patient} from '../../types/Patient'
+
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
+//useFront - get the string
+//redux
+//action
+//selector 
+//dispatch
+
+
 const currentDate = new Date();
 const dob = '23/10/1999';
 const [day, month, year] = dob.split('/');
@@ -43,65 +58,72 @@ const calculateAge = (dob: Date) => {
 	return age;
 };
 
-const patient = {
-	imgSrc:
-		'https://images.unsplash.com/photo-1542740348-39501cd6e2b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80',
-	givenName: 'Emily',
-	surname: 'Cooper',
-	preferredName: 'Emily Cooper',
-	dob: ptDOB.toLocaleDateString(),
-	age: calculateAge(ptDOB),
-	birthSex: 'Female',
-	emailAddress: 'emily.cooper@mail.com',
-	mobilePhone: '+61 412 345 678',
-	homePhone: '+61 423 456 789',
-	workPhone: '+61 434 567 890',
-	address: {
-		line1: '1 Flinders Street',
-		line2: '',
-		city: 'Melbourne',
-		state: 'Victoria',
-		postcode: '3000',
-		country: 'Australia',
-	},
-	medicareCardNo: '1234567890',
-	medicareCardIRN: '2',
-	medicareCardExpiryDate: '05/2025',
-	privateHealthFund: 'NIB',
-	privateHealthFundNo: '2345678901',
-	emgContactGivenName: 'Joyce',
-	emgContactSurname: 'Bryers',
-	emgContactRelationship: 'Friend',
-	emgContactMobilePhone: '+61 423 456 789',
-	emgContactHomePhone: '+61 345 678 901',
-	emgContactWorkPhone: '+61 356 789 012',
-	nextOfKinGivenName: 'Sheldon',
-	nextOfKinSurname: 'Cooper',
-	nextOfKinRelationship: 'Sibling',
-	nextOfKinMobilePhone: '+61 434 567 890',
-	nextOfKinHomePhone: '+61 367 890 123',
-	nextOfKinWorkPhone: '+61 378 901 234',
-	dVAFileNo: '3456789012',
-	dVAExpiryDate: '07/2027',
-	healthcareCardNo: '4567890123',
-	healthcareCardExpiryDate: '09/2023',
-	pensionCardNo: '5678901234',
-	pensionCardExpiryDate: '04/2024',
-};
+
+
 
 const PatientProfileBasicDetails = () => {
+
+	const data = useAppSelector(state => state.patients.data[0])
+
+	const patient = {
+		ptGivenName: data.ptGivenName,
+		ptSurname: data.ptSurname,
+		ptPreferredName: data.ptPreferredName,
+		ptDOB: data.ptDOB,
+		ptBirthSex: data.ptBirthSex,
+		ptEmailAddress: data.ptEmailAddress,
+		ptMobilePhone: data.ptMobilePhone,
+		ptHomePhone: data.ptHomePhone,
+		ptWorkPhone: data.ptWorkPhone,
+		ptAddress: {
+			line1: data.ptAddress.line1,
+			line2: data.ptAddress.line2,
+			city: data.ptAddress.city,
+			state: data.ptAddress.state,
+			postcode: data.ptAddress.postcode,
+			country: data.ptAddress.country,
+		},
+		ptMedicareCardNo: data.ptMedicareCardNo,
+		ptMedicareCardIRN:data.ptMedicareCardIRN,
+		ptMedicareCardExpiryDate: data.ptMedicareCardExpiryDate,
+		ptPrivateHealthFund: data.ptPrivateHealthFund,
+		ptPrivateHealthFundNo: data.ptPrivateHealthFundNo,
+		ptEmgContactGivenName: data.ptEmgContactGivenName,
+		ptEmgContactSurname: data.ptEmgContactSurname,
+		ptEmgContactRelationship: data.ptEmgContactRelationship,
+		ptEmgContactMobilePhone: data.ptEmgContactMobilePhone,
+		ptEmgContactHomePhone: data.ptEmgContactHomePhone,
+		ptEmgContactWorkPhone: data.ptEmgContactWorkPhone,
+		ptNextOfKinGivenName: data.ptNextOfKinGivenName,
+		ptNextOfKinSurname: data.ptNextOfKinSurname,
+		ptNextOfKinRelationship: data.ptNextOfKinRelationship,
+		ptNextOfKinMobilePhone: data.ptNextOfKinMobilePhone,
+		ptNextOfKinHomePhone: data.ptNextOfKinHomePhone,
+		ptNextofKinWorkPhone: data.ptNextofKinWorkPhone,
+		ptDVAFileNo: data.ptDVAFileNo,
+		ptDVAExpiryDate: data.ptDVAExpiryDate,
+		ptHealthcareCardNo: data.ptHealthcareCardNo,
+		ptHealthcareCardExpiryDate: data.ptHealthcareCardExpiryDate,
+		ptPensionCardNo: data.ptPensionCardNo,
+		ptPensionCardExpiryDate: data.ptPensionCardExpiryDate,
+	};
+
+
+
+
+	const ptAge = calculateAge(new Date(patient.ptDOB))
 	const patientAddress = [
-		patient.address.line1,
-		patient.address.line2,
-		patient.address.city,
-		patient.address.state,
-		patient.address.postcode,
-		patient.address.country,
+		patient.ptAddress.line1,
+		patient.ptAddress.line2,
+		patient.ptAddress.city,
+		patient.ptAddress.state,
+		patient.ptAddress.postcode,
+		patient.ptAddress.country,
 	]
 		.filter(Boolean)
 		.join(', ');
 
-	const patientName = [patient.givenName, patient.surname].join(' ');
+	const patientName = [patient.ptGivenName, patient.ptSurname].join(' ');
 
 	return (
 		<Box className="patient-profile-container card-container patient-profile-details-card">
@@ -114,7 +136,7 @@ const PatientProfileBasicDetails = () => {
 				>
 					<Box className="text-center">
 						<Box className="py-3">
-							<Avatar size="xl" name={patientName} src={patient.imgSrc} />
+							<Avatar size="xl" name={patientName} />
 						</Box>
 						<Text className="text-xl font-semibold">{patientName}</Text>
 					</Box>
@@ -123,20 +145,20 @@ const PatientProfileBasicDetails = () => {
 						className="patient-profile-details"
 					>
 						<Box className="patient-profile-basic-details-1">
-							<CardContent label="DOB" description={patient.dob} />
+							<CardContent label="DOB" description={patient.ptDOB} />
 						</Box>
 						<Box className="card-content patient-profile-basic-details-1">
 							<Text className="card-label">Age</Text>
 							<Text className="card-description">
-								{patient.age > 0
-									? patient.age + ' years old'
-									: patient.age + ' year old'}
+								{ptAge > 0
+									? ptAge + ' years old'
+									: ptAge + ' year old'}
 							</Text>
 							{/* <Moment from={currentDate}>{ptDOB}</Moment> */}
 							{/* <Moment date={ptDOB} format="yy [year old]" durationFromNow /> */}
 						</Box>
 						<Box className="patient-profile-basic-details-1">
-							<CardContent label="Birth sex" description={patient.birthSex} />
+							<CardContent label="Birth sex" description={patient.ptBirthSex} />
 						</Box>
 					</SimpleGrid>
 					{/* <Divider orientation="vertical" /> */}
@@ -145,19 +167,19 @@ const PatientProfileBasicDetails = () => {
 					<CardContent label="Address" description={patientAddress} />
 					<CardContent
 						label="Email address"
-						description={patient.emailAddress}
+						description={patient.ptEmailAddress}
 					/>
 					<CardContent
 						label="Mobile phone number"
-						description={patient.mobilePhone}
+						description={patient.ptMobilePhone}
 					/>
 					<CardContent
 						label="Home phone number"
-						description={patient.homePhone}
+						description={patient.ptHomePhone || ""}
 					/>
 					<CardContent
 						label="Work phone number"
-						description={patient.workPhone}
+						description={patient.ptWorkPhone || ""}
 					/>
 				</Box>
 				<Link as={ReachLink} to="/update">
@@ -176,7 +198,88 @@ const PatientProfileBasicDetails = () => {
 	);
 };
 
+
+interface IPatientProfile {
+	ptName: string;
+	ptImgSrc: string;
+}
+
+const PatientProfile: React.FC<IPatientProfile> = ({}) => {
+
+	const dispatch = useAppDispatch()
+	useEffect(() => {
+			dispatch(getPatient())
+	}, [])
+
+
+	return (
+		<Box className="w-screen">
+			<Box>
+				<Heading as="h1" size="lg" className="text-center py-10">
+					My Profile
+				</Heading>
+			</Box>
+			<PatientProfileBasicDetails />
+			<PatientProfileAdditionalDetails />
+		</Box>
+	);
+};
+
+
+
+
+
+
+
 const PatientProfileAdditionalDetails = () => {
+
+	const data = useAppSelector(state => state.patients.data[0])
+
+	const patient = {
+		ptGivenName: data.ptGivenName,
+		ptSurname: data.ptSurname,
+		ptPreferredName: data.ptPreferredName,
+		ptDOB: data.ptDOB,
+		ptBirthSex: data.ptBirthSex,
+		ptEmailAddress: data.ptEmailAddress,
+		ptMobilePhone: data.ptMobilePhone,
+		ptHomePhone: data.ptHomePhone,
+		ptWorkPhone: data.ptWorkPhone,
+		ptAddress: {
+			line1: data.ptAddress.line1,
+			line2: data.ptAddress.line2,
+			city: data.ptAddress.city,
+			state: data.ptAddress.state,
+			postcode: data.ptAddress.postcode,
+			country: data.ptAddress.country,
+		},
+		ptMedicareCardNo: data.ptMedicareCardNo,
+		ptMedicareCardIRN:data.ptMedicareCardIRN,
+		ptMedicareCardExpiryDate: data.ptMedicareCardExpiryDate,
+		ptPrivateHealthFund: data.ptPrivateHealthFund,
+		ptPrivateHealthFundNo: data.ptPrivateHealthFundNo,
+		ptEmgContactGivenName: data.ptEmgContactGivenName,
+		ptEmgContactSurname: data.ptEmgContactSurname,
+		ptEmgContactRelationship: data.ptEmgContactRelationship,
+		ptEmgContactMobilePhone: data.ptEmgContactMobilePhone,
+		ptEmgContactHomePhone: data.ptEmgContactHomePhone,
+		ptEmgContactWorkPhone: data.ptEmgContactWorkPhone,
+		ptNextOfKinGivenName: data.ptNextOfKinGivenName,
+		ptNextOfKinSurname: data.ptNextOfKinSurname,
+		ptNextOfKinRelationship: data.ptNextOfKinRelationship,
+		ptNextOfKinMobilePhone: data.ptNextOfKinMobilePhone,
+		ptNextOfKinHomePhone: data.ptNextOfKinHomePhone,
+		ptNextofKinWorkPhone: data.ptNextofKinWorkPhone,
+		ptDVAFileNo: data.ptDVAFileNo,
+		ptDVAExpiryDate: data.ptDVAExpiryDate,
+		ptHealthcareCardNo: data.ptHealthcareCardNo,
+		ptHealthcareCardExpiryDate: data.ptHealthcareCardExpiryDate,
+		ptPensionCardNo: data.ptPensionCardNo,
+		ptPensionCardExpiryDate: data.ptPensionCardExpiryDate,
+	};
+
+
+
 	return (
 		<Box className="patient-profile-container">
 			<SimpleGrid columns={[1, 1, 1, 1, 1, 2]} spacing={10}>
@@ -190,23 +293,23 @@ const PatientProfileAdditionalDetails = () => {
 					<Box className="py-4">
 						<CardContent
 							label="Medicare card number"
-							description={patient.medicareCardNo}
+							description={patient.ptMedicareCardNo}
 						/>
 						<CardContent
 							label="Medicare card IRN"
-							description={patient.medicareCardIRN}
+							description={patient.ptMedicareCardIRN || ""}
 						/>
 						<CardContent
 							label="Medicare card expiry date"
-							description={patient.medicareCardExpiryDate}
+							description={patient.ptMedicareCardExpiryDate || ""}
 						/>
 						<CardContent
 							label="Private health fund name"
-							description={patient.privateHealthFund}
+							description={patient.ptPrivateHealthFund || ""}
 						/>
 						<CardContent
 							label="Private health fund number"
-							description={patient.privateHealthFundNo}
+							description={patient.ptPrivateHealthFundNo || ""}
 						/>
 					</Box>
 				</Box>
@@ -221,25 +324,25 @@ const PatientProfileAdditionalDetails = () => {
 						<CardContent
 							label="Name"
 							description={[
-								patient.emgContactGivenName,
-								patient.emgContactSurname,
+								patient.ptEmgContactGivenName,
+								patient.ptEmgContactSurname,
 							].join(' ')}
 						/>
 						<CardContent
 							label="Relationship"
-							description={patient.emgContactRelationship}
+							description={patient.ptEmgContactRelationship || ""}
 						/>
 						<CardContent
 							label="Mobile phone"
-							description={patient.emgContactMobilePhone}
+							description={patient.ptEmgContactMobilePhone || ""}
 						/>
 						<CardContent
 							label="Home phone"
-							description={patient.emgContactHomePhone}
+							description={patient.ptEmgContactHomePhone || ""}
 						/>
 						<CardContent
 							label="Work phone"
-							description={patient.emgContactWorkPhone}
+							description={patient.ptEmgContactWorkPhone || ""}
 						/>
 					</Box>
 				</Box>
@@ -254,25 +357,25 @@ const PatientProfileAdditionalDetails = () => {
 						<CardContent
 							label="Name"
 							description={[
-								patient.nextOfKinGivenName,
-								patient.nextOfKinSurname,
+								patient.ptNextOfKinGivenName,
+								patient.ptNextOfKinSurname,
 							].join(' ')}
 						/>
 						<CardContent
 							label="Relationship"
-							description={patient.nextOfKinRelationship}
+							description={patient.ptNextOfKinRelationship || ""}
 						/>
 						<CardContent
 							label="Mobile phone"
-							description={patient.nextOfKinMobilePhone}
+							description={patient.ptNextOfKinMobilePhone || ""}
 						/>
 						<CardContent
 							label="Home phone"
-							description={patient.nextOfKinHomePhone}
+							description={patient.ptNextOfKinHomePhone || ""}
 						/>
 						<CardContent
 							label="Work phone"
-							description={patient.nextOfKinWorkPhone}
+							description={patient.ptNextofKinWorkPhone || ""}
 						/>
 					</Box>
 				</Box>
@@ -286,50 +389,31 @@ const PatientProfileAdditionalDetails = () => {
 					<Box className="py-4">
 						<CardContent
 							label="DVA file number"
-							description={patient.dVAFileNo}
+							description={patient.ptDVAFileNo || "" }
 						/>
 						<CardContent
 							label="DVA expiry date"
-							description={patient.dVAExpiryDate}
+							description={patient.ptDVAExpiryDate || ""}
 						/>
 						<CardContent
 							label="Healthcare card number"
-							description={patient.healthcareCardNo}
+							description={patient.ptHealthcareCardNo || ""}
 						/>
 						<CardContent
 							label="Healthcare card expiry date"
-							description={patient.healthcareCardExpiryDate}
+							description={patient.ptHealthcareCardExpiryDate || ""}
 						/>
 						<CardContent
 							label="Pension card number"
-							description={patient.pensionCardNo}
+							description={patient.ptPensionCardNo || ""} 
 						/>
 						<CardContent
 							label="Pension card expiry date"
-							description={patient.pensionCardExpiryDate}
+							description={patient.ptPensionCardExpiryDate || ""}
 						/>
 					</Box>
 				</Box>
 			</SimpleGrid>
-		</Box>
-	);
-};
-
-interface IPatientProfile {
-	ptName: string;
-	ptImgSrc: string;
-}
-
-const PatientProfile: React.FC<IPatientProfile> = ({}) => {
-	return (
-		<Box className="w-screen">
-			<Box>
-				<Heading as="h1" size="lg" className="text-center py-10">
-					My Profile
-				</Heading>
-			</Box>
-			<PatientProfileBasicDetails />
-			<PatientProfileAdditionalDetails />
 		</Box>
 	);
 };
