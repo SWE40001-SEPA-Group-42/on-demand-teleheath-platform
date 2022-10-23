@@ -12,9 +12,9 @@ export const validationSchema = Yup.object({
     ptSurname: Yup.string()
         .required('Surname cannot be blank')
         .matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'),
-    ptPreferredName: Yup.string().matches(
-        /^[A-Za-z]+$/,
-        'Only alphabets are allowed for this field'
+    ptPreferredName: Yup.string()
+		.required("Preferred name cannot be blank")
+		.matches(/^[A-Za-z]+$/, 'Only alphabets are allowed for this field'
     ),
     ptDOB: Yup.string()
         .required('Date of Birth cannot be blank')
@@ -76,15 +76,17 @@ export const validationSchema = Yup.object({
             ),
     }),
 	ptMedicareCardNo: Yup.string()
+			.required('Medicare cannot be blank')
 			.min(10, 'Medicare card number must be exactly 10 digits long')
 			.matches(/^[0-9]{10}$/, 'Only numbers are allowed for this field'),
 		ptMedicareCardIRN: Yup.string()
+			.required('IRN cannot be blank')
 			.max(10, 'Medicare card IRN must be exactly 10 digits long')
 			.matches(/^[0-9]{10}$/, 'Only numbers are allowed for this field'),
-		ptMedicareCardExpiryDate: Yup.string().matches(
-			
-			/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/,
-			'Please enter a valid date in the format: DD-MM-YYYY'
+		ptMedicareCardExpiryDate: Yup.string()
+			.required('Medicare valid until cannot be blank')
+			.matches(/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/,
+				'Please enter a valid date in the format: DD-MM-YYYY'
 		),
 		ptPrivateHealthFund: Yup.string().matches(
 			/^[A-Za-z]+$/,
@@ -147,7 +149,6 @@ export const validationSchema = Yup.object({
 			'Only numbers are allowed for this field'
 		),
 		ptDVAExpiryDate: Yup.string().matches(
-			// ^(0[1-9]|1[0-2])-\d{4}$
 			/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/,
 			'Please enter a valid date in the format: YYYY/MM/DD'
 		),
@@ -164,8 +165,6 @@ export const validationSchema = Yup.object({
 			'Only numbers are allowed for this field'
 		),
 		ptPensionCardExpiryDate: Yup.string().matches(
-			// /^(0[1-9]|1[0-2])-\d{4}$/,
-			// 'Please enter a valid date in the format: YYYY/MM/DD'
 			/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/,
 			'Only numbers are allowed for this field'
 		),

@@ -13,7 +13,8 @@ import {
 	TabPanels,
 	Tab,
 	TabPanel,
-	useToast
+	useToast, 
+	Spinner
 } from '@chakra-ui/react';
 import InputField from '../../CustomFormFields/InputField';
 import BirthSexField from '../../CustomFormFields/BirthSexField';
@@ -25,7 +26,7 @@ import { Patient } from '../../../types/Patient';
 
 
 import {validationSchema} from './PatientHelper'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { number } from 'yup/lib/locale';
 import { sample } from 'lodash';
 import e from 'cors';
@@ -34,9 +35,6 @@ Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 
 
-// console.log(Userfront.user)
-
-// console.log(Userfront.tokens)
 
 const initialValues = {
 	ptId: '',
@@ -85,89 +83,130 @@ const initialValues = {
 
 
 
-
-
-
 const PatientBasicDetails = () => {
 	const toast = useToast()
-
-
-	const dispatch = useAppDispatch();
-
-
+ 	const dispatch = useAppDispatch();
+	const [isLoading, setLoading] = useState(false)
 	
-async function ptUserFrontHandler(values : Patient){
-	//USERFRONT API
-	try {
-		const payload = {
-			email: values.ptEmailAddress,
-			username: values.ptGivenName.trim() + values.ptSurname.trim(),
-			name: values.ptGivenName.trim() + " " + values.ptSurname.trim(),
-			data: {
-				isRegistered: true, 
-				ptGivenName: values.ptGivenName,
-				ptSurname: values.ptSurname
-			}
-			};
+	async function ptUserFrontHandler(values : Patient){
+		//USERFRONT API
+		// setApiResult(false);
+		// setUserFrontResult(false);
+		setLoading(true)
 
+		let apiResult = false; 
+		let userFrontResult = false; 
 
-		let patientId;
-		await fetch("https://api.userfront.com/v0/users", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
-		}, 
-		body: JSON.stringify(payload)
-		})
-		//get json()
-		.then(res => res.json())
-		//get actual data
-		.then(data => patientId = data.userId)
-
-
-		//UserFront successfully created -> Pass in the userID
-		let validate = false
-		if(patientId) {
-			console.log(patientId)
-			values.ptId = patientId
-			const res = dispatch(addPatient(values));
-			if(((await res).meta.requestStatus === "fulfilled")) {
-				validate = true
-			}
-		}
-		
-		if(validate == true) {
-			toast({
-				title: 'Account created.',
-				description: "We've created your account for you.",
-				status: 'success',
-				duration: 6000,
-				isClosable: true,
+		console.log("useFront state before passing through " + userFrontResult)
+		console.log("Backend state before passing through " + apiResult)
+		try {
+			const payload = {
+				email: values.ptEmailAddress,
+				username: values.ptGivenName.trim() + values.ptSurname.trim(),
+				name: values.ptGivenName.trim() + " " + values.ptSurname.trim(),
+				data: {
+					isRegistered: true, 
+					ptGivenName: values.ptGivenName,
+					ptSurname: values.ptSurname
+				}
+				};
+			await fetch("https://api.userfront.com/v0/users", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
+			}, 
+			body: JSON.stringify(payload)
 			})
-		} else {
-			toast({
-					title: 'Account created denied.',
-					description: "We cannot create a new account",
+			.then(res => res.json())
+			.then(data => {
+				values.ptId = data.userId
+				console.log("This is the values.ptId " + data.userId)
+				if(values.ptId !== "" && data.userId !== undefined) {
+					// setUserFrontResult(true);
+					userFrontResult = true; 
+					console.log("UserFront passed thru")
+				}
+			})
+			.catch((e) => {console.log(e); return;})
+
+
+			console.log("userFront successfully created " + userFrontResult)
+			//UserFront successfully created -> Pass in the userID 
+			if(userFrontResult) {
+				//await dispatch(addPatient(values)).then(res => console.log(res));
+				const res = await dispatch(addPatient(values)); 
+				console.log(res.meta.requestStatus);
+				if(res.meta.requestStatus === 'fulfilled') {
+					// setApiResult(true)
+					apiResult = true 
+					console.log("API pass thru")
+					console.log(apiResult)
+				}
+			}
+			
+
+
+			console.log("Double Condition UserFront " + userFrontResult)
+			console.log("Double Condition API " + apiResult)
+
+
+
+
+			//check both conditions if they are being fulfilled
+			if(apiResult === true && userFrontResult !== false) {
+				toast({
+							title: 'Account created.',
+							description: "We've created your account for you.",
+							status: 'success',
+							duration: 6000,
+							isClosable: true,
+						})
+			} else {
+
+				console.log(apiResult);
+				console.log(userFrontResult);
+				// await fetch(`https://api.userfront.com/v0/users/${values.ptId}`, {
+				// method: "DELETE",
+				// headers: {
+				// 	"Content-Type": "application/json",
+				// 	Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
+				// }
+				// });
+				toast({
+					title: 'Account created Denied.',
+					description: "We cannot created your account for you.",
 					status: 'error',
 					duration: 6000,
 					isClosable: true,
 				})
-		}
-
-		} catch(error) {
-			console.log(error)
-		}
-}
-
-
+			}
+			
+			// setApiResult(false);
+			// setUserFrontResult(false);
+			
+			
+			setLoading(false)
+			} catch(error) {
+				console.log(error)
+			}
+	}
 	return (
+		
+		<div>
+		{isLoading ?<Spinner thickness='4px'
+							speed='0.65s'
+							emptyColor='gray.200'
+  							color='blue.500'
+  							size='xl'
+			/>  : 
+		
+		
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
 			onSubmit={(values) => {
 				ptUserFrontHandler(values);
-				
 			}}
 		>
 			{(formik) => (
@@ -523,7 +562,10 @@ async function ptUserFrontHandler(values : Patient){
 				</Box>
 			)}
 		</Formik>
+			}
+		</div>
 	);
+			
 };
 
 

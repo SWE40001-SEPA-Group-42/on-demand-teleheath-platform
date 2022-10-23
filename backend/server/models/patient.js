@@ -167,7 +167,7 @@ const patientSchema = mongoose.Schema(
       required: false,
     },
     ptId: {
-      type: Number, 
+      type: String, 
       required: true,
     }
   },

@@ -18,6 +18,7 @@ const BirthSexField: React.FC<Props> = ({ label, defaultValue, ...props }) => {
 				{...props}
 				className="css-10ex9a1"
 				value={defaultValue}
+				style={{width: "100%", borderRadius: "5px", background: "transparent", border: "1px solid black"}}
 			/>
 			{meta.touched && meta.error ? (
 				<div className="error">{meta.error}</div>

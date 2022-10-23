@@ -78,6 +78,9 @@ const clinicValidator = (validationType) => {
   }
 };
 
+
+
+
 const doctorValidator = (validationType) => {
   // Work in Progress
   if (validationType == "doctorName") {
@@ -318,10 +321,12 @@ const patientValidator = (validationType) => {
         .notEmpty()
         .withMessage("must provide a Medicare Card Number"),
       body("ptMedicareCardIRN")
+        .notEmpty()
         .optional({ checkFalsy: true })
         .isNumeric()
         .withMessage("must provide a Medicare IRN Number"),
       body("ptMedicareCardExpiryDate")
+        .notEmpty()
         .optional({ checkFalsy: true })
         .isDate()
         .withMessage("must provide a Medicare IRN Number"),
