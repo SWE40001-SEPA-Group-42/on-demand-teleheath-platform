@@ -9,7 +9,7 @@ Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 
 //FORM VALIDATOR OPTION
-const birthSexOptions = ['Male', 'Female', 'Other'];
+const birthSexOptions = ['male', 'female', 'other'];
 const languagesSpokenOptions = [
     'English',
     'Mandarin',
@@ -22,7 +22,7 @@ const languagesSpokenOptions = [
 
 
 
-//FORM VALIDATOR
+//DOCTOR FORM VALIDATOR
 export const validationSchema = Yup.object().shape({
     drGivenName: Yup.string()
         .required('Given name(s) cannot be blank')
@@ -30,9 +30,9 @@ export const validationSchema = Yup.object().shape({
     drSurname: Yup.string()
         .required('Surname cannot be blank')
         .matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
-    drPreferredName: Yup.string().matches(
-        /^[A-Za-z ]+$/,
-        'Only alphabets are allowed for this field'
+    drPreferredName: Yup.string()
+        .required('Preffered Name cannot be blank')
+        .matches(/^[A-Za-z ]+$/,'Only alphabets are allowed for this field'
     ),
     drDOB: Yup.string()
         .required('Date of Birth cannot be blank')
@@ -85,8 +85,10 @@ export const validationSchema = Yup.object().shape({
                 'Please enter a valid country'
             ),
     }),
-    drCode: Yup.string().required("Doctor's code cannot be blank"),
-    drPrescriberNo: Yup.string().required('Prescriber Code cannot be blank'),
+    drCode: Yup.string()
+        .required("Doctor's code cannot be blank"),
+    drPrescriberNo: Yup.string()
+        .required('Prescriber Code cannot be blank'),
     drClinicName: Yup.string()
         .required('Clinic cannot be blank')
         .matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),

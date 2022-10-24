@@ -10,6 +10,7 @@ const DoctorUpdateProfile = () => {
 	const doctors = useAppSelector((state) => state.doctors);
 	const [doctor, setDoctor] = useState<Doctor>({
 		_id: '',
+		drId: '',
 		drGivenName: '',
 		drSurname: '',
 		drPreferredName: '',

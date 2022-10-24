@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState}  from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
@@ -20,11 +20,15 @@ Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 
 const DoctorAddProfileForm = () => {
+
+	const [isLoading, setLoading] = useState(false)
+
 	const dispatch = useAppDispatch();
-	const doctors = useAppSelector((state) => state.doctors);
+	// const doctors = useAppSelector((state) => state.doctors);
 	const toast = useToast()
     const navigate = useNavigate()
 	const initialValues = {
+		drId: '',
 		drGivenName: '',
 		drSurname: '',
 		drPreferredName: '',
@@ -50,6 +54,15 @@ const DoctorAddProfileForm = () => {
 
 	async function drUserFrontHandler(values : Doctor) {
 		try {
+
+			setLoading(true); 
+			let apiResult = false; 
+			let userFrontResult = false;
+			console.log("useFront state before passing through " + userFrontResult)
+			console.log("Backend state before passing through " + apiResult)
+
+
+			//USERFORM SET UP
 			const payload = {
 				email: values.drEmail,
 				username: values.drGivenName.trim() + values.drSurname.trim(),
@@ -61,26 +74,61 @@ const DoctorAddProfileForm = () => {
 				}
 				};
 				
-				const response = await fetch("https://api.userfront.com/v0/users", {
+				await fetch("https://api.userfront.com/v0/users", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
 				}, 
 				body: JSON.stringify(payload)
-				});
-				
-				console.log(response.json());
-	
-			if(response) {
-				toast({
-					title: 'Account created.',
-					description: "We've created your account for you.",
-					status: 'success',
-					duration: 6000,
-					isClosable: true,
 				})
-			}
+				.then(res => res.json())
+				.then(data => {
+					values.drId = data.userId
+					console.log('This is the values.drId ' + data.userId)
+					if(values.drId !== "" && data.userId !== undefined) {
+						userFrontResult = true; 
+						console.log("Userfront pass thru")
+					}
+				})
+				.catch(e => {console.log(console.log(e)); return;})
+
+
+				console.log("Userfront successfully created " + userFrontResult)
+
+				//BACKEND SET UP
+				if(userFrontResult) {
+					const res = await dispatch(addDoctor(values))
+					console.log(res.meta.requestStatus)
+					if(res.meta.requestStatus === 'fulfilled') {
+						console.log("Hooyayy its passing thru")
+						apiResult = true;
+					}
+				}
+
+				console.log("Double Condition UserFront " + userFrontResult)
+				console.log("Double Condition API " + apiResult)
+
+				if(apiResult === true && userFrontResult !== false) {
+					toast({
+								title: 'Account created.',
+								description: "We've created your account for you.",
+								status: 'success',
+								duration: 6000,
+								isClosable: true,
+							})
+				} else {
+					console.log(apiResult);
+					console.log(userFrontResult);
+					toast({
+						title: 'Account created Denied.',
+						description: "We cannot created your account for you.",
+						status: 'error',
+						duration: 6000,
+						isClosable: true,
+					})
+				}
+			setLoading(false)
 		} catch(error) {
 			console.log(error)
 		}
@@ -95,6 +143,8 @@ const DoctorAddProfileForm = () => {
 
 				//USERFRONT HANDLER
 				drUserFrontHandler(values)
+
+
 
 
 				//BACKEND

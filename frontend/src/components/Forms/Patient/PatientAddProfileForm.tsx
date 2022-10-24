@@ -166,13 +166,6 @@ const PatientBasicDetails = () => {
 
 				console.log(apiResult);
 				console.log(userFrontResult);
-				// await fetch(`https://api.userfront.com/v0/users/${values.ptId}`, {
-				// method: "DELETE",
-				// headers: {
-				// 	"Content-Type": "application/json",
-				// 	Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
-				// }
-				// });
 				toast({
 					title: 'Account created Denied.',
 					description: "We cannot created your account for you.",
@@ -181,11 +174,8 @@ const PatientBasicDetails = () => {
 					isClosable: true,
 				})
 			}
-			
-			// setApiResult(false);
-			// setUserFrontResult(false);
-			
-			
+
+					
 			setLoading(false)
 			} catch(error) {
 				console.log(error)
