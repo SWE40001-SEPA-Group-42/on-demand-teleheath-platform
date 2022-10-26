@@ -2,7 +2,7 @@ import React, {useState}  from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
-import { Box, Button, Divider, Heading, SimpleGrid , useToast} from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, ModalBody, SimpleGrid , useToast} from '@chakra-ui/react';
 import InputField from '../../CustomFormFields/InputField';
 import BirthSexField from '../../CustomFormFields/BirthSexField';
 import BirthSexSelectField from '../../CustomFormFields/BirthSexSelectField';
@@ -135,6 +135,7 @@ const DoctorAddProfileForm = () => {
 	}
 
 	return (
+		<ModalBody>
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
@@ -156,8 +157,7 @@ const DoctorAddProfileForm = () => {
 			}}
 		>
 			{(formik) => (
-				<Box px={[4, 4, 4, 4, 8, 8, 10]} h="100vh" className="form-margin-y">
-					<form onSubmit={formik.handleSubmit} className="form-container">
+					<form onSubmit={formik.handleSubmit}>
 						<Box py={4} className="text-center">
 							<Heading as="h2" size="md" py={4}>
 								Practioner's details
@@ -344,9 +344,9 @@ const DoctorAddProfileForm = () => {
 							Add new doctor
 						</Button>
 					</form>
-				</Box>
 			)}
 		</Formik>
+		</ModalBody>
 	);
 };
 

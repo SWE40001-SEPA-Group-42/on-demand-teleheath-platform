@@ -26,7 +26,11 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { Link as ReachLink } from 'react-router-dom';
-import DashboardProfile from '../Dashboard/Profile/DashboardProfile';
+import DashboardProfile from './DashboardProfile';
+import Userfront from '@userfront/react';
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
+
+
 
 interface IDashboardNavbar {
 	userName: string;
@@ -46,6 +50,7 @@ const DashboardNavbar: React.FC<IDashboardNavbar> = ({ userName, userImgSrc }) =
 				<Flex justify="space-between" flex="1">
 					<h1>Logo here</h1>
 					<DashboardProfile userProfileName={userName} userProfileImgSrc={userImgSrc} />
+					
 				</Flex>
 			</HStack>
 		</Box>

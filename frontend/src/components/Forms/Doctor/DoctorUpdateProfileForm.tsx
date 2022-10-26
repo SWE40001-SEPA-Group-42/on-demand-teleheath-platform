@@ -12,8 +12,12 @@ import { EditIcon } from '@chakra-ui/icons';
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { modifyDoctorById } from '../../../redux/Doctor/doctorsSlice';
+import Userfront from '@userfront/react';
 
 import { Doctor } from '../../../types/Doctor';
+
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
+
 
 interface IDoctorUpdateProfile {
 	drDoctor: Doctor;
@@ -122,13 +126,43 @@ const DoctorUpdateProfileForm = ({ drDoctor }: IDoctorUpdateProfile) => {
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
-			onSubmit={(values, actions) => {
-				actions.setSubmitting(false);
-				dispatch(modifyDoctorById(values));
-				if (doctors.error == '') {
-					alert('Update doctor profile successfully!');
-					window.location.reload();
-				}
+			onSubmit={async (values, actions) => {
+
+				//USERFRONT UPDATE USER
+				console.log(Userfront.user.email)
+				console.log(Userfront.user.userId)
+				console.log(Userfront.user)
+
+				const payload = {
+					userId: Userfront.user.Id,
+					email: Userfront.user.email,
+					username: Userfront.user.username,
+					name: "Jane Doe",
+					data: {
+					   "isRegistered": true, 
+					   "givenName" : values.drGivenName, 
+					   "surName": values.drSurname
+					}
+				  };
+
+				  const response = await fetch(`https://api.userfront.com/v0/users/${Userfront.user.userId}`, {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer uf_test_admin_xbrr9qdb_7736f64fe39cc8c574d13d41234600a8"
+					}, 
+					body: JSON.stringify(payload)
+					});
+
+					values.drId = Userfront.user.userId
+
+				//BACKEND SET UP
+				// actions.setSubmitting(false);
+				// dispatch(modifyDoctorById(values));
+				
+				// if (doctors.error == '') {
+				// 	alert('Update doctor profile successfully!');
+				// }
 			}}
 		>
 			{(formik) => (
