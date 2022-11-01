@@ -8,12 +8,15 @@ const baseURL = 'http://localhost:8001/api/patients'
 export const getPatient = createAsyncThunk(
     //action name
     '/patients/getPatient',
-    async () => {
+    async ({ptGivenName, ptSurname}: {
+        ptGivenName: string,
+        ptSurname: string
+    }) => {
         try {
             const response = await axios.get(`${baseURL}`, {
                 params: {
-                    ptGivenName: "Anthony",
-                    ptSurname: "Edwards"
+                    ptGivenName: ptGivenName,
+                    ptSurname: ptSurname
                 }
             })
 

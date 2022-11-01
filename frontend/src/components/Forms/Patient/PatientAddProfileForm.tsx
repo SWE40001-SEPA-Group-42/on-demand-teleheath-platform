@@ -28,12 +28,6 @@ import {validationSchema} from './PatientHelper'
 
 Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
-
-
-// console.log(Userfront.user)
-
-// console.log(Userfront.tokens)
-
 const initialValues = {
 	ptGivenName: '',
 	ptSurname: '',

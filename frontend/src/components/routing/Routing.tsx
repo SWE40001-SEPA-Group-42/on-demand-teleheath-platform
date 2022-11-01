@@ -42,7 +42,7 @@ const Routing = () => {
 		<Routes>
 			
 			{/* temporary navbar - will need to refactor later */}
-			{/* <Route element={<LayoutsWithNavbar />}> */}
+			<Route element={<LayoutsWithNavbar />}>
 				{/* PUBLIC ROUTES */}
 				<Route index element={<Login />} />
 				<Route path="signup" element={<Signup />} />
@@ -121,7 +121,7 @@ const Routing = () => {
 						{<RequireAuth>
 							<Logout />
 						</RequireAuth>}/>
-			{/* </Route> */}
+			</Route>
 		</Routes>
 	);
 };

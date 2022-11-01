@@ -1,4 +1,5 @@
 import Moment from 'react-moment';
+import { useState } from 'react';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import {
@@ -205,12 +206,78 @@ interface IPatientProfile {
 }
 
 const PatientProfile: React.FC<IPatientProfile> = ({}) => {
+	const [patient, setPatient] = useState<Patient>({
+		_id: '',
+		ptGivenName: '',
+		ptSurname: '',
+		ptPreferredName: '',
+		ptDOB: '',
+		ptBirthSex: '',
+		ptEmailAddress: '',
+		ptMobilePhone: '',
+		ptHomePhone: '',
+		ptWorkPhone: '',
+		ptAddress: {
+			line1: '',
+			line2: '',
+			city: '',
+			state: '',
+			postcode: '',
+			country: '',
+		},
+		ptMedicareCardNo: '',
+		ptMedicareCardIRN: '',
+		ptMedicareCardExpiryDate: '',
+		ptPrivateHealthFund: '',
+		ptPrivateHealthFundNo: '',
+		ptEmgContactGivenName: '',
+		ptEmgContactSurname: '',
+		ptEmgContactRelationship: '',
+		ptEmgContactMobilePhone: '',
+		ptEmgContactHomePhone: '',
+		ptEmgContactWorkPhone: '',
+		ptNextOfKinGivenName: '',
+		ptNextOfKinSurname: '',
+		ptNextOfKinRelationship: '',
+		ptNextOfKinMobilePhone: '',
+		ptNextOfKinHomePhone: '',
+		ptNextofKinWorkPhone: '',
+		ptDVAFileNo: '',
+		ptDVAExpiryDate: '',
+		ptHealthcareCardNo: '',
+		ptHealthcareCardExpiryDate: '',
+		ptPensionCardNo: '',
+		ptPensionCardExpiryDate: '',
+	});
+
+	
+	const patients = useAppSelector((state) => state.patients);
+	const patientName = Userfront.user.name
+	const ptGivenName = patientName.substring(0, patientName.indexOf(' ')).trim()
+	const ptSurname = patientName.substring(patientName.indexOf(' ')).trim()
+	console.log(ptGivenName)
+	console.log(ptSurname)
 
 	const dispatch = useAppDispatch()
 	useEffect(() => {
-			dispatch(getPatient())
+			dispatch(getPatient({
+				ptGivenName: ptGivenName,
+				ptSurname: ptSurname
+			}))
 	}, [])
 
+	useEffect(() => {
+		dispatch(getPatient({
+			ptGivenName: ptGivenName,
+			ptSurname: ptSurname
+		}));
+	}, []);
+
+	useEffect(() => {
+		if (patients.data.length > 0) {
+			setPatient(patients.data[0]);
+		}
+	}, [patients]);
 
 	return (
 		<Box className="w-screen">

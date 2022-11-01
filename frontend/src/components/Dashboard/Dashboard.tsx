@@ -1,9 +1,9 @@
-import { Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import DashboardNavbar from '../Dashboard/DashboardNavbar';
 import PatientTable from '../Dashboard/Table/PatientTable';
 import { createColumnHelper } from '@tanstack/react-table';
 import axios from 'axios';
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from '../../redux/hooks'
 import {fetchDoctors} from '../../redux/Doctor/doctorsSlice'
 import Userfront from '@userfront/react';
@@ -83,6 +83,19 @@ const Dashboard = () => {
     // })
     // console.log(data)
 
+	const dispatch = useAppDispatch();
+	const patients = useAppSelector((state) => state.patients);
+	const ptName = Userfront.user.name
+	const ptGivenName = ptName.substring(0, ptName.indexOf(' ')).trim()
+	const ptSurname = ptName.substring(ptName.indexOf(' ')).trim()
+
+	const [ptDetails, setPtDetails] = useState()
+	
+
+	const requestAppointment = async () => {
+
+	}
+
 
 	//Check if the user is newly signup
 	if(Object.keys(Userfront.user.data).length === 0) {
@@ -126,6 +139,8 @@ const Dashboard = () => {
 			{clinicView !== "" && <h1>ClinicView</h1>}
 
 			{/* <PatientTable columns={columns} data={data} /> */}
+
+			<Button onClick={requestAppointment}>Request Appointment</Button>
 		</>
 	);
 };
