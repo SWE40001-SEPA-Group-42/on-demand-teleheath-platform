@@ -56,6 +56,24 @@ io.on("connection", (socket) => {
     }
     socket.broadcast.emit("user left", socket.id);
   });
+
+  socket.on("offer", payload => {
+      io.to(payload.target).emit("offer", payload);
+  });
+
+  socket.on("ICEcandidate", (incoming) => {
+    io.to(incoming.target).emit("ICEcandidate", incoming.candidate);
+  });
+
+  // socket.io("ICEcandidate", (incoming) => {
+  //   // let otherUser = data.user;
+  //   // let rtcMessage = data.rtcMessage;
+
+  //   // socket.to(otherUser).emit("ICEcandidate", {
+  //   //   sender: socket.user,
+  //   //   rtcMessage: rtcMessage
+  //   // })
+  // }
 });
 
 server.listen(process.env.SOCKET_PORT || 8000, () =>

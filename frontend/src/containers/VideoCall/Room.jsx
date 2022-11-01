@@ -45,6 +45,7 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = useParams()
+    const otherUser = useRef();
 
     useEffect(() => {
         socketRef.current = io.connect("localhost:8000");
@@ -56,6 +57,9 @@ const Room = (props) => {
                 const peers = [];
                 users.forEach(userID => {
                     const peer = createPeer(userID, socketRef.current.id, stream);
+
+                    otherUser.current = userID;
+
                     peersRef.current.push({
                         peerID: userID,
                         peer,
@@ -70,6 +74,9 @@ const Room = (props) => {
 
             socketRef.current.on("user joined", payload => {
                 const peer = addPeer(payload.signal, payload.callerID, stream);
+
+                otherUser.current = payload.userID;
+
                 peersRef.current.push({
                     peerID: payload.callerID,
                     peer,
@@ -98,15 +105,40 @@ const Room = (props) => {
                 peersRef.current = peers
                 setPeers(peers)
             })
+
+            socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
         })
     }, []);
 
     function createPeer(userToSignal, callerID, stream) {
+
+        // Free public STUN servers provided by Google.
+        // const iceServers = {
+        //     iceServers: [
+        //     { urls: "stun:stun.l.google.com:19302" },
+        //     { urls: "stun:stun1.l.google.com:19302" },
+        //     { urls: "stun:stun2.l.google.com:19302" },
+        //     { urls: "stun:stun3.l.google.com:19302" },
+        //     { urls: "stun:stun4.l.google.com:19302" },
+        //     ],
+        // };
+
         const peer = new Peer({
+            iceServers: [
+                { urls: "stun:stun.l.google.com:19302" },
+                { urls: "stun:stun1.l.google.com:19302" },
+                { urls: "stun:stun2.l.google.com:19302" },
+                { urls: "stun:stun3.l.google.com:19302" },
+                { urls: "stun:stun4.l.google.com:19302" },
+            ],
             initiator: true,
             trickle: false,
             stream,
         });
+
+        peer.onicecandidate = handleICECandidateEvent;
+        // peer.ontrack = handleTrackEvent;
+        peer.onnegotiationneeded = () => handleNegotiationNeededEvent(userToSignal);
 
         peer.on("signal", signal => {
             socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
@@ -130,6 +162,40 @@ const Room = (props) => {
 
         return peer;
     }
+
+    function handleNewICECandidateMsg(incoming) {
+        const candidate = new RTCIceCandidate(incoming);
+
+        peersRef.current.addIceCandidate(candidate)
+            .catch(e => console.log(e));
+    }
+
+    function handleNegotiationNeededEvent(userID) {
+        peersRef.current.createOffer().then(offer => {
+            return peersRef.current.setLocalDescription(offer);
+        }).then(() => {
+            const payload = {
+                target: userID,
+                caller: socketRef.current.id,
+                sdp: peersRef.current.localDescription
+            };
+            socketRef.current.emit("offer", payload);
+        }).catch(e => console.log(e));
+    }
+
+    function handleICECandidateEvent(e) {
+        if (e.candidate) {
+            const payload = {
+                target: otherUser.current,
+                candidate: e.candidate,
+            }
+            socketRef.current.emit("ice-candidate", payload);
+        }
+    }
+
+    // function handleTrackEvent(e) {
+    //     partnerVideo.current.srcObject = e.streams[0];
+    // };
 
     const leaveCall = () => {
         window.open("about:blank", "_self");
