@@ -31,7 +31,7 @@ export const validationSchema = Yup.object().shape({
         .required('Surname cannot be blank')
         .matches(/^[A-Za-z ]+$/, 'Only alphabets are allowed for this field'),
     drPreferredName: Yup.string()
-        .required('Preffered Name cannot be blank')
+        .required('Preferred Name cannot be blank')
         .matches(/^[A-Za-z ]+$/,'Only alphabets are allowed for this field'
     ),
     drDOB: Yup.string()
