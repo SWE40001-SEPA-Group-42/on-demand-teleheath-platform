@@ -35,11 +35,16 @@ import {
 } from '@tanstack/match-sorter-utils';
 import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks'
-import {fetchDoctors} from '../../../redux/Doctor/doctorsSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { fetchDoctors } from '../../../redux/Doctor/doctorsSlice'
+import { Doctor } from '../../../types/Doctor'
 
-
-
+type DoctorData = {
+	drName: string,
+	drGender: string,
+	drLanguagesSpoken: string,
+	drQualifications: string
+}
 
 declare module '@tanstack/table-core' {
 	interface FilterFns {
@@ -78,37 +83,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-
-
-type Doctor = {
-	drName: String;
-	drGender: String;
-	drLanguagesSpoken: String;
-	drSpecialisations: String;
-};
-
-const data: Doctor[] = [
-	{
-		drName: 'Peter',
-		drGender: 'Male',
-		drLanguagesSpoken: 'Vietnamese',
-		drSpecialisations: 'Men Health',
-	},
-	{
-		drName: 'Cath',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Woman Health',
-	},
-	{
-		drName: 'Katy',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Mental Health',
-	},
-];
-
-const columnHelper = createColumnHelper<Doctor>();
+const columnHelper = createColumnHelper<DoctorData>();
 
 const columns = [
 	columnHelper.accessor('drName', {
@@ -123,44 +98,41 @@ const columns = [
 		cell: (info) => info.getValue(),
 		header: 'Languages Spoken',
 	}),
-	columnHelper.accessor('drSpecialisations', {
+	columnHelper.accessor('drQualifications', {
 		cell: (info) => info.getValue(),
 		header: 'Specialisations',
 	}),
 ];
 
-
-
-
-
-
-
-
-
-
+let data : DoctorData[] = [{
+	drName: "",
+	drGender: "",
+	drLanguagesSpoken: "",
+	drQualifications: ""
+}]
 //MAIN COMPONENT
 export const PatientTable = <Data extends object>() => {
 
-
-	
 	const dispatch = useAppDispatch();
+	const doctors = useAppSelector(state => state.doctors);
+
 	useEffect(() => {
 		dispatch(fetchDoctors())
 	}, [])
-	const res = useAppSelector(state => state.doctors.data);
 
-	const data : Doctor[] = []
-	res.forEach(element => {
-		const temp : Doctor = {
-			drName: element.drGivenName + " " +element.drSurname, 
-			drGender: element.drBirthSex, 
-			drLanguagesSpoken: element.drLanguagesSpoken, 
-			drSpecialisations: element.drQualifications
-		}
-		data.push(temp)
-	})
-
-
+	useEffect(() => {
+		data = []
+		doctors.data.forEach(e => {
+			const temp: DoctorData = {
+				drName: e.drGivenName + " " + e.drSurname,
+				drGender: e.drBirthSex,
+				drLanguagesSpoken: e.drLanguagesSpoken,
+				drQualifications: e.drQualifications
+			}
+			data.push(temp)
+		})
+		console.log(data)
+	}, [doctors.data])
 
 	const rerender = React.useReducer(() => ({}), {})[1];
 
@@ -268,7 +240,7 @@ export const PatientTable = <Data extends object>() => {
 									<>
 										<Td
 											className="text-sm"
-											style={{textAlign: 'center'}}
+											style={{ textAlign: 'center' }}
 											key={cell.id}
 											isNumeric={meta?.isNumeric}
 										>
@@ -320,11 +292,10 @@ function Filter({
 				type="text"
 				value={(columnFilterValue ?? '') as string}
 				onChange={(value) => column.setFilterValue(value)}
-				placeholder={`Search by ${
-					column.columnDef.header == 'Languages Spoken'
-						? 'Languages'
-						: column.columnDef.header
-				}`}
+				placeholder={`Search by ${column.columnDef.header == 'Languages Spoken'
+					? 'Languages'
+					: column.columnDef.header
+					}`}
 				className="pl-3 h-10 border shadow rounded"
 				list={column.id + 'list'}
 			/>

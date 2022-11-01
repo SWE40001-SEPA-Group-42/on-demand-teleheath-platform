@@ -59,6 +59,8 @@ const Dashboard = () => {
     surname: Userfront.user.data.surName,
   };
 
+  console.log(Userfront.user.data.givenName)
+
   const userName = [user.givenName, user.surname].join(' ');
   return (
     <>
@@ -151,8 +153,8 @@ const Dashboard = () => {
 
           <Box w="90%" mx="auto">
             {/* Customised table */}
-            {Userfront.user.hasRole('viewer') === true && <h1>PatientView</h1>}
-            {Userfront.user.hasRole('member') === true && <h1>DoctorView</h1>}
+            {Userfront.user.hasRole('viewer') === true && <PatientTable/>}
+            {Userfront.user.hasRole('member') === true && <DoctorTable/>}
             {Userfront.user.hasRole('admin') === true && <ClinicTable />}
           </Box>
         </Box>

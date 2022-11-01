@@ -9,10 +9,9 @@ export const fetchDoctors = createAsyncThunk(
   '/doctors/fetchDoctors',
   async () => {
     try {
-      const response = await axios.get(`${baseURL}`, {
+      const response = await axios.get(`${baseURL}/status`, {
         params: {
-          drGivenName: 'Johnathan',
-          drSurname: 'Furr',
+          drAvail: true
         },
       });
 

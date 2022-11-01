@@ -37,19 +37,17 @@ import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks'
 import {getPatient} from '../../../redux/Patient/patientsSlice'
+import Userfront from '@userfront/react';
+import { Patient } from '../../../types/Patient'
 
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
+type PatientData = {
+	ptName: string,
+	ptGender: string
+}
 
-
-
-type Patient = {
-	ptName: String;
-	ptGender: String;
-};
-
-
-
-const columnHelper = createColumnHelper<Patient>();
+const columnHelper = createColumnHelper<PatientData>();
 
 const columns = [
 	columnHelper.accessor('ptName', {
@@ -61,11 +59,6 @@ const columns = [
 		header: 'Gender',
 	}),
 ];
-
-
-
-
-
 
 declare module '@tanstack/table-core' {
 	interface FilterFns {
@@ -104,29 +97,26 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-
+let data : PatientData[] = []
 
 export const DoctorTable = <Data extends object>() => {
 
 	const dispatch = useAppDispatch();
-	useEffect(() => {
-		dispatch(getPatient())
-	}, [])
-	const res = useAppSelector(state => state.patients.data);
+	// useEffect(() => {
+	// 	dispatch(getPatient({
+	// 		ptGivenName: Userfront.user.data.givenName,
+    // 		ptSurname: Userfront.user.data.surName,
+	// 	}))
+	// }, [])
+	const patients = useAppSelector(state => state.patients.data);
 
-	const data : Patient[] = []
-	res.forEach(element => {
-		const temp : Patient = {
-			ptName: element.ptGivenName + " " +element.ptSurname, 
+	patients.forEach(element => {
+		const temp : PatientData = {
+			ptName: element.ptGivenName + " " + element.ptSurname, 
 			ptGender: element.ptBirthSex, 
 		}
 		data.push(temp)
 	})
-
-
-
-
-
 
 	const rerender = React.useReducer(() => ({}), {})[1];
 
