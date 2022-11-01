@@ -36,7 +36,33 @@ import {
 import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks'
-import {fetchDoctors} from '../../../redux/Doctor/doctorsSlice'
+import {getPatient} from '../../../redux/Patient/patientsSlice'
+
+
+
+
+
+type Patient = {
+	ptName: String;
+	ptGender: String;
+};
+
+
+
+const columnHelper = createColumnHelper<Patient>();
+
+const columns = [
+	columnHelper.accessor('ptName', {
+		cell: (info) => info.getValue(),
+		header: 'Patient Name',
+	}),
+	columnHelper.accessor('ptGender', {
+		cell: (info) => info.getValue(),
+		header: 'Gender',
+	}),
+];
+
+
 
 
 
@@ -80,85 +106,25 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 
 
 
-type Doctor = {
-	drName: String;
-	drGender: String;
-	drLanguagesSpoken: String;
-	drSpecialisations: String;
-};
+export const DoctorTable = <Data extends object>() => {
 
-const data: Doctor[] = [
-	{
-		drName: 'Peter',
-		drGender: 'Male',
-		drLanguagesSpoken: 'Vietnamese',
-		drSpecialisations: 'Men Health',
-	},
-	{
-		drName: 'Cath',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Woman Health',
-	},
-	{
-		drName: 'Katy',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Mental Health',
-	},
-];
-
-const columnHelper = createColumnHelper<Doctor>();
-
-const columns = [
-	columnHelper.accessor('drName', {
-		cell: (info) => info.getValue(),
-		header: 'Doctor Name',
-	}),
-	columnHelper.accessor('drGender', {
-		cell: (info) => info.getValue(),
-		header: 'Gender',
-	}),
-	columnHelper.accessor('drLanguagesSpoken', {
-		cell: (info) => info.getValue(),
-		header: 'Languages Spoken',
-	}),
-	columnHelper.accessor('drSpecialisations', {
-		cell: (info) => info.getValue(),
-		header: 'Specialisations',
-	}),
-];
-
-
-
-
-
-
-
-
-
-
-//MAIN COMPONENT
-export const PatientTable = <Data extends object>() => {
-
-
-	
 	const dispatch = useAppDispatch();
 	useEffect(() => {
-		dispatch(fetchDoctors())
+		dispatch(getPatient())
 	}, [])
-	const res = useAppSelector(state => state.doctors.data);
+	const res = useAppSelector(state => state.patients.data);
 
-	const data : Doctor[] = []
+	const data : Patient[] = []
 	res.forEach(element => {
-		const temp : Doctor = {
-			drName: element.drGivenName + " " +element.drSurname, 
-			drGender: element.drBirthSex, 
-			drLanguagesSpoken: element.drLanguagesSpoken, 
-			drSpecialisations: element.drQualifications
+		const temp : Patient = {
+			ptName: element.ptGivenName + " " +element.ptSurname, 
+			ptGender: element.ptBirthSex, 
 		}
 		data.push(temp)
 	})
+
+
+
 
 
 
@@ -169,7 +135,7 @@ export const PatientTable = <Data extends object>() => {
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	);
-
+ 
 	const [globalFilter, setGlobalFilter] = React.useState('');
 
 	const table = useReactTable({
@@ -203,15 +169,8 @@ export const PatientTable = <Data extends object>() => {
 	}, [table.getState().columnFilters[0]?.id]);
 
 	return (
-		<Box mb='100px'>
+		<Box>
 			<Flex className="w-full">
-				{/* <DebouncedInput
-					value={globalFilter ?? ''}
-					onChange={(value) => setGlobalFilter(String(value))}
-					className="w-3/4 p-4 font-lg shadow border rounded-md"
-					placeholder="Search doctor"
-				/> */}
-
 				{/* This is the Refine Search Container */}
 				<SearchFilter />
 			</Flex>
@@ -281,7 +240,7 @@ export const PatientTable = <Data extends object>() => {
 								);
 							})}
 							<Td>
-								<Button colorScheme="green">Request</Button>
+								<Button colorScheme="green">Accept</Button>
 							</Td>
 						</Tr>
 					))}
@@ -367,4 +326,14 @@ function DebouncedInput({
 	);
 }
 
-export default PatientTable;
+export default DoctorTable;
+
+
+
+
+{/* <DebouncedInput
+	value={globalFilter ?? ''}
+	onChange={(value) => setGlobalFilter(String(value))}
+	className="w-3/4 p-4 font-lg shadow border rounded-md"
+	placeholder="Search doctor"
+/> */}
