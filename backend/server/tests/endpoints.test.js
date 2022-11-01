@@ -338,6 +338,7 @@ describe("Patient Routes", () => {
           ptHealthcareCardExpiryDate: "2023-05-10",
           ptPensionCardNo: mockPatient.ptPensionCardNo,
           ptPensionCardExpiryDate: "2023-05-10",
+          ptId: mockPatient.ptId,
         });
       expect(response.statusCode).toBe(200);
       expect(response.headers["content-type"]).toEqual(
@@ -391,6 +392,7 @@ describe("Patient Routes", () => {
           ptHealthcareCardExpiryDate: "2023-05-10",
           ptPensionCardNo: mockInvalidPatient.ptPensionCardNo,
           ptPensionCardExpiryDate: "2023-05-10",
+          ptId: mockInvalidPatient.ptId,
         });
       expect(response.statusCode).toBe(422);
     });
@@ -419,7 +421,7 @@ describe("Patient Routes", () => {
             postcode: "4573",
             country: "Australia",
           },
-          ptMedicareCardNo: "12345678",
+          ptMedicareCardNo: 12345678,
           ptMedicareCardIRN: "3",
           ptMedicareCardExpiryDate: "2023-05-10",
           ptPrivateHealthFund: "Medibank",
@@ -442,6 +444,7 @@ describe("Patient Routes", () => {
           ptHealthcareCardExpiryDate: "2023-05-10",
           ptPensionCardNo: "12345678",
           ptPensionCardExpiryDate: "2023-05-10",
+          ptId: "54321",
         });
       expect(response.statusCode).toBe(200);
       expect(response.headers["content-type"]).toEqual(
@@ -474,7 +477,7 @@ describe("Handling Appointments", () => {
         dateOfAppointment: "2022-01-18",
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
-        aptLink: '',
+        aptLink: "",
         aptStatus: mockAppointment.aptStatus,
       });
     expect(response.statusCode).toBe(200);
@@ -514,7 +517,7 @@ describe("Handling Appointments", () => {
     const response = await request(app)
       .get("/api/dashboard/appointment/status/")
       .query({
-        aptStatus: mockAppointment.aptStatus
+        aptStatus: mockAppointment.aptStatus,
       });
     expect(response.statusCode).toBe(200);
     expect(response.headers["content-type"]).toEqual(
@@ -530,7 +533,7 @@ describe("Handling Appointments", () => {
         dateOfAppointment: "2022-01-20",
         drEmail: mockAppointment.drEmail,
         ptEmail: mockAppointment.ptEmail,
-        aptLink: '',
+        aptLink: "",
         aptStatus: mockAppointment.aptStatus,
       });
     expect(response.statusCode).toBe(200);
