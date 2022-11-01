@@ -20,6 +20,7 @@ const PatientUpdateProfile = () => {
 
 	const [patient, setPatient] = useState<Patient>({
 		_id: '',
+		ptId: '',
 		ptGivenName: '',
 		ptSurname: '',
 		ptPreferredName: '',

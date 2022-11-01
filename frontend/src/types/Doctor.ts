@@ -21,4 +21,5 @@ export type Doctor = {
 	drQualifications: string;
 	drLanguagesSpoken: string;
 	drClinicName: string;
+	drId: String; 
 };

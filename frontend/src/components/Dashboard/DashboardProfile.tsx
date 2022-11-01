@@ -25,8 +25,9 @@ import {
 } from '@chakra-ui/react';
 import { Link as ReachLink } from 'react-router-dom';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { Logout } from "../../Authentication";
-
+import { Logout } from "../Authentication";
+import Userfront from '@userfront/react';
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 interface IDashboardProfile {
     userProfileName: string;
     userProfileImgSrc?: string;
@@ -67,9 +68,11 @@ const DashboardProfile: React.FC<IDashboardProfile> = ({ userProfileName, userPr
                 <MenuList>
                     <MenuGroup title='Profile'>
                         <Link as={ReachLink} to='patient/profile'>
+
+                        {Userfront.user.hasRole("admin") !== true && 
                             <MenuItem>
                                 My Profile
-                            </MenuItem>
+                            </MenuItem>}
                         </Link>
                     </MenuGroup>
                     <MenuItem>
