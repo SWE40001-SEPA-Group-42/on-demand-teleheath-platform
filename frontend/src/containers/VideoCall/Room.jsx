@@ -112,29 +112,51 @@ const Room = (props) => {
 
     function createPeer(userToSignal, callerID, stream) {
 
-        // Free public STUN servers provided by Google.
-        // const iceServers = {
-        //     iceServers: [
-        //     { urls: "stun:stun.l.google.com:19302" },
-        //     { urls: "stun:stun1.l.google.com:19302" },
-        //     { urls: "stun:stun2.l.google.com:19302" },
-        //     { urls: "stun:stun3.l.google.com:19302" },
-        //     { urls: "stun:stun4.l.google.com:19302" },
-        //     ],
-        // };
+        /*
+            // Uses Google's Free Stun Servers, but has no TURN servers
+            const peer = new Peer({
+                iceServers: [
+                    { urls: "stun:stun.l.google.com:19302" },
+                    { urls: "stun:stun1.l.google.com:19302" },
+                    { urls: "stun:stun2.l.google.com:19302" },
+                    { urls: "stun:stun3.l.google.com:19302" },
+                    { urls: "stun:stun4.l.google.com:19302" },
+                ],
+                initiator: true,
+                trickle: false,
+                stream,
+            });
+        */
 
+
+        // https://www.metered.ca/tools/openrelay/ --> Free STUN and TURN servers
         const peer = new Peer({
-            iceServers: [
-                { urls: "stun:stun.l.google.com:19302" },
-                { urls: "stun:stun1.l.google.com:19302" },
-                { urls: "stun:stun2.l.google.com:19302" },
-                { urls: "stun:stun3.l.google.com:19302" },
-                { urls: "stun:stun4.l.google.com:19302" },
-            ],
-            initiator: true,
-            trickle: false,
-            stream,
-        });
+            config: {
+                iceServers: [
+                    {
+                      urls: "stun:openrelay.metered.ca:80",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:80",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:443",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:443?transport=tcp",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                ],
+                initiator: true,
+                trickle: false,
+                stream,
+            }
+        })
 
         peer.onicecandidate = handleICECandidateEvent;
         // peer.ontrack = handleTrackEvent;
@@ -163,7 +185,7 @@ const Room = (props) => {
         return peer;
     }
 
-    function handleNewICECandidateMsg(incoming) {
+    function c(incoming) {
         const candidate = new RTCIceCandidate(incoming);
 
         peersRef.current.addIceCandidate(candidate)
