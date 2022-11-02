@@ -1,4 +1,5 @@
 export type Clinic = {
+	userId?: string,
 	_id?: string;
 	clName: string;
 	clAddress: {

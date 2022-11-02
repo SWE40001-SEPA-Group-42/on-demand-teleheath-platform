@@ -162,6 +162,24 @@ const updateAppointmentStatus = asyncHandler(async (req, res) => {
   }
 });
 
+//GET 
+const searchForAppointmentByDoctor = asyncHandler(async (req, res) => {
+  const drEmail = req.query.drEmail;
+
+  const appointment = await Appointment.find({
+    drEmail: drEmail,
+  });
+
+  if (!appointment) {
+    res.status(400);
+    throw new Error(
+      `Unable to find appointment between ${ptEmail} and ${drEmail}`
+    );
+  } else {
+    res.status(200).json(appointment);
+  }
+})
+
 module.exports = {
   searchForAppointment,
   checkForAppointmentStatus,
@@ -171,4 +189,5 @@ module.exports = {
   updateAppointmentByID,
   deleteAppointment,
   deleteAppointmentByID,
+  searchForAppointmentByDoctor
 };

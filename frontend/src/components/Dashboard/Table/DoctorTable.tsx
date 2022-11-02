@@ -35,21 +35,23 @@ import {
 } from '@tanstack/match-sorter-utils';
 import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks'
-import {getPatient} from '../../../redux/Patient/patientsSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { getPatient, getAllPatient } from '../../../redux/Patient/patientsSlice'
+import Userfront from '@userfront/react';
+import { Patient } from '../../../types/Patient'
+import { Doctor } from '../../../types/Doctor';
+import { fetchDoctor } from '../../../redux/Doctor/doctorsSlice';
+import { searchForAppointmentByDoctor } from '../../../redux/Appointment/appointmentsSlice';
+import { Appointment } from '../../../types/Appointment';
 
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
+type PatientData = {
+	ptName: string,
+	ptGender: string
+}
 
-
-
-type Patient = {
-	ptName: String;
-	ptGender: String;
-};
-
-
-
-const columnHelper = createColumnHelper<Patient>();
+const columnHelper = createColumnHelper<PatientData>();
 
 const columns = [
 	columnHelper.accessor('ptName', {
@@ -61,11 +63,6 @@ const columns = [
 		header: 'Gender',
 	}),
 ];
-
-
-
-
-
 
 declare module '@tanstack/table-core' {
 	interface FilterFns {
@@ -104,29 +101,56 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-
-
+//MAIN COMPONENT
 export const DoctorTable = <Data extends object>() => {
-
 	const dispatch = useAppDispatch();
+	const patients = useAppSelector(state => state.patients);
+	const doctors = useAppSelector(state => state.doctors)
+	const appointments = useAppSelector(state => state.appointments)
+	const [doctor, setDoctor] = useState<Doctor>()
+	const [appointmentsList, setAppointmentsList] = useState<Appointment[]>()
+	const [data, setData] = useState<PatientData[]>([])
+
 	useEffect(() => {
-		dispatch(getPatient())
+		dispatch(fetchDoctor({
+			drGivenName: Userfront.user.data.givenName,
+			drSurname: Userfront.user.data.surname
+		}))
+		dispatch(getAllPatient())
 	}, [])
-	const res = useAppSelector(state => state.patients.data);
 
-	const data : Patient[] = []
-	res.forEach(element => {
-		const temp : Patient = {
-			ptName: element.ptGivenName + " " +element.ptSurname, 
-			ptGender: element.ptBirthSex, 
+	useEffect(() => {
+		setDoctor(doctors.data[0])
+	}, [doctors.data])
+
+	useEffect(() => {
+		if (doctor) {
+			dispatch(searchForAppointmentByDoctor(doctor.drEmail))
 		}
-		data.push(temp)
-	})
+	}, [doctor])
 
+	useEffect(() => {
+		setAppointmentsList(appointments.data)
+	}, [appointments.data])
 
-
-
-
+	useEffect(() => {
+		if (appointmentsList) {
+			if (appointmentsList.length > 0) {
+				setData([])
+				for (const e of appointmentsList) {
+					for (const p of patients.data) {
+						if (e.ptEmail === p.ptEmailAddress) {
+							let temp: PatientData = {
+								ptName: p.ptGivenName + " " + p.ptSurname,
+								ptGender: p.ptBirthSex
+							}
+							setData(prev => [...prev, temp])
+						}
+					}
+				}
+			}
+		}
+	}, [appointmentsList])
 
 	const rerender = React.useReducer(() => ({}), {})[1];
 
@@ -135,7 +159,7 @@ export const DoctorTable = <Data extends object>() => {
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	);
- 
+
 	const [globalFilter, setGlobalFilter] = React.useState('');
 
 	const table = useReactTable({
@@ -160,13 +184,17 @@ export const DoctorTable = <Data extends object>() => {
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 	});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (table.getState().columnFilters[0]?.id === 'fullName') {
 			if (table.getState().sorting[0]?.id !== 'fullName') {
 				table.setSorting([{ id: 'fullName', desc: false }]);
 			}
 		}
 	}, [table.getState().columnFilters[0]?.id]);
+
+	useEffect(() => {
+		
+	}, [data])
 
 	return (
 		<Box>
@@ -175,7 +203,7 @@ export const DoctorTable = <Data extends object>() => {
 				<SearchFilter />
 			</Flex>
 			<Table>
-				<Thead>
+				<Thead> 
 					{table.getHeaderGroups().map((headerGroup) => (
 						<Tr key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
@@ -227,7 +255,7 @@ export const DoctorTable = <Data extends object>() => {
 									<>
 										<Td
 											className="text-sm"
-											style={{textAlign: 'center'}}
+											style={{ textAlign: 'center' }}
 											key={cell.id}
 											isNumeric={meta?.isNumeric}
 										>
@@ -279,11 +307,10 @@ function Filter({
 				type="text"
 				value={(columnFilterValue ?? '') as string}
 				onChange={(value) => column.setFilterValue(value)}
-				placeholder={`Search by ${
-					column.columnDef.header == 'Languages Spoken'
-						? 'Languages'
-						: column.columnDef.header
-				}`}
+				placeholder={`Search by ${column.columnDef.header == 'Languages Spoken'
+					? 'Languages'
+					: column.columnDef.header
+					}`}
 				className="pl-3 h-10 border shadow rounded"
 				list={column.id + 'list'}
 			/>

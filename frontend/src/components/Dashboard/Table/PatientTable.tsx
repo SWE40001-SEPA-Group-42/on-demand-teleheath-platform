@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -35,11 +35,23 @@ import {
 } from '@tanstack/match-sorter-utils';
 import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks'
-import {fetchDoctors} from '../../../redux/Doctor/doctorsSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { fetchDoctor, fetchDoctors } from '../../../redux/Doctor/doctorsSlice'
+import { createAppointment } from '../../../redux/Appointment/appointmentsSlice'
+import Userfront from '@userfront/react';
+import { getPatient } from '../../../redux/Patient/patientsSlice';
+import { Patient } from '../../../types/Patient';
+import { v1 as uuid } from "uuid";
 
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
-
+type DoctorData = {
+	userId: string,
+	drName: string,
+	drGender: string,
+	drLanguagesSpoken: string,
+	drQualifications: string
+}
 
 declare module '@tanstack/table-core' {
 	interface FilterFns {
@@ -78,37 +90,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
 
-
-
-type Doctor = {
-	drName: String;
-	drGender: String;
-	drLanguagesSpoken: String;
-	drSpecialisations: String;
-};
-
-const data: Doctor[] = [
-	{
-		drName: 'Peter',
-		drGender: 'Male',
-		drLanguagesSpoken: 'Vietnamese',
-		drSpecialisations: 'Men Health',
-	},
-	{
-		drName: 'Cath',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Woman Health',
-	},
-	{
-		drName: 'Katy',
-		drGender: 'Female',
-		drLanguagesSpoken: 'English',
-		drSpecialisations: 'Mental Health',
-	},
-];
-
-const columnHelper = createColumnHelper<Doctor>();
+const columnHelper = createColumnHelper<DoctorData>();
 
 const columns = [
 	columnHelper.accessor('drName', {
@@ -123,44 +105,47 @@ const columns = [
 		cell: (info) => info.getValue(),
 		header: 'Languages Spoken',
 	}),
-	columnHelper.accessor('drSpecialisations', {
+	columnHelper.accessor('drQualifications', {
 		cell: (info) => info.getValue(),
 		header: 'Specialisations',
 	}),
 ];
 
-
-
-
-
-
-
-
-
-
 //MAIN COMPONENT
 export const PatientTable = <Data extends object>() => {
 
-
-	
 	const dispatch = useAppDispatch();
+	const doctors = useAppSelector(state => state.doctors);
+	const patients = useAppSelector(state => state.patients)
+	const appointments = useAppSelector(state => state.appointments)
+	const [patient, setPatient] = useState<Patient>()
+	const [data, setData] = useState<DoctorData[]>([])
+
 	useEffect(() => {
 		dispatch(fetchDoctors())
+		dispatch(getPatient({
+			ptGivenName: Userfront.user.data.givenName,
+			ptSurname: Userfront.user.data.surname
+		}))
 	}, [])
-	const res = useAppSelector(state => state.doctors.data);
 
-	const data : Doctor[] = []
-	res.forEach(element => {
-		const temp : Doctor = {
-			drName: element.drGivenName + " " +element.drSurname, 
-			drGender: element.drBirthSex, 
-			drLanguagesSpoken: element.drLanguagesSpoken, 
-			drSpecialisations: element.drQualifications
-		}
-		data.push(temp)
-	})
+	useEffect(() => {
+		setPatient(patients.data[0])
+	}, [patients.data])
 
-
+	useEffect(() => {
+		setData([])
+		doctors.data.forEach(e => {
+			const temp: DoctorData = {
+				userId: e.userId || "",
+				drName: e.drGivenName + " " + e.drSurname,
+				drGender: e.drBirthSex,
+				drLanguagesSpoken: e.drLanguagesSpoken,
+				drQualifications: e.drQualifications
+			}
+			setData(prev => [...prev, temp])
+		})
+	}, [doctors.data])
 
 	const rerender = React.useReducer(() => ({}), {})[1];
 
@@ -201,6 +186,28 @@ export const PatientTable = <Data extends object>() => {
 			}
 		}
 	}, [table.getState().columnFilters[0]?.id]);
+
+
+	//request appoinment
+	const requestAppointment = async (drName: string) => {
+		let tempArr = drName.split(" ")
+		const drGivenName = tempArr[0]
+		const drSurname = tempArr[1]
+
+		const doctorToRequest = doctors.data.filter(e => e.drGivenName === drGivenName && e.drSurname === drSurname)[0]
+		console.log(doctorToRequest)
+
+		if (patient) {
+			const id = uuid()
+			await dispatch(createAppointment({
+				ptEmail: patient.ptEmailAddress,
+				drEmail: doctorToRequest.drEmail,
+				aptLink: id
+			}))
+
+			console.log(appointments.data[0])
+		}
+	}
 
 	return (
 		<Box mb='100px'>
@@ -264,11 +271,12 @@ export const PatientTable = <Data extends object>() => {
 						<Tr key={row.id}>
 							{row.getVisibleCells().map((cell) => {
 								const meta: any = cell.column.columnDef.meta;
+								// console.log(row.original.userId)
 								return (
 									<>
 										<Td
 											className="text-sm"
-											style={{textAlign: 'center'}}
+											style={{ textAlign: 'center' }}
 											key={cell.id}
 											isNumeric={meta?.isNumeric}
 										>
@@ -281,7 +289,9 @@ export const PatientTable = <Data extends object>() => {
 								);
 							})}
 							<Td>
-								<Button colorScheme="green">Request</Button>
+								<Button onClick={() => {
+									requestAppointment(row.original.drName)
+								}} colorScheme="green">Request</Button>
 							</Td>
 						</Tr>
 					))}
@@ -320,11 +330,10 @@ function Filter({
 				type="text"
 				value={(columnFilterValue ?? '') as string}
 				onChange={(value) => column.setFilterValue(value)}
-				placeholder={`Search by ${
-					column.columnDef.header == 'Languages Spoken'
-						? 'Languages'
-						: column.columnDef.header
-				}`}
+				placeholder={`Search by ${column.columnDef.header == 'Languages Spoken'
+					? 'Languages'
+					: column.columnDef.header
+					}`}
 				className="pl-3 h-10 border shadow rounded"
 				list={column.id + 'list'}
 			/>

@@ -195,7 +195,10 @@ interface IPatientProfile {
 const PatientProfile: React.FC<IPatientProfile> = ({}) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getPatient());
+    dispatch(getPatient({
+      ptGivenName: Userfront.user.data.givenName,
+      ptSurname: Userfront.user.data.surName,
+    }));
   }, []);
 
   return (
