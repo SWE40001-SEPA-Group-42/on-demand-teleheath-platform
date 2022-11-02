@@ -59,7 +59,7 @@ const Dashboard = () => {
     surname: Userfront.user.data.surName,
   };
 
-  console.log(Userfront.user.data.givenName)
+  //console.log(Userfront.user.data.givenName)
 
   const userName = [user.givenName, user.surname].join(' ');
   return (
