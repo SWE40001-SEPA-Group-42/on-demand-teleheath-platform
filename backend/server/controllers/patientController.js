@@ -21,6 +21,21 @@ const getPatient = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllPatient = asyncHandler(async (req, res) => {
+  const ptEmail = req.query.ptEmail
+
+  const patient = await Patient.find();
+
+  if (!patient) {
+    res.status(400);
+    throw new Error(
+      `Invalid Patient Details: Missing inputs found in the request!`
+    )
+  } else {
+    res.status(200).json(patient);
+  }
+})
+
 // POST - Patient
 const addPatient = asyncHandler(async (req, res) => {
   const patient = await Patient.create({
@@ -159,4 +174,5 @@ module.exports = {
   modifyPatientByName,
   deletePatientByID,
   deletePatientByName,
+  getAllPatient
 };

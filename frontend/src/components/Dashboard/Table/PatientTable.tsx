@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -36,10 +36,17 @@ import {
 import SearchFilter from '../SearchFilters/SearchFilter';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import { fetchDoctors } from '../../../redux/Doctor/doctorsSlice'
-import { Doctor } from '../../../types/Doctor'
+import { fetchDoctor, fetchDoctors } from '../../../redux/Doctor/doctorsSlice'
+import { createAppointment } from '../../../redux/Appointment/appointmentsSlice'
+import Userfront from '@userfront/react';
+import { getPatient } from '../../../redux/Patient/patientsSlice';
+import { Patient } from '../../../types/Patient';
+import { v1 as uuid } from "uuid";
+
+Userfront.init(process.env.REACT_APP_USERFRONT_INIT);
 
 type DoctorData = {
+	userId: string,
 	drName: string,
 	drGender: string,
 	drLanguagesSpoken: string,
@@ -104,34 +111,40 @@ const columns = [
 	}),
 ];
 
-let data : DoctorData[] = [{
-	drName: "",
-	drGender: "",
-	drLanguagesSpoken: "",
-	drQualifications: ""
-}]
 //MAIN COMPONENT
 export const PatientTable = <Data extends object>() => {
 
 	const dispatch = useAppDispatch();
 	const doctors = useAppSelector(state => state.doctors);
+	const patients = useAppSelector(state => state.patients)
+	const appointments = useAppSelector(state => state.appointments)
+	const [patient, setPatient] = useState<Patient>()
+	const [data, setData] = useState<DoctorData[]>([])
 
 	useEffect(() => {
 		dispatch(fetchDoctors())
+		dispatch(getPatient({
+			ptGivenName: Userfront.user.data.givenName,
+			ptSurname: Userfront.user.data.surname
+		}))
 	}, [])
 
 	useEffect(() => {
-		data = []
+		setPatient(patients.data[0])
+	}, [patients.data])
+
+	useEffect(() => {
+		setData([])
 		doctors.data.forEach(e => {
 			const temp: DoctorData = {
+				userId: e.userId || "",
 				drName: e.drGivenName + " " + e.drSurname,
 				drGender: e.drBirthSex,
 				drLanguagesSpoken: e.drLanguagesSpoken,
 				drQualifications: e.drQualifications
 			}
-			data.push(temp)
+			setData(prev => [...prev, temp])
 		})
-		console.log(data)
 	}, [doctors.data])
 
 	const rerender = React.useReducer(() => ({}), {})[1];
@@ -173,6 +186,28 @@ export const PatientTable = <Data extends object>() => {
 			}
 		}
 	}, [table.getState().columnFilters[0]?.id]);
+
+
+	//request appoinment
+	const requestAppointment = async (drName: string) => {
+		let tempArr = drName.split(" ")
+		const drGivenName = tempArr[0]
+		const drSurname = tempArr[1]
+
+		const doctorToRequest = doctors.data.filter(e => e.drGivenName === drGivenName && e.drSurname === drSurname)[0]
+		console.log(doctorToRequest)
+
+		if (patient) {
+			const id = uuid()
+			await dispatch(createAppointment({
+				ptEmail: patient.ptEmailAddress,
+				drEmail: doctorToRequest.drEmail,
+				aptLink: id
+			}))
+
+			console.log(appointments.data[0])
+		}
+	}
 
 	return (
 		<Box mb='100px'>
@@ -236,6 +271,7 @@ export const PatientTable = <Data extends object>() => {
 						<Tr key={row.id}>
 							{row.getVisibleCells().map((cell) => {
 								const meta: any = cell.column.columnDef.meta;
+								// console.log(row.original.userId)
 								return (
 									<>
 										<Td
@@ -253,7 +289,9 @@ export const PatientTable = <Data extends object>() => {
 								);
 							})}
 							<Td>
-								<Button colorScheme="green">Request</Button>
+								<Button onClick={() => {
+									requestAppointment(row.original.drName)
+								}} colorScheme="green">Request</Button>
 							</Td>
 						</Tr>
 					))}

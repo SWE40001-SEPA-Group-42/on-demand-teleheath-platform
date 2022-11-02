@@ -8,6 +8,7 @@ const {
   updateAppointmentByID,
   deleteAppointment,
   deleteAppointmentByID,
+  searchForAppointmentByDoctor
 } = require("../controllers/dashboardController");
 const {
   dashboardValidator,
@@ -54,5 +55,9 @@ dashboardRouter
     updateAppointmentByID
   )
   .delete(deleteAppointmentByID);
-
+dashboardRouter
+  .route("/appointment/doctor")
+  .get(
+    searchForAppointmentByDoctor
+  )
 module.exports = dashboardRouter;

@@ -6,6 +6,8 @@ const {
   modifyPatientByName,
   deletePatientByID,
   deletePatientByName,
+  getPatientByEmail,
+  getAllPatient,
 } = require("../controllers/patientController");
 const {
   patientValidator,
@@ -40,5 +42,8 @@ patientRouter
     modifyPatientByID
   )
   .delete(deletePatientByID);
+patientRouter
+  .route("/all")
+  .get(getAllPatient)
 
 module.exports = patientRouter;

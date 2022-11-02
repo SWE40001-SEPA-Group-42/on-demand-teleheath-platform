@@ -489,11 +489,11 @@ const dashboardValidator = (validationType) => {
     ];
   } else if (validationType == "appointment") {
     return [
-      body("dateOfAppointment")
-        .isDate()
-        .notEmpty()
-        .withMessage("must provide an appointment date"),
-      body("aptStatus").isBoolean().notEmpty(),
+      // body("dateOfAppointment")
+      //   .isDate()
+      //   .notEmpty()
+      //   .withMessage("must provide an appointment date"),
+      // body("aptStatus").isBoolean().notEmpty(),
       body("ptEmail")
         .isEmail()
         .withMessage("must provide a valid email address")

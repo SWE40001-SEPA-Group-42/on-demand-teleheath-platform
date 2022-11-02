@@ -74,6 +74,7 @@
 	"devDependencies": {
 		"@types/react-copy-to-clipboard": "^5.0.4",
 		"@types/simple-peer": "^9.11.5",
+		"@types/uuid": "^8.3.4",
 		"@userfront/react": "^0.3.1",
 		"autoprefixer": "^10.4.8",
 		"moment-duration-format": "^2.3.2",
