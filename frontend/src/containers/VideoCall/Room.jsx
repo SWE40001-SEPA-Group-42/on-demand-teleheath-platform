@@ -48,7 +48,7 @@ const Room = (props) => {
     const otherUser = useRef();
 
     useEffect(() => {
-        socketRef.current = io.connect(`${process.env.REACT_APP_BASE_IP}:8000`);
+        socketRef.current = io.connect(`${process.env.REACT_APP_BASE_URL}:8000`);
         console.log(socketRef)
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
@@ -106,7 +106,7 @@ const Room = (props) => {
                 setPeers(peers)
             })
 
-            socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
+            socketRef.current.on("ICEcandidate", handleNewICECandidateMsg);
         })
     }, []);
 
@@ -159,6 +159,7 @@ const Room = (props) => {
         })
 
         peer.onicecandidate = handleICECandidateEvent;
+        // MAY NEED TO ADD BACK SOMEHOW
         // peer.ontrack = handleTrackEvent;
         peer.onnegotiationneeded = () => handleNegotiationNeededEvent(userToSignal);
 
@@ -215,6 +216,7 @@ const Room = (props) => {
         }
     }
 
+    // MAY NEED TO ADD BACK SOMEHOW
     // function handleTrackEvent(e) {
     //     partnerVideo.current.srcObject = e.streams[0];
     // };
