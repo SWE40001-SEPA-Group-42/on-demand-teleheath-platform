@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { Clinic } from '../../types/Clinic'
 
-const baseURL = `${process.env.REACT_APP_SSL_URL}/api/clinics`;
+const baseURL = `${process.env.REACT_APP_BASE_URL}/api/clinics`;
 
 export const getClinic = createAsyncThunk(
     //action name

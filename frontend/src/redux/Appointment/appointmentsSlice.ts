@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction, TaskAbortError } from '@r
 import axios from 'axios'
 import { Appointment } from '../../types/Appointment'
 
-const baseURL = `${process.env.REACT_APP_SSL_URL}/api/dashboard/appointment`;
+const baseURL = `${process.env.REACT_APP_BASE_URL}/api/dashboard/appointment`;
 
 export const createAppointment = createAsyncThunk(
     'appointments/createApt',
