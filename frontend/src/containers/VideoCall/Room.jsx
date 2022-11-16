@@ -49,7 +49,7 @@ const Room = (props) => {
 
     useEffect(() => {
         socketRef.current = io.connect(`${process.env.REACT_APP_WEBRTC_URL}:8000`);
-        console.log(socketRef)
+	console.log(socketRef)
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);

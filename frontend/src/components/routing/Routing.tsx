@@ -8,7 +8,7 @@ import {
 
 import Userfront from '@userfront/react';
 
-import LayoutsWithNavbar from '../Shared/LayoutsWithNavbar';
+import LayoutsWithNavbar from '../shared/LayoutsWithNavbar';
 import { Login, Logout, Signup, Reset } from '../Authentication';
 
 // Landing Page
