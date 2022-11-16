@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Doctor } from '../../types/Doctor';
 
-const baseURL = 'http://localhost:8001/api/doctors';
+const baseURL = `${process.env.REACT_APP_BASE_URL}/api/doctors`;
 
 export const fetchDoctors = createAsyncThunk(
   //action name

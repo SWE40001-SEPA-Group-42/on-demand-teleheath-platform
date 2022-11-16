@@ -44,3 +44,13 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Deployment Requirements
+You will need to create a .env file in order for the App's Backend calls to work correctly, this would need the following variables to be set:
+* REACT\_APP\_USERFRONT\_INIT = refer to Userfront
+* REACT\_APP\_USERFRONT\_LOGIN = refer to Userfront
+* REACT\_APP\_USERFRONT\_LOGOUT = refer to Userfront
+* REACT\_APP\_USERFRONT\_SIGNUP = refer to Userfront
+* REACT\_APP\_USERFRONT\_RESET = refer to Userfront
+* REACT\_APP\_BASE\_URL = "http://localhost" or "http://<publicIP>"
+* REACT\_APP\_BASE\_IP = "localhost" or "<publicIP>"

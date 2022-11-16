@@ -45,10 +45,11 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = useParams()
+    const otherUser = useRef();
 
     useEffect(() => {
-        socketRef.current = io.connect("localhost:8000");
-        console.log(socketRef)
+        socketRef.current = io.connect(`${process.env.REACT_APP_WEBRTC_URL}:8000`);
+	console.log(socketRef)
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -56,6 +57,9 @@ const Room = (props) => {
                 const peers = [];
                 users.forEach(userID => {
                     const peer = createPeer(userID, socketRef.current.id, stream);
+
+                    otherUser.current = userID;
+
                     peersRef.current.push({
                         peerID: userID,
                         peer,
@@ -70,6 +74,9 @@ const Room = (props) => {
 
             socketRef.current.on("user joined", payload => {
                 const peer = addPeer(payload.signal, payload.callerID, stream);
+
+                otherUser.current = payload.userID;
+
                 peersRef.current.push({
                     peerID: payload.callerID,
                     peer,
@@ -98,15 +105,63 @@ const Room = (props) => {
                 peersRef.current = peers
                 setPeers(peers)
             })
+
+            socketRef.current.on("ICEcandidate", handleNewICECandidateMsg);
         })
     }, []);
 
     function createPeer(userToSignal, callerID, stream) {
+
+        /*
+            // Uses Google's Free Stun Servers, but has no TURN servers
+            const peer = new Peer({
+                iceServers: [
+                    { urls: "stun:stun.l.google.com:19302" },
+                    { urls: "stun:stun1.l.google.com:19302" },
+                    { urls: "stun:stun2.l.google.com:19302" },
+                    { urls: "stun:stun3.l.google.com:19302" },
+                    { urls: "stun:stun4.l.google.com:19302" },
+                ],
+                initiator: true,
+                trickle: false,
+                stream,
+            });
+        */
+
+
+        // https://www.metered.ca/tools/openrelay/ --> Free STUN and TURN servers
         const peer = new Peer({
-            initiator: true,
-            trickle: false,
-            stream,
-        });
+            config: {
+                iceServers: [
+                    {
+                      urls: "stun:openrelay.metered.ca:80",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:80",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:443",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                    {
+                      urls: "turn:openrelay.metered.ca:443?transport=tcp",
+                      username: "openrelayproject",
+                      credential: "openrelayproject",
+                    },
+                ],
+                initiator: true,
+                trickle: false,
+                stream,
+            }
+        })
+
+        peer.onicecandidate = handleICECandidateEvent;
+        // MAY NEED TO ADD BACK SOMEHOW
+        // peer.ontrack = handleTrackEvent;
+        peer.onnegotiationneeded = () => handleNegotiationNeededEvent(userToSignal);
 
         peer.on("signal", signal => {
             socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
@@ -130,6 +185,41 @@ const Room = (props) => {
 
         return peer;
     }
+
+    function handleNewICECandidateMsg(incoming) {
+        const candidate = new RTCIceCandidate(incoming);
+
+        peersRef.current.addIceCandidate(candidate)
+            .catch(e => console.log(e));
+    }
+
+    function handleNegotiationNeededEvent(userID) {
+        peersRef.current.createOffer().then(offer => {
+            return peersRef.current.setLocalDescription(offer);
+        }).then(() => {
+            const payload = {
+                target: userID,
+                caller: socketRef.current.id,
+                sdp: peersRef.current.localDescription
+            };
+            socketRef.current.emit("offer", payload);
+        }).catch(e => console.log(e));
+    }
+
+    function handleICECandidateEvent(e) {
+        if (e.candidate) {
+            const payload = {
+                target: otherUser.current,
+                candidate: e.candidate,
+            }
+            socketRef.current.emit("ice-candidate", payload);
+        }
+    }
+
+    // MAY NEED TO ADD BACK SOMEHOW
+    // function handleTrackEvent(e) {
+    //     partnerVideo.current.srcObject = e.streams[0];
+    // };
 
     const leaveCall = () => {
         window.open("about:blank", "_self");

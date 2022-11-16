@@ -1,5 +1,0 @@
-@import './components/index';
-
-.app {
-  @apply box-border bg-white;
-}

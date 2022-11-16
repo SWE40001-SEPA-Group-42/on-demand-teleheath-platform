@@ -3,7 +3,7 @@ import axios from 'axios'
 import { modifyDoctorById } from '../Doctor/doctorsSlice'
 import { Patient } from '../../types/Patient'
 
-const baseURL = 'http://localhost:8001/api/patients'
+const baseURL = `${process.env.REACT_APP_BASE_URL}/api/patients`;
 
 export const getPatient = createAsyncThunk(
     //action name
