@@ -70,10 +70,11 @@ const mockPatient = new Patient({
   ptNextofKinWorkPhone: "",
   ptDVAFileNo: "12345678",
   ptDVAExpiryDate: "2023-05-10",
-  ptHealthcareCardNo: "12345678",
+  ptHealthcareCardNo: 12345678,
   ptHealthcareCardExpiryDate: "2023-05-10",
   ptPensionCardNo: "12345678",
   ptPensionCardExpiryDate: "2023-05-10",
+  ptId: "12345",
 });
 
 const mockInvalidPatient = new Patient({
@@ -117,6 +118,7 @@ const mockInvalidPatient = new Patient({
   ptHealthcareCardExpiryDate: "2023-05-10",
   ptPensionCardNo: 1234556,
   ptPensionCardExpiryDate: "2023-05-10",
+  ptId: 12345,
 });
 
 //Mock Doctor Data
