@@ -52,5 +52,5 @@ You will need to create a .env file in order for the App's Backend calls to work
 * REACT\_APP\_USERFRONT\_LOGOUT = refer to Userfront
 * REACT\_APP\_USERFRONT\_SIGNUP = refer to Userfront
 * REACT\_APP\_USERFRONT\_RESET = refer to Userfront
-* REACT\_APP\_BASE\_URL = "http://localhost" or "http://<publicIP>"
-* REACT\_APP\_BASE\_IP = "localhost" or "<publicIP>"
+* REACT\_APP\_BASE\_URL = "http://localhost:8001" or "http://<publicIP>" or "https://<domain-name>"
+* REACT\_APP\_WEBRTC\_URL = "localhost" or "<publicIP>" or "https://<domain-name>"

@@ -46,6 +46,7 @@ const Routing = () => {
       {/* <Route element={<LayoutsWithNavbar />}> */}
       {/* PUBLIC ROUTES */}
       <Route index element={<Login />} />
+      <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
 
       {/* Need UI improvement */}
@@ -100,8 +101,9 @@ const Routing = () => {
           </RequireAuth>
         }
       />
+      {/* Will need to make one for Doctor */}
       <Route
-        path="patient/profile"
+        path="dashboard/patient/profile"
         element={
           <RequireAuth>
             <PatientProfile ptName={''} ptImgSrc={''} />
