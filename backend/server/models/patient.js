@@ -151,7 +151,7 @@ const patientSchema = mongoose.Schema(
       required: false,
     },
     ptHealthcareCardNo: {
-      type: String,
+      type: Number,
       required: false,
     },
     ptHealthcareCardExpiryDate: {
@@ -167,9 +167,9 @@ const patientSchema = mongoose.Schema(
       required: false,
     },
     ptId: {
-      type: String, 
+      type: String,
       required: true,
-    }
+    },
   },
   {
     collection: "patients",
