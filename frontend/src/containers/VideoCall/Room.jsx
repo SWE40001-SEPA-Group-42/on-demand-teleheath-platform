@@ -1,3 +1,4 @@
+// DEPRECATED
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -159,8 +160,7 @@ const Room = (props) => {
         })
 
         peer.onicecandidate = handleICECandidateEvent;
-        // MAY NEED TO ADD BACK SOMEHOW
-        // peer.ontrack = handleTrackEvent;
+        peer.ontrack = handleTrackEvent;
         peer.onnegotiationneeded = () => handleNegotiationNeededEvent(userToSignal);
 
         peer.on("signal", signal => {
@@ -172,9 +172,31 @@ const Room = (props) => {
 
     function addPeer(incomingSignal, callerID, stream) {
         const peer = new Peer({
-            initiator: false,
-            trickle: false,
-            stream,
+            config: {
+                iceServers: [
+                  {
+                    urls: "stun:openrelay.metered.ca:80",
+                  },
+                  {
+                    urls: "turn:openrelay.metered.ca:80",
+                    username: "openrelayproject",
+                    credential: "openrelayproject",
+                  },
+                  {
+                    urls: "turn:openrelay.metered.ca:443",
+                    username: "openrelayproject",
+                    credential: "openrelayproject",
+                  },
+                  {
+                    urls: "turn:openrelay.metered.ca:443?transport=tcp",
+                    username: "openrelayproject",
+                    credential: "openrelayproject",
+                  },
+                ],
+                initiator: true,
+                trickle: false,
+                stream,
+              },
         })
 
         peer.on("signal", signal => {
@@ -217,9 +239,9 @@ const Room = (props) => {
     }
 
     // MAY NEED TO ADD BACK SOMEHOW
-    // function handleTrackEvent(e) {
-    //     partnerVideo.current.srcObject = e.streams[0];
-    // };
+    function handleTrackEvent(e) {
+        partnerVideo.current.srcObject = e.streams[0];
+    };
 
     const leaveCall = () => {
         window.open("about:blank", "_self");

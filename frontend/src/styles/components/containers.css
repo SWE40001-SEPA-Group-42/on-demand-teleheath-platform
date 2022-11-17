@@ -1,0 +1,11 @@
+@tailwind components;
+
+@layer components {
+	.page-container {
+		@apply flex justify-center content-center items-center min-h-screen w-screen overflow-hidden;
+	}
+
+	.landing-page-container {
+		@apply flex justify-center items-center h-screen;
+	}
+}
